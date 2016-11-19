@@ -1,0 +1,9 @@
+{
+  "name": "nodebb-plugin-zade",
+  "version": "0.2.1",
+  "dependencies": {
+  },
+  "nbbpm": {
+    "compatibility": "^0.7.0"
+  }
+}
