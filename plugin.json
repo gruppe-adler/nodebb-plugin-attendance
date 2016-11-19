@@ -1,6 +1,6 @@
 {
-    "id": "nodebb-plugin-zade",
-    "name": "NodeBB Zade (Da mir kein Name eingefallen ist :)",
+    "id": "nodebb-plugin-attendance",
+    "name": "NodeBB Attendance",
     "description": "NodeBB Plugin plugin to ",
     "url": "https://github.com/gruppe-adler/nodebb-plugin-color-by-date",
     "libary": "",
