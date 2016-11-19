@@ -2,7 +2,7 @@
     "id": "nodebb-plugin-attendance",
     "name": "NodeBB Attendance",
     "description": "plugin which adds ability to show whether you attend a event by a single mouse click",
-    "url": "https://github.com/gruppe-adler/nodebb-plugin-color-by-date",
+    "url": "https://github.com/DerZade/nodebb-plugin-attendance",
     "libary": "",
     "scripts": [
         "./public/updateTopicList.js",
