@@ -1,5 +1,19 @@
 /*global $ */
 (function updateTopicList() {
+     var isMission = function (title) {
+          var matches = title.trim().match(/([0-9]{4}-[0-9]{2}-[0-9]{2})([^0-9a-z])/i);
+          if (!matches) {
+               return false;
+          } else {
+               return true;
+          }
+     }
+     var topicLoaded = function () {
+          var topicID = parseInt(app.currentRoom.replace("topic_",""));
+          if (isMission(document.querySelector('[component="topic/title"]').getAttribute('content') || document.querySelector('[component="topic/title"]').textContent || '')) {
+
+          }
+     };
      var topicsLoaded = function () {
 
           //for all shown topics
@@ -7,6 +21,8 @@
 
                //check wheather topic is a mission
                if (isMission(categoryItem.querySelector('[component="topic/header"] a').getAttribute('content') || categoryItem.querySelector('[component="topic/header"] a').textContent || '')) {
+
+                    var topicID = parseInt(category.getAttribute("data-tid"));
 
                     var postsDiv = categoryItem.querySelector('[class="col-md-1 hidden-sm hidden-xs stats"]');
                     var viewsDiv = (categoryItem.querySelectorAll('[class="col-md-1 hidden-sm hidden-xs stats"]'))[1];
@@ -33,4 +49,5 @@
      }
 
      $(window).bind('action:topics.loaded', topicsLoaded);
+     $(window).bind('action:topic.loaded', topicLoaded);
 }());
