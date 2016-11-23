@@ -17,6 +17,11 @@
             "hook": "filter:topic.get",
             "method": "onLoadTopic",
             "callbacked": true
-       }
+       },
+        {
+            "hook": "static:app.load",
+            "method": "registerApi",
+            "callbacked": true
+        }
     ]
 }

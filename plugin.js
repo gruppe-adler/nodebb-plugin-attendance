@@ -126,3 +126,5 @@ module.exports.onLoadTopic = function (data, cb) {
 
      cb(null, data);
 };
+
+module.exports.registerApi = require('./registerApi');
