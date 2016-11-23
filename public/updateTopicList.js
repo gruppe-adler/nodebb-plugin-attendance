@@ -22,12 +22,29 @@
                //check wheather topic is a mission
                if (isMission(categoryItem.querySelector('[component="topic/header"] a').getAttribute('content') || categoryItem.querySelector('[component="topic/header"] a').textContent || '')) {
 
-                    var topicID = parseInt(category.getAttribute("data-tid"));
 
                     var postsDiv = categoryItem.querySelector('[class="col-md-1 hidden-sm hidden-xs stats"]');
                     var viewsDiv = (categoryItem.querySelectorAll('[class="col-md-1 hidden-sm hidden-xs stats"]'))[1];
 
-                    //delete posts
+                    var firm_commitments = viewsDiv.querySelector('[component="topic/firm-commitments"]').getAttribute('data-firmcomm');
+                    var own_commitment = postsDiv.querySelector('[component="topic/own-commitment"]').getAttribute('data-owncomm');
+
+                    console.log(own_commitment);
+
+                    var color = "#777"; //GREY
+                    switch (own_commitment) {
+                         case "1":
+                              color = "#96D21F"; //GREEN
+                              break;
+                         case "2":
+                              color = "#D2A51F"; //ORANGE
+                              break;
+                         case "3":
+                              color = "#D21F1F"; //RED
+                              break;
+                    }
+
+                    //delete post count
                     var height = postsDiv.style.clientHeight;
                     postsDiv.innerHTML = "";
 
@@ -38,14 +55,13 @@
                     img.style.height = height;
                     img.style.paddingTop = "25%";
                     img.style.paddingBottom = "25%";
+                    img.style.color = color;
 
                     //firm commitments
                     viewsDiv.querySelector('small').innerHTML = "ZUSAGEN";
-                    var firm_commitments = 0;
-                    viewsDiv.querySelector('span').innerHTML = firm_commitments.toString();
+                    viewsDiv.querySelector('[class="human-readable-number"]').innerHTML = firm_commitments;
                }
           });
-          console.log("Topics Updated");
      }
 
      $(window).bind('action:topics.loaded', topicsLoaded);
