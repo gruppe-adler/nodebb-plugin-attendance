@@ -29,8 +29,6 @@
                     var firm_commitments = viewsDiv.querySelector('[component="topic/firm-commitments"]').getAttribute('data-firmcomm');
                     var own_commitment = postsDiv.querySelector('[component="topic/own-commitment"]').getAttribute('data-owncomm');
 
-                    console.log(own_commitment);
-
                     var color = "#777"; //GREY
                     switch (own_commitment) {
                          case "1":
@@ -67,3 +65,4 @@
      $(window).bind('action:topics.loaded', topicsLoaded);
      $(window).bind('action:topic.loaded', topicLoaded);
 }());
+
