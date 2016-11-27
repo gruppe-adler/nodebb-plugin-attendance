@@ -1,23 +1,17 @@
 {
     "id": "nodebb-plugin-attendance",
     "name": "NodeBB Attendance",
-    "description": "plugin which adds ability to show whether you attend a event by a single mouse click",
+    "description": "plugin which adds ability to show whether you attend an event by a single mouse click",
     "url": "https://github.com/DerZade/nodebb-plugin-attendance",
     "library": "./plugin.js",
+    "staticDirs": {
+        "templates": "./public/templates",
+        "css": "./public/css"
+    },
     "scripts": [
         "./public/updateTopicList.js"
     ],
     "hooks": [
-       {
-            "hook": "filter:category.topics.get",
-            "method": "addDataToTopic",
-            "callbacked": true
-       },
-       {
-            "hook": "filter:topic.get",
-            "method": "onLoadTopic",
-            "callbacked": true
-       },
         {
             "hook": "static:app.load",
             "method": "registerApi",

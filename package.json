@@ -1,9 +1,13 @@
 {
-  "name": "nodebb-plugin-attendance",
-  "version": "0.2.0",
-  "dependencies": {
-  },
-  "nbbpm": {
-    "compatibility": "^1.0.0"
-  }
+    "name": "nodebb-plugin-attendance",
+    "version": "0.2.0",
+    "dependencies": {
+        "async": "*"
+    },
+    "engines" : {
+        "npm" : ">3.0"
+    },
+    "nbbpm": {
+        "compatibility": "^1.0.0"
+    }
 }

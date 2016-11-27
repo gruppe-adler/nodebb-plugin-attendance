@@ -1,7 +1,7 @@
 var types = [
-    "commitment",
-    "firm_commitment",
-    "cancellation"
+    'yes',
+    'maybe',
+    'no'
 ];
 
 var validateType = function (type) {
@@ -10,18 +10,40 @@ var validateType = function (type) {
     }
 };
 
+var getZsetKey = function (topic_id, type) {
+    return 'tid:%s:attendance:%s'.replace('%s', topic_id).replace('%s', type);
+};
+
+var getAsyncAttendancesGetter = function (tid, type) {
+    return function (next) {
+        db.getSortedSetRangeWithScores(getZsetKey(tid, type), 0, -1, next);
+    };
+};
+
+var getAsyncAttendancesDeleter = function (tid, uid, type) {
+    return function (next) {
+        db.sortedSetRemove(getZsetKey(tid, type), uid, next);
+    };
+};
+
+var getUserAttendance = function (attendance, uid) {
+    return types.filter(function (type) {
+        return attendance[type].some(function (a) { return a.uid == uid; });
+    }).pop();
+};
+
 var db = require('../../src/database');
+var users = require('../../src/user');
+var async = require('async');
 
 module.exports = function (params, callback) {
-    var router = params.router,
-        middleware = params.middleware,
-        controllers = params.controllers;
+    var router = params.router;
 
     router.post('/api/attendance/:tid',
-        // middleware.checkGlobalPrivacySettings, //(?)
         function (req, res, next) {
             var type = req.body.type;
-            var tid = req.params['tid'];
+            var tid = req.params.tid;
+            var uid = req.uid;
             var timestamp = (new Date()).getTime();
 
             try {
@@ -30,25 +52,72 @@ module.exports = function (params, callback) {
                 return res.status(400).json({"error": e.message});
             }
 
-            db.sortedSetAdd(['tid', tid, type].join(':'), timestamp, req.uid, function (err, data) {
-                // TODO logging and shit
-            });
-            types.forEach(function (typeToDelete) {
-                if (typeToDelete !== type) {
-                    db.sortedSetRemove(['tid', tid, typeToDelete].join(':'), req.uid, function (err, data) {
-                        // TODO logging and shit
+            async.parallel(
+                types.map(function (type) { return getAsyncAttendancesDeleter(tid, uid, type); }),
+                function (err, results) {
+                    if (err) {
+                        return res.status(500).json({error: err});
+                    }
+                    db.sortedSetAdd(getZsetKey(tid, type), timestamp, uid, function (err, data) {
+                        if (err) {
+                            return next(res.status(500).json({error: err}));
+                        }
+                        res.status(200).json({
+                            added: type,
+                            user: uid
+                        });
                     });
                 }
-            });
-
-            return res.status(202).json({
-                added: type,
-                user: req.uid
-            });
+            );
         });
 
     router.get('/api/attendance/:tid', function (req, res, next) {
-        return res.status(200).json({"foo":"bar"});
+        var tid = req.params.tid;
+        var currentUser = req.uid;
+
+        if (!currentUser) {
+            return res.status(401).json({});
+        }
+
+        async.parallel(
+            types.map(function (type) { return getAsyncAttendancesGetter(tid, type); }),
+            function (err, results) {
+                if (err) {
+                    return res.status(500).json({error: err});
+                }
+
+                var attendance = {};
+                var userIds = [];
+                types.forEach(function (type, idx) {
+                    attendance[type] = results[idx];
+                    userIds = userIds.concat(results[idx].map(function (res) {return Number(res.value); }));
+                });
+
+                users.getUsersWithFields(userIds, ['uid', 'username', 'userslug', 'picture'], currentUser, function (err, users) {
+                    if (err) {
+                        return res.status(500).json({err: err});
+                    }
+
+                    types.forEach(function (type) {
+                        attendance[type].forEach(function (attendance) {
+                            var u = users.filter(function (user) { return user.uid == attendance.value; }).pop();
+                            attendance.uid = u.uid;
+                            delete attendance.value;
+                            attendance.timestamp = (new Date(attendance.score)).toISOString();
+                            delete attendance.score;
+                            attendance.username  = u.username;
+                            attendance.userslug = u.userslug;
+                            attendance.picture = u.picture;
+                        });
+                    });
+
+                    res.status(200).json({
+                        myAttendance: myAttendance,
+                        attendance: getUserAttendance(attendance, currentUser)
+                    });
+                });
+            }
+        );
     });
 
     callback();
