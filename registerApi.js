@@ -112,8 +112,8 @@ module.exports = function (params, callback) {
                     });
 
                     res.status(200).json({
-                        myAttendance: myAttendance,
-                        attendance: getUserAttendance(attendance, currentUser)
+                        myAttendance: getUserAttendance(attendance, currentUser),
+                        attendance: attendance
                     });
                 });
             }
