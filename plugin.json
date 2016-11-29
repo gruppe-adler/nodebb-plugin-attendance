@@ -1,8 +1,8 @@
 {
     "id": "nodebb-plugin-attendance",
     "name": "NodeBB Attendance",
-    "description": "plugin which adds ability to show whether you attend an event by a single mouse click",
-    "url": "https://github.com/DerZade/nodebb-plugin-attendance",
+    "description": "plugin which adds ability to show whether you attend an event by a single mouse click. Events are marked by having an ISO date at the start of the title.",
+    "url": "https://github.com/Fusselwurm/nodebb-plugin-attendance",
     "library": "./plugin.js",
     "staticDirs": {
         "templates": "./public/templates",

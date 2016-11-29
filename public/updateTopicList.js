@@ -6,7 +6,7 @@
         var css = document.createElement('link');
         css.rel = 'stylesheet';
         css.type = 'text/css';
-        css.href = '/plugins/nodebb-plugin-attendance/css/styles.css';
+        css.href = '/plugins/nodebb-plugin-attendance/css/styles.css?v=2';
         document.head.appendChild(css);
     }());
 
@@ -21,9 +21,10 @@
                data: JSON.stringify({"type": value}),
                success: function () {
                    $button.disabled = true;
+                   topicLoaded();
                },
                error: function () {
-
+                   console.log(arguments);
                }
            });
 
@@ -36,7 +37,7 @@
             if (loadedTemplates[templateName]) {
                 cb(loadedTemplates[templateName]);
             }
-            $.get('/plugins/nodebb-plugin-attendance/templates/topic.html', function (response) {
+            $.get('/plugins/nodebb-plugin-attendance/templates/topic.html?v=2', function (response) {
                 loadedTemplates[templateName] = response;
                 cb(loadedTemplates[templateName]);
             });
@@ -101,6 +102,15 @@
         });
     }
 
+    var insertTopicAttendanceNode = function (topicComponentNode, attendanceNode) {
+        var existingAttendanceComponentNode = topicComponentNode.parentNode.querySelector('[component="topic/attendance"]');
+        if (existingAttendanceComponentNode) {
+            topicComponentNode.parentNode.replaceChild(attendanceNode, existingAttendanceComponentNode);
+        } else {
+            topicComponentNode.parentNode.insertBefore(attendanceNode, topicComponentNode);
+        }
+    };
+
     var topicLoaded = function () {
         Array.prototype.forEach.call(document.querySelectorAll('[component="topic"]'), function (topicNode) {
             debugger;
@@ -117,8 +127,10 @@
                             tid: topicId
                         });
                         var node = document.createElement('div');
+                        node.setAttribute('component', 'topic/attendance');
                         node.innerHTML = markup;
-                        topicNode.parentNode.insertBefore(node, topicNode);
+
+                        insertTopicAttendanceNode(topicNode, node);
                     });
                 });
             }
@@ -126,7 +138,6 @@
     };
 
     var topicsLoaded = function () {
-        //for all shown topics
         Array.prototype.forEach.call(document.querySelectorAll('[component="category/topic"]'), function (topicItem) {
             if (isMission(getTopicTitle(topicItem))) {
                 var topicId = parseInt(topicItem.getAttribute('data-tid'), 10);

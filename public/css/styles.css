@@ -4,6 +4,10 @@
     padding: 10px;
 }
 
+[component="topic/attendance"] .attendance-current {
+    font-weight: normal;
+}
+
 .attendance-container ul {
     list-style: none;
 }

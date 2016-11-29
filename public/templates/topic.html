@@ -1,68 +1,56 @@
- <div component="topic/attendance">
-     <div><h5>Bist du dabei?</h5>
-         <button class="attendance-control" data-value="yes" data-tid="{tid}">ja</button>
-         <button class="attendance-control" data-value="maybe" data-tid="{tid}">vielleicht</button>
-         <button class="attendance-control" data-value="no" data-tid="{tid}">nein</button>
-     </div>
-    <div component="attendance/yes" class="attendance-container">
-        <h5>Zusagen:</h5>
-        <ul>
-            <!-- BEGIN attendance.yes -->
-            <li>
-                <a href="{config.relative_path}/user/{attendance.yes.userslug}">
-                    <!-- IF attendance.yes.picture -->
-                    <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.yes.picture}"
-                         title="{attendance.yes.username}">
-                    <!-- ENDIF attendance.yes.picture -->
-                    <span title="{attendance.yes.timestamp}">{attendance.yes.username}</span>
-                </a>
-                <!-- IF @last -->
-                <!-- ELSE -->
-                ,
-                <!-- ENDIF -->
-            </li>
-            <!-- END attendance.yes -->
-        </ul>
-    </div>
-    <div component="attendance/maybe" class="attendance-container">
-        <h5>Vielleicht:</h5>
-        <ul>
-            <!-- BEGIN attendance.maybe -->
-            <li>
-                <a href="{config.relative_path}/user/{attendance.maybe.userslug}">
-                    <!-- IF attendance.maybe.picture -->
-                    <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.maybe.picture}"
-                         title="{attendance.maybe.username}" />
-                    <!-- ENDIF attendance.maybe.picture -->
-                    <span title="{attendance.maybe.timestamp}">{attendance.maybe.username}</span>
-                </a>
-                <!-- IF @last -->
-                <!-- ELSE -->
-                ,
-                <!-- ENDIF -->
-            </li>
-            <!-- END attendance.maybe -->
-        </ul>
-    </div>
-    <div component="attendance/no" class="attendance-container">
-        <h5>Absagen:</h5>
-        <ul>
-            <!-- BEGIN attendance.no -->
-            <li>
-                <a href="{config.relative_path}/user/{attendance.no.userslug}">
-                    <!-- IF attendance.no.picture -->
-                    <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.no.picture}"
-                         title="{attendance.no.username}">
-                    <!-- ENDIF attendance.no.picture -->
-                    <span title="{attendance.no.timestamp}">{attendance.no.username}</span>
-                </a>
-                <!-- IF @last -->
-                <!-- ELSE -->
-                ,
-                <!-- ENDIF @last -->
-            </li>
-            <!-- END attendance.no -->
-        </ul>
-    </div>
+<div><h5>Bist du dabei? <span class="attendance-current">(Du hast bisher {myAttendance} ausgewählt)</span></h5>
+    <button class="attendance-control" data-value="yes" data-tid="{tid}">ja</button>
+    <button class="attendance-control" data-value="maybe" data-tid="{tid}">vielleicht</button>
+    <button class="attendance-control" data-value="no" data-tid="{tid}">nein</button>
 </div>
-<hr/>
+<div component="attendance/yes" class="attendance-container">
+    <h5>Zusagen:</h5>
+    <ul>
+        <!-- BEGIN attendance.yes -->
+        <li>
+            <a href="{config.relative_path}/user/{attendance.yes.userslug}">
+                <!-- IF attendance.yes.picture -->
+                <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.yes.picture}"
+                     title="{attendance.yes.username}">
+                <!-- ENDIF attendance.yes.picture -->
+                <span title="{attendance.yes.timestamp}">{attendance.yes.username}</span>
+            </a>
+            <!-- IF @last --> <!-- ELSE -->, <!-- ENDIF @last -->
+        </li>
+        <!-- END attendance.yes -->
+    </ul>
+</div>
+<div component="attendance/maybe" class="attendance-container">
+    <h5>Vielleicht:</h5>
+    <ul>
+        <!-- BEGIN attendance.maybe -->
+        <li>
+            <a href="{config.relative_path}/user/{attendance.maybe.userslug}">
+                <!-- IF attendance.maybe.picture -->
+                <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.maybe.picture}"
+                     title="{attendance.maybe.username}"/>
+                <!-- ENDIF attendance.maybe.picture -->
+                <span title="{attendance.maybe.timestamp}">{attendance.maybe.username}</span>
+            </a>
+            <!-- IF @last --> <!-- ELSE -->, <!-- ENDIF @last -->
+        </li>
+        <!-- END attendance.maybe -->
+    </ul>
+</div>
+<div component="attendance/no" class="attendance-container">
+    <h5>Absagen:</h5>
+    <ul>
+        <!-- BEGIN attendance.no -->
+        <li>
+            <a href="{config.relative_path}/user/{attendance.no.userslug}">
+                <!-- IF attendance.no.picture -->
+                <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.no.picture}"
+                     title="{attendance.no.username}">
+                <!-- ENDIF attendance.no.picture -->
+                <span title="{attendance.no.timestamp}">{attendance.no.username}</span>
+            </a>
+            <!-- IF @last --> <!-- ELSE -->, <!-- ENDIF @last -->
+        </li>
+        <!-- END attendance.no -->
+    </ul>
+</div>
