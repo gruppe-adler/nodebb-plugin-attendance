@@ -112,11 +112,11 @@
 		} else {
 			postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
 		}
+		
+		hideAttendanceDetails("yes");
+		hideAttendanceDetails("maybe");
+		hideAttendanceDetails("no");
 	}
-
-	hideAttendanceDetails("yes");
-	hideAttendanceDetails("maybe");
-	hideAttendanceDetails("no");
     };
 
     var topicLoaded = function () {
