@@ -116,6 +116,13 @@
 		hideAttendanceDetails("yes");
 		hideAttendanceDetails("maybe");
 		hideAttendanceDetails("no");
+	} else if (topicComponentNode.children.length === 1) {
+		var existingAttendanceComponentNode = postBarNode.parentNode.querySelector('[component="topic/attendance"]');
+		if (existingAttendanceComponentNode) {
+			postBarNode.parentNode.replaceChild(attendanceNode, existingAttendanceComponentNode);
+		} else {
+			topicComponentNode.querySelector("[component='post']").appendChild(attendanceNode);
+		}
 	}
     };
 
