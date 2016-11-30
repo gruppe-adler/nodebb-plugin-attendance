@@ -1,17 +1,54 @@
 [component="topic/attendance"] {
-    margin: 10px 0;
-    background: white;
-    padding: 10px;
+     margin: 10px 0;
+     background: white;
 }
 
+[component="topic/attendance"] div {
+     text-align: center;
+}
+[component="topic/attendance"] div button {
+     padding: 10px;
+     padding-top: 7px;
+     padding-bottom: 7px;
+}
 [component="topic/attendance"] .attendance-current {
-    font-weight: normal;
+     font-weight: normal;
+}
+[component="topic/attendance"] table {
+     margin: 10px;
+     width: 100%;
+}
+[component="topic/attendance"] table tr {
+     line-height: 40px;
+     padding-top: 3px;
+     padding-bottom: 3px;
+     border-bottom: 1px solid #f0f0f0;
 }
 
-.attendance-container ul {
-    list-style: none;
+[component="topic/attendance"] table tr .firstColumn {
+     width: 155px;
+     font-weight: bold;
+}
+[component="topic/attendance"] table tr .secondColumn ul {
+     padding: 0px;
+     list-style: none;
 }
 
-.attendance-container li {
-    display: inline;
+[component="topic/attendance"] table tr .secondColumn ul li {
+     display: inline;
+}
+
+[component="topic/attendance"] table tr .secondColumn ul li img {
+    width: 30px;
+    height: 30px;
+}
+[component="topic/attendance"] table tr .thirdColumn {
+     width: 60px;
+}
+[component="topic/attendance"] table tr .thirdColumn a {
+     cursor: pointer;
+}
+
+[component="topic/attendance"] .fade {
+     display: none;
 }
