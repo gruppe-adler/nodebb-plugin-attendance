@@ -102,28 +102,26 @@
     }
 
     var insertTopicAttendanceNode = function (topicComponentNode, attendanceNode) {
-	var postBarNode = topicComponentNode.querySelector('[component="post"]').querySelector('[class="post-bar"]');
+	var firstPost = topicComponentNode.querySelector('[component="post"]');
+	var existingAttendanceComponentNode = firstPost.querySelector('[component="topic/attendance"]');
+	if (existingAttendanceComponentNode) {
+		firstPost.replaceChild(attendanceNode, existingAttendanceComponentNode);
+		return true;
+	};
+	    
+	var postBarNode = firstPost.querySelector('[class="post-bar"]');
 
 	//only insert attendance if the postbar exists (if this is the first post)
 	if (postBarNode) {
-		var existingAttendanceComponentNode = postBarNode.parentNode.querySelector('[component="topic/attendance"]');
-		if (existingAttendanceComponentNode) {
-			postBarNode.parentNode.replaceChild(attendanceNode, existingAttendanceComponentNode);
-		} else {
-			postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
-		}
-		
-		hideAttendanceDetails("yes");
-		hideAttendanceDetails("maybe");
-		hideAttendanceDetails("no");
+		postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
 	} else if (topicComponentNode.children.length === 1) {
-		var existingAttendanceComponentNode = postBarNode.parentNode.querySelector('[component="topic/attendance"]');
-		if (existingAttendanceComponentNode) {
-			postBarNode.parentNode.replaceChild(attendanceNode, existingAttendanceComponentNode);
-		} else {
-			topicComponentNode.querySelector("[component='post']").appendChild(attendanceNode);
-		}
+		console.log("lenght == 1");
+		firstPost.appendChild(attendanceNode);
 	}
+	    
+	hideAttendanceDetails("yes");
+	hideAttendanceDetails("maybe");
+	hideAttendanceDetails("no");
     };
 
     var topicLoaded = function () {
