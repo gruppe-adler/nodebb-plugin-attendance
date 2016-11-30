@@ -115,7 +115,6 @@
 	if (postBarNode) {
 		postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
 	} else if (topicComponentNode.children.length === 1) {
-		console.log("lenght == 1");
 		firstPost.appendChild(attendanceNode);
 	}
 	    
