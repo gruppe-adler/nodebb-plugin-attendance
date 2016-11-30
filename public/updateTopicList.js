@@ -129,11 +129,11 @@
                             config: {
                                 relative_path: config.relative_path
                             },
-                            attendance: response.attendance,
-					   yes: (function(v1){if(v1 == "yes"){return 1} else {return 0}})(response.myAttendance),
-					   maybe: (function(v1){if(v1 == "maybe"){return 1} else {return 0}})(response.myAttendance),
-					   no: (function(v1){if(v1 == "no"){return 1} else {return 0}})(response.myAttendance),
-                            tid: topicId
+			    attendance: response.attendance,
+			    yes: (function(v1){if(v1 == "yes"){return 1} else {return 0}})(response.myAttendance),
+			    maybe: (function(v1){if(v1 == "maybe"){return 1} else {return 0}})(response.myAttendance),
+			    no: (function(v1){if(v1 == "no"){return 1} else {return 0}})(response.myAttendance),
+			    tid: topicId
                         });
                         var node = document.createElement('div');
                         node.setAttribute('component', 'topic/attendance');
