@@ -103,15 +103,15 @@
 
     var insertTopicAttendanceNode = function (topicComponentNode, attendanceNode) {
 	var postBarNode = topicComponentNode.querySelector('[component="post"]').querySelector('[class="post-bar"]');
-	var existingAttendanceComponentNode = postBarNode.parentNode.querySelector('[component="topic/attendance"]');
 
 	//only insert attendance if the postbar exists (if this is the first post)
 	if (postBarNode) {
-	     if (existingAttendanceComponentNode) {
-		  postBarNode.parentNode.replaceChild(attendanceNode, existingAttendanceComponentNode);
-	     } else {
-		  postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
-	     }
+		var existingAttendanceComponentNode = postBarNode.parentNode.querySelector('[component="topic/attendance"]');
+		if (existingAttendanceComponentNode) {
+			postBarNode.parentNode.replaceChild(attendanceNode, existingAttendanceComponentNode);
+		} else {
+			postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
+		}
 	}
 
 	hideAttendanceDetails("yes");
