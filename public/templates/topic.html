@@ -1,57 +1,169 @@
-<div style="float:right; font-weight: bold;">BETA</div>
-<div><h5>Bist du dabei? <span class="attendance-current">(Du hast bisher {myAttendance} ausgewählt)</span></h5>
-    <button class="attendance-control" data-value="yes" data-tid="{tid}">ja</button>
-    <button class="attendance-control" data-value="maybe" data-tid="{tid}">vielleicht</button>
-    <button class="attendance-control" data-value="no" data-tid="{tid}">nein</button>
+<div style="float:right; font-weight: bold;color:grey;">BETA</div>
+<div style="float:left; font-weight: bold; margin-bottom:10px; font-size: larger;">TEILNAHME:</div>
+<table>
+     <tr>
+          <td class="firstColumn"><i class="fa fa-fw fa-user" style="color: #96D21F;"></i> ZUSAGEN  ({attendance.yes.length})</td>
+          <td class="secondColumn">
+               <ul>
+                   <!-- BEGIN attendance.yes -->
+                   <li>
+                       <a href="{config.relative_path}/user/{attendance.yes.userslug}">
+                           <!-- IF attendance.yes.picture -->
+                           <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.yes.picture}"
+                                title="{attendance.yes.username} – {attendance.yes.timestamp}">
+                           <!-- ENDIF attendance.yes.picture -->
+                       </a>
+                   </li>
+                   <!-- END attendance.yes -->
+               </ul>
+          </td>
+          <td class="thirdColumn"><a onclick="showAttendanceDetails('yes');">Details</a></td>
+     </tr>
+     <tr>
+          <td  class="firstColumn"><i class="fa fa-fw fa-user" style="color: #D2A51F;"></i> VIELLEICHT  ({attendance.maybe.length})</td>
+          <td class="secondColumn">
+               <ul>
+                   <!-- BEGIN attendance.maybe -->
+                   <li>
+                       <a href="{config.relative_path}/user/{attendance.maybe.userslug}">
+                           <!-- IF attendance.maybe.picture -->
+                           <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.maybe.picture}"
+                                title="{attendance.maybe.username} – {attendance.maybe.timestamp}"/>
+                           <!-- ENDIF attendance.maybe.picture -->
+                       </a>
+                   </li>
+                   <!-- END attendance.maybe -->
+               </ul>
+          </td>
+          <td class="thirdColumn"><a onclick="showAttendanceDetails('maybe');">Details</a></td>
+     </tr>
+     <tr>
+          <td  class="firstColumn"><i class="fa fa-fw fa-user" style="color: #D21F1F;"></i> ABSAGEN  ({attendance.no.length})</td>
+          <td class="secondColumn">
+               <ul>
+                   <!-- BEGIN attendance.no -->
+                   <li>
+                       <a href="{config.relative_path}/user/{attendance.no.userslug}">
+                           <!-- IF attendance.no.picture -->
+                           <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.no.picture}"
+                                title="{attendance.no.username} – {attendance.no.timestamp}">
+                           <!-- ENDIF attendance.no.picture -->
+                       </a>
+                   </li>
+                   <!-- END attendance.no -->
+               </ul>
+          </td>
+          <td class="thirdColumn"><a onclick="showAttendanceDetails('no');">Details</a></td>
+     </tr>
+</table>
+
+<div>
+     <button class="attendance-control btn btn-<!-- IF yes -->primary<!-- ELSE -->default<!-- ENDIF yes -->" data-value="yes" data-tid="{tid}">ZUSAGEN</button>
+     <button class="attendance-control btn btn-<!-- IF maybe -->primary<!-- ELSE -->default<!-- ENDIF maybe -->" data-value="maybe" data-tid="{tid}">VIELLEICHT</button>
+     <button class="attendance-control btn btn-<!-- IF no -->primary<!-- ELSE -->default<!-- ENDIF no -->" data-value="no" data-tid="{tid}">ABSAGEN</button>
+
 </div>
-<div component="attendance/yes" class="attendance-container">
-    <h5>Ja ({attendance.yes.length}):</h5>
-    <ul>
-        <!-- BEGIN attendance.yes -->
-        <li>
-            <a href="{config.relative_path}/user/{attendance.yes.userslug}">
-                <!-- IF attendance.yes.picture -->
-                <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.yes.picture}"
-                     title="{attendance.yes.username} – {attendance.yes.timestamp}">
-                <!-- ENDIF attendance.yes.picture -->
-<!--                <span title="{attendance.yes.timestamp}">{attendance.yes.username}</span> -->
-            </a>
-            <!-- IF @last --> <!-- ELSE --> <!-- ENDIF @last -->
-        </li>
-        <!-- END attendance.yes -->
-    </ul>
+<hr/>
+<div class="modal-backdrop fade in" component="topic/attendance/backdrop"></div>
+<div class="bootbox modal fade vote-modal in" component="topic/attendance/yes-details" abindex="-1" role="dialog" style="display: block; padding-right: 16px;">
+     <div class="modal-dialog">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <button type="button" onclick="hideAttendanceDetails('yes');" class="bootbox-close-button close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Zusagen</h4>
+               </div>
+               <div class="modal-body">
+                    <table component="groups/members" class="table table-striped table-hover" data-nextstart="20">
+                         <tbody>
+                              <!-- BEGIN attendance.yes -->
+                              <tr data-uid="{attendance.yes.uid}">
+                                   <td>
+                                        <a href="{config.relative_path}/user/{attendance.yes.userslug}">
+                                             <!-- IF attendance.yes.picture -->
+                                             <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.yes.picture}"
+                                             title="{attendance.yes.username} – {attendance.yes.timestamp}">
+                                             <!-- ENDIF attendance.yes.picture -->
+                                        </a>
+                                   </td>
+                                   <td class="member-name">
+                                   <a href="{config.relative_path}/user/{attendance.yes.userslug}">{attendance.yes.username}</a>
+                                        <div class="pull-right">
+                                             {attendance.yes.timestamp}
+                                        </div>
+                                   </td>
+                              </tr>
+                              <!-- END attendance.yes -->
+                         </tbody>
+                    </table>
+               </div>
+          </div>
+     </div>
 </div>
-<div component="attendance/maybe" class="attendance-container">
-    <h5>Vielleicht ({attendance.maybe.length}):</h5>
-    <ul>
-        <!-- BEGIN attendance.maybe -->
-        <li>
-            <a href="{config.relative_path}/user/{attendance.maybe.userslug}">
-                <!-- IF attendance.maybe.picture -->
-                <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.maybe.picture}"
-                     title="{attendance.maybe.username} – {attendance.maybe.timestamp}"/>
-                <!-- ENDIF attendance.maybe.picture -->
-<!--                <span title="{attendance.maybe.timestamp}">{attendance.maybe.username}</span> -->
-            </a>
-            <!-- IF @last --> <!-- ELSE --> <!-- ENDIF @last -->
-        </li>
-        <!-- END attendance.maybe -->
-    </ul>
+<div class="bootbox modal fade vote-modal in" component="topic/attendance/maybe-details" abindex="-1" role="dialog" style="display: block; padding-right: 16px;">
+     <div class="modal-dialog">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <button type="button" onclick="hideAttendanceDetails('maybe');" class="bootbox-close-button close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Vielleicht</h4>
+               </div>
+               <div class="modal-body">
+                    <table component="groups/members" class="table table-striped table-hover" data-nextstart="20">
+                         <tbody>
+                              <!-- BEGIN attendance.maybe -->
+                              <tr data-uid="{attendance.maybe.uid}">
+                                   <td>
+                                        <a href="{config.relative_path}/user/{attendance.maybe.userslug}">
+                                             <!-- IF attendance.maybe.picture -->
+                                             <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.maybe.picture}"
+                                             title="{attendance.maybe.username} – {attendance.maybe.timestamp}">
+                                             <!-- ENDIF attendance.maybe.picture -->
+                                        </a>
+                                   </td>
+                                   <td class="member-name">
+                                   <a href="{config.relative_path}/user/{attendance.maybe.userslug}">{attendance.maybe.username}</a>
+                                        <div class="pull-right">
+                                             {attendance.maybe.timestamp}
+                                        </div>
+                                   </td>
+                              </tr>
+                              <!-- END attendance.maybe -->
+                         </tbody>
+                    </table>
+               </div>
+          </div>
+     </div>
 </div>
-<div component="attendance/no" class="attendance-container">
-    <h5>Nein ({attendance.no.length}):</h5>
-    <ul>
-        <!-- BEGIN attendance.no -->
-        <li>
-            <a href="{config.relative_path}/user/{attendance.no.userslug}">
-                <!-- IF attendance.no.picture -->
-                <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.no.picture}"
-                     title="{attendance.no.username} – {attendance.no.timestamp}">
-                <!-- ENDIF attendance.no.picture -->
-<!--                <span title="{attendance.no.timestamp}">{attendance.no.username}</span> -->
-            </a>
-            <!-- IF @last --> <!-- ELSE --> <!-- ENDIF @last -->
-        </li>
-        <!-- END attendance.no -->
-    </ul>
+<div class="bootbox modal fade vote-modal in" component="topic/attendance/no-details" abindex="-1" role="dialog" style="display: block; padding-right: 16px;">
+     <div class="modal-dialog">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <button type="button" onclick="hideAttendanceDetails('no');" class="bootbox-close-button close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Absagen</h4>
+               </div>
+               <div class="modal-body">
+                    <table component="groups/members" class="table table-striped table-hover" data-nextstart="20">
+                         <tbody>
+                              <!-- BEGIN attendance.no -->
+                              <tr data-uid="{attendance.no.uid}">
+                                   <td>
+                                        <a href="{config.relative_path}/user/{attendance.no.userslug}">
+                                             <!-- IF attendance.no.picture -->
+                                             <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.no.picture}"
+                                             title="{attendance.no.username} – {attendance.no.timestamp}">
+                                             <!-- ENDIF attendance.no.picture -->
+                                        </a>
+                                   </td>
+                                   <td class="member-name">
+                                   <a href="{config.relative_path}/user/{attendance.no.userslug}">{attendance.no.username}</a>
+                                        <div class="pull-right">
+                                             {attendance.no.timestamp}
+                                        </div>
+                                   </td>
+                              </tr>
+                              <!-- END attendance.no -->
+                         </tbody>
+                    </table>
+               </div>
+          </div>
+     </div>
 </div>

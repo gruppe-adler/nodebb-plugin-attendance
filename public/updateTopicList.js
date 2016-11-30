@@ -1,13 +1,6 @@
 /*global $, templates */
 
 (function () {
-
-	var attendanceMap = {
-		yes: 'Ja',
-		maybe: 'Vielleicht',
-		no: 'Nein'
-	};
-
     (function () {
         var css = document.createElement('link');
         css.rel = 'stylesheet';
@@ -120,6 +113,10 @@
 		  postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
 	     }
 	}
+
+	hideAttendanceDetails("yes");
+	hideAttendanceDetails("maybe");
+	hideAttendanceDetails("no");
     };
 
     var topicLoaded = function () {
@@ -133,7 +130,9 @@
                                 relative_path: config.relative_path
                             },
                             attendance: response.attendance,
-                            myAttendance: attendanceMap[response.myAttendance] || 'nichts',
+					   yes: (function(v1){if(v1 == "yes"){return 1} else {return 0}})(response.myAttendance),
+					   maybe: (function(v1){if(v1 == "maybe"){return 1} else {return 0}})(response.myAttendance),
+					   no: (function(v1){if(v1 == "no"){return 1} else {return 0}})(response.myAttendance),
                             tid: topicId
                         });
                         var node = document.createElement('div');
@@ -161,3 +160,13 @@
     $(window).bind('action:topic.loaded', topicLoaded);
     $(window).bind('action:topics.loaded', topicsLoaded);
 }());
+
+
+var showAttendanceDetails = function(type) {
+	document.querySelector(['[component="topic/attendance/',type,'-details"]'].join("")).style.display = 'block';
+	document.querySelector('[component="topic/attendance/backdrop"]').style.display = 'block';
+}
+var hideAttendanceDetails = function(type) {
+	document.querySelector(['[component="topic/attendance/',type,'-details"]'].join("")).style.display = 'none';
+	document.querySelector('[component="topic/attendance/backdrop"]').style.display = 'none';
+}
