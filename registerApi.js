@@ -93,7 +93,7 @@ module.exports = function (params, callback) {
                     userIds = userIds.concat(results[idx].map(function (res) {return Number(res.value); }));
                 });
 
-                users.getUsersWithFields(userIds, ['uid', 'username', 'userslug', 'picture'], currentUser, function (err, users) {
+                users.getUsersWithFields(userIds, ['uid', 'username', 'userslug', 'picture', 'icon:bgColor', 'icon:text'], currentUser, function (err, users) {
                     if (err) {
                         return res.status(500).json({err: err});
                     }
@@ -108,6 +108,8 @@ module.exports = function (params, callback) {
                             attendance.username  = u.username;
                             attendance.userslug = u.userslug;
                             attendance.picture = u.picture;
+                            attendance['icon:bgColor'] = u['icon:bgColor'];
+                            attendance['icon:text'] = u['icon:text'];
                         });
                     });
 
