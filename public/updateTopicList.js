@@ -43,7 +43,7 @@
             if (loadedTemplates[templateName]) {
                 cb(loadedTemplates[templateName]);
             }
-            $.get('/plugins/nodebb-plugin-attendance/templates/topic.html?v=4', function (response) {
+            $.get(templateName, function (response) {
                 loadedTemplates[templateName] = response;
                 cb(loadedTemplates[templateName]);
             });
@@ -122,7 +122,7 @@
             if (isMission(getTopicTitle(document))) {
                 var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
                 getCommitments(topicId, function (response) {
-                    getTemplate('/plugins/nodebb-plugin-attendance/templates/topic.html', function (template) {
+                    getTemplate('/plugins/nodebb-plugin-attendance/templates/topic.html?v=5', function (template) {
                         var markup = templates.parse(template, {
                             config: {
                                 relative_path: config.relative_path
