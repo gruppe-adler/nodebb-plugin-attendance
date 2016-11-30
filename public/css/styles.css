@@ -1,54 +1,60 @@
 [component="topic/attendance"] {
-     margin: 10px 0;
-     background: white;
+    margin: 10px 0;
+    background: white;
 }
 
 [component="topic/attendance"] div {
-     text-align: center;
+    text-align: center;
 }
 [component="topic/attendance"] div button {
-     padding: 10px;
-     padding-top: 7px;
-     padding-bottom: 7px;
+    padding: 10px;
+    padding-top: 7px;
+    padding-bottom: 7px;
 }
 [component="topic/attendance"] .attendance-current {
-     font-weight: normal;
+    font-weight: normal;
 }
-[component="topic/attendance"] table {
-     margin: 10px;
-     width: 100%;
+[component="topic/attendance"] .main-table {
+    margin: 10px 0px 10px 0px;
+    width: 100%;
 }
-[component="topic/attendance"] table tr {
-     line-height: 40px;
-     padding-top: 3px;
-     padding-bottom: 3px;
-     border-bottom: 1px solid #f0f0f0;
+[component="topic/attendance"] .main-table tr {
+    line-height: 40px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #f0f0f0;
+}
+[component="topic/attendance"] .main-table td {
+    border: none;
+}
+[component="topic/attendance"] .main-table tr .firstColumn {
+    width: 155px;
+    font-weight: bold;
+}
+[component="topic/attendance"] .main-table tr .secondColumn ul {
+    padding: 0px;
+    list-style: none;     
+    height: 40px;
+    overflow: hidden;
 }
 
-[component="topic/attendance"] table tr .firstColumn {
-     width: 155px;
-     font-weight: bold;
-}
-[component="topic/attendance"] table tr .secondColumn ul {
-     padding: 0px;
-     list-style: none;
+[component="topic/attendance"] .main-table tr .secondColumn ul li {
+    display: inline;
 }
 
-[component="topic/attendance"] table tr .secondColumn ul li {
-     display: inline;
-}
-
-[component="topic/attendance"] table tr .secondColumn ul li img {
+[component="topic/attendance"] .main-table tr .secondColumn ul li img {
     width: 30px;
     height: 30px;
 }
-[component="topic/attendance"] table tr .thirdColumn {
-     width: 60px;
+[component="topic/attendance"] .main-table tr .thirdColumn {
+    width: 60px;
 }
-[component="topic/attendance"] table tr .thirdColumn a {
-     cursor: pointer;
+[component="topic/attendance"] .main-table tr .thirdColumn a {
+    cursor: pointer;
 }
 
-[component="topic/attendance"] .fade {
-     display: none;
+[component="topic/attendance"] .modal-body {   
+    overflow-y: scroll;
+    max-height: 85vh;
 }
+

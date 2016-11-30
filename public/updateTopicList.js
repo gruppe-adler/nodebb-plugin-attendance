@@ -103,9 +103,19 @@
 
     var insertTopicAttendanceNode = function (topicComponentNode, attendanceNode) {
 	var firstPost = topicComponentNode.querySelector('[component="post"]');
+	    
+	//exit if isn't first page
+	if (firstPost.getAttribute("data-index") != "0") {
+		return false;
+	};
+	
+	//replace we updated data if the attendance component already exists
 	var existingAttendanceComponentNode = firstPost.querySelector('[component="topic/attendance"]');
 	if (existingAttendanceComponentNode) {
 		firstPost.replaceChild(attendanceNode, existingAttendanceComponentNode);
+		hideAttendanceDetails("yes");
+		hideAttendanceDetails("maybe");
+		hideAttendanceDetails("no");
 		return true;
 	};
 	    
@@ -133,6 +143,7 @@
                             config: {
                                 relative_path: config.relative_path
                             },
+
 			    attendance: response.attendance,
 			    yes: (function(v1){if(v1 == "yes"){return 1} else {return 0}})(response.myAttendance),
 			    maybe: (function(v1){if(v1 == "maybe"){return 1} else {return 0}})(response.myAttendance),
