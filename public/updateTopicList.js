@@ -2,6 +2,12 @@
 
 (function () {
 
+	var attendanceMap = {
+		yes: 'Ja',
+		maybe: 'Vielleicht',
+		no: 'Nein'
+	};
+
     (function () {
         var css = document.createElement('link');
         css.rel = 'stylesheet';
@@ -37,7 +43,7 @@
             if (loadedTemplates[templateName]) {
                 cb(loadedTemplates[templateName]);
             }
-            $.get('/plugins/nodebb-plugin-attendance/templates/topic.html?v=2', function (response) {
+            $.get('/plugins/nodebb-plugin-attendance/templates/topic.html?v=4', function (response) {
                 loadedTemplates[templateName] = response;
                 cb(loadedTemplates[templateName]);
             });
@@ -113,7 +119,6 @@
 
     var topicLoaded = function () {
         Array.prototype.forEach.call(document.querySelectorAll('[component="topic"]'), function (topicNode) {
-            debugger;
             if (isMission(getTopicTitle(document))) {
                 var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
                 getCommitments(topicId, function (response) {
@@ -123,7 +128,7 @@
                                 relative_path: config.relative_path
                             },
                             attendance: response.attendance,
-                            myAttendance: response.myAttendance,
+                            myAttendance: attendanceMap[response.myAttendance] || 'nichts',
                             tid: topicId
                         });
                         var node = document.createElement('div');
