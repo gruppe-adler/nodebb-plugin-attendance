@@ -12,20 +12,20 @@
     (function () {
         $(document).on('click', 'button.attendance-control', function () {
             var $button = $(this);
-           var value = $button.data('value');
-           var tid = $button.data('tid');
-           $.post({
-               url: config.relative_path + '/api/attendance/' + tid,
-               contentType: 'application/json',
-               data: JSON.stringify({"type": value}),
-               success: function () {
-                   $button.disabled = true;
-                   topicLoaded();
-               },
-               error: function () {
-                   console.log(arguments);
-               }
-           });
+            var value = $button.data('value');
+            var tid = $button.data('tid');
+            $.post({
+                url: config.relative_path + '/api/attendance/' + tid,
+                contentType: 'application/json',
+                data: JSON.stringify({"type": value}),
+                success: function () {
+                    $button.disabled = true;
+                    topicLoaded();
+                },
+                error: function () {
+                    console.log(arguments);
+                }
+            });
 
         });
     }());
@@ -102,25 +102,35 @@
     }
 
     var insertTopicAttendanceNode = function (topicComponentNode, attendanceNode) {
-	var firstPost = topicComponentNode.querySelector('[component="post"]');
-	var existingAttendanceComponentNode = firstPost.querySelector('[component="topic/attendance"]');
-	if (existingAttendanceComponentNode) {
-		firstPost.replaceChild(attendanceNode, existingAttendanceComponentNode);
-		return true;
-	};
-	    
-	var postBarNode = firstPost.querySelector('[class="post-bar"]');
+        var firstPost = topicComponentNode.querySelector('[component="post"]');
 
-	//only insert attendance if the postbar exists (if this is the first post)
-	if (postBarNode) {
-		postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
-	} else if (topicComponentNode.children.length === 1) {
-		firstPost.appendChild(attendanceNode);
-	}
-	    
-	hideAttendanceDetails("yes");
-	hideAttendanceDetails("maybe");
-	hideAttendanceDetails("no");
+        //exit if isn't first page
+        if (firstPost.getAttribute("data-index") != "0") {
+            return false;
+        }
+
+        //replace we updated data if the attendance component already exists
+        var existingAttendanceComponentNode = firstPost.querySelector('[component="topic/attendance"]');
+        if (existingAttendanceComponentNode) {
+            firstPost.replaceChild(attendanceNode, existingAttendanceComponentNode);
+            hideAttendanceDetails("yes");
+            hideAttendanceDetails("maybe");
+            hideAttendanceDetails("no");
+            return true;
+        }
+
+        var postBarNode = firstPost.querySelector('[class="post-bar"]');
+
+        //only insert attendance if the postbar exists (if this is the first post)
+        if (postBarNode) {
+            postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
+        } else if (topicComponentNode.children.length === 1) {
+            firstPost.appendChild(attendanceNode);
+        }
+
+        hideAttendanceDetails("yes");
+        hideAttendanceDetails("maybe");
+        hideAttendanceDetails("no");
     };
 
     var topicLoaded = function () {
@@ -133,11 +143,30 @@
                             config: {
                                 relative_path: config.relative_path
                             },
-			    attendance: response.attendance,
-			    yes: (function(v1){if(v1 == "yes"){return 1} else {return 0}})(response.myAttendance),
-			    maybe: (function(v1){if(v1 == "maybe"){return 1} else {return 0}})(response.myAttendance),
-			    no: (function(v1){if(v1 == "no"){return 1} else {return 0}})(response.myAttendance),
-			    tid: topicId
+
+                            attendance: response.attendance,
+                            yes: (function (v1) {
+                                if (v1 == "yes") {
+                                    return 1
+                                } else {
+                                    return 0
+                                }
+                            })(response.myAttendance),
+                            maybe: (function (v1) {
+                                if (v1 == "maybe") {
+                                    return 1
+                                } else {
+                                    return 0
+                                }
+                            })(response.myAttendance),
+                            no: (function (v1) {
+                                if (v1 == "no") {
+                                    return 1
+                                } else {
+                                    return 0
+                                }
+                            })(response.myAttendance),
+                            tid: topicId
                         });
                         var node = document.createElement('div');
                         node.setAttribute('component', 'topic/attendance');
@@ -166,11 +195,11 @@
 }());
 
 
-var showAttendanceDetails = function(type) {
-	document.querySelector(['[component="topic/attendance/',type,'-details"]'].join("")).style.display = 'block';
-	document.querySelector('[component="topic/attendance/backdrop"]').style.display = 'block';
-}
-var hideAttendanceDetails = function(type) {
-	document.querySelector(['[component="topic/attendance/',type,'-details"]'].join("")).style.display = 'none';
-	document.querySelector('[component="topic/attendance/backdrop"]').style.display = 'none';
-}
+var showAttendanceDetails = function (type) {
+    document.querySelector(['[component="topic/attendance/', type, '-details"]'].join("")).style.display = 'block';
+    document.querySelector('[component="topic/attendance/backdrop"]').style.display = 'block';
+};
+var hideAttendanceDetails = function (type) {
+    document.querySelector(['[component="topic/attendance/', type, '-details"]'].join("")).style.display = 'none';
+    document.querySelector('[component="topic/attendance/backdrop"]').style.display = 'none';
+};
