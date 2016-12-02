@@ -13,11 +13,12 @@
         $(document).on('click', 'button.attendance-control', function () {
             var $button = $(this);
             var value = $button.data('value');
+            var probability = $button.data('probability');
             var tid = $button.data('tid');
             $.post({
                 url: config.relative_path + '/api/attendance/' + tid,
                 contentType: 'application/json',
-                data: JSON.stringify({"type": value}),
+                data: JSON.stringify({type: value, probability: probability}),
                 success: function () {
                     $button.disabled = true;
                     topicLoaded();

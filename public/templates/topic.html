@@ -65,13 +65,13 @@
 
 <div>
     <button class="attendance-control btn btn-<!-- IF yes -->primary<!-- ELSE -->default<!-- ENDIF yes -->"
-            data-value="yes" data-tid="{tid}">ZUSAGEN
+            data-value="yes" data-probability="1" data-tid="{tid}">ZUSAGEN
     </button>
     <button class="attendance-control btn btn-<!-- IF maybe -->primary<!-- ELSE -->default<!-- ENDIF maybe -->"
-            data-value="maybe" data-tid="{tid}">VIELLEICHT
+            data-value="maybe" data-probability="0.5" data-tid="{tid}">VIELLEICHT
     </button>
     <button class="attendance-control btn btn-<!-- IF no -->primary<!-- ELSE -->default<!-- ENDIF no -->"
-            data-value="no" data-tid="{tid}">ABSAGEN
+            data-value="no" data-probability="0" data-tid="{tid}">ABSAGEN
     </button>
 
 </div>

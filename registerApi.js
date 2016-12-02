@@ -64,6 +64,7 @@ module.exports = function (params, callback) {
     router.post('/api/attendance/:tid',
         function (req, res, next) {
             var type = req.body.type;
+            var probability = req.body.probability;
             var tid = req.params.tid;
             var uid = req.uid;
             var stringType = floatTypeStringMap[type] || type;
@@ -97,7 +98,7 @@ module.exports = function (params, callback) {
                 tid,
                 {
                     uid: uid,
-                    probability: ensureFloatType(type),
+                    probability: probability || ensureFloatType(type),
                     lastUpdatedAt: (new Date()).getTime()
                 },
                 function (err, result) {
