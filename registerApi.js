@@ -4,10 +4,27 @@ var types = [
     'no'
 ];
 
-var validateType = function (type) {
+var stringTypeFloatMap = {
+    yes: 1,
+    maybe: 0.5,
+    no: 0
+};
+
+var floatTypeStringMap = {
+    0: 'no',
+    0.5: 'maybe',
+    1: 'yes'
+};
+
+var ensureFloatType = function (type) {
+    if (typeof type === 'number') {
+        return type;
+    }
     if (types.indexOf(type) === -1) {
         throw new Error('invalid type ' + type);
     }
+
+    return stringTypeFloatMap[type];
 };
 
 var getZsetKey = function (topic_id, type) {
@@ -32,9 +49,14 @@ var getUserAttendance = function (attendance, uid) {
     }).pop();
 };
 
+var async = require('async');
+var winston = require('winston');
+
 var db = require('../../src/database');
 var users = require('../../src/user');
-var async = require('async');
+
+var floatPersistence = require('./lib/persistence-float');
+floatPersistence.setDatabase(db);
 
 module.exports = function (params, callback) {
     var router = params.router;
@@ -44,10 +66,11 @@ module.exports = function (params, callback) {
             var type = req.body.type;
             var tid = req.params.tid;
             var uid = req.uid;
+            var stringType = floatTypeStringMap[type] || type;
             var timestamp = (new Date()).getTime();
 
             try {
-                validateType(type);
+                ensureFloatType(type);
             } catch (e) {
                 return res.status(400).json({"error": e.message});
             }
@@ -58,7 +81,7 @@ module.exports = function (params, callback) {
                     if (err) {
                         return res.status(500).json({error: err});
                     }
-                    db.sortedSetAdd(getZsetKey(tid, type), timestamp, uid, function (err, data) {
+                    db.sortedSetAdd(getZsetKey(tid, stringType), timestamp, uid, function (err, data) {
                         if (err) {
                             return next(res.status(500).json({error: err}));
                         }
@@ -67,6 +90,20 @@ module.exports = function (params, callback) {
                             user: uid
                         });
                     });
+                }
+            );
+
+            floatPersistence.set(
+                tid,
+                {
+                    uid: uid,
+                    probability: ensureFloatType(type),
+                    lastUpdatedAt: (new Date()).getTime()
+                },
+                function (err, result) {
+                    if (err) {
+                        winston.error('error saving attendance value ' + err);
+                    }
                 }
             );
         });
