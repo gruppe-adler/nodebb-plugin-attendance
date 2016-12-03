@@ -1,6 +1,56 @@
+.attendance_btn_yes {
+  background-color: #6a6;
+  border-color: #339933;
+  color: #fff;
+}
+
+.attendance_btn_maybe {
+  background-color: #d18d1f;
+  border-color: #bb7e1c;
+  color: #fff;
+}
+
+.attendance_btn_no {
+  background-color: #c91106;
+  border-color: #c91106;
+  color: #fff;
+}
+
+.attendance_btn_default {
+  background-color: #fff;
+  border-color: #333;
+  color: #666;
+}
+
+[component="topic/attendance"] .attendance_pill_yes {
+  color: #666 !important;
+  padding: 5px;
+  font-size: 20px;
+  font-weight: normal;
+}
+
+[component="topic/attendance"] .attendance_maybe img {
+  opacity: 0.35;
+}
+
+[component="topic/attendance"] .attendance_pill_maybe {
+  color: #999 !important;
+  padding: 5px;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+[component="topic/attendance"] .attendance_pill_no {
+  color: #666 !important;
+  padding: 5px;
+  font-size: 20px;
+  font-weight: normal;
+}
+
 [component="topic/attendance"] {
     margin: 10px 0;
-    background: white;
+    background-color: #f9f9f9;
+    height: 176px;
 }
 
 [component="topic/attendance"] div {
@@ -26,16 +76,17 @@
     line-height: 40px;
     padding-top: 3px;
     padding-bottom: 3px;
-    border-bottom: 1px solid #f0f0f0;
+    border-top: 1px solid #d6d6d6;
+    border-bottom: none;
 }
 
 [component="topic/attendance"] .main-table td {
     border: none;
 }
 
+
 [component="topic/attendance"] .main-table tr .firstColumn {
-    width: 155px;
-    font-weight: bold;
+    width: 100px;
 }
 
 [component="topic/attendance"] .main-table tr .secondColumn ul {

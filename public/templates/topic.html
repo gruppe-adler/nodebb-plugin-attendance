@@ -1,9 +1,8 @@
-<div style="float:right; font-weight: bold;color:grey;">BETA</div>
-<div style="float:left; font-weight: bold; margin-bottom:10px; font-size: larger;">TEILNAHME:</div>
+<div style="float:left; margin-left: 10px; margin-bottom:10px; text-transform: uppercase; color: #777; font-weight: 300; font-size: 12px;">Teilnehmer (BETA)</div>
+<div class="showAttendanceDetails" style="float:right"><a onclick="showAttendanceDetails('yes');">Details</a></div>
 <table class="main-table">
-    <tr>
-        <td class="firstColumn"><i class="fa fa-fw fa-user" style="color: #96D21F;"></i> ZUSAGEN
-            ({attendance.yes.length})
+    <tr class="firstRow">
+        <td class="firstColumn"><span class="attendance_pill_yes"><i class="fa fa-fw fa-check-circle"></i>{attendance.yes.length}</span><span class="attendance_pill_maybe">+ {attendance.maybe.length}</span>
         </td>
         <td class="secondColumn">
             <ul>
@@ -11,7 +10,7 @@
                 <li>
                     <a href="{config.relative_path}/user/{attendance.yes.userslug}">
                         <!-- IF attendance.yes.picture -->
-                        <img class="user-img avatar avatar-md avatar-rounded" src="{attendance.yes.picture}"
+                        <img class="user-img avatar avatar-md avatar-rounded attendance_yes" src="{attendance.yes.picture}"
                              title="{attendance.yes.username} – {attendance.yes.timestamp}">
                         <!-- ELSE -->
                         <div class="avatar avatar-md avatar-rounded"
@@ -21,21 +20,12 @@
                     </a>
                 </li>
                 <!-- END attendance.yes -->
-            </ul>
-        </td>
-        <td class="thirdColumn"><a onclick="showAttendanceDetails('yes');">Details</a></td>
-    </tr>
-    <tr>
-        <td class="firstColumn"><i class="fa fa-fw fa-user" style="color: #D2A51F;"></i> VIELLEICHT
-            ({attendance.maybe.length})
-        </td>
-        <td class="secondColumn">
-            <ul>
+                <li><span style="margin-left: 30px;"></span></li>
                 <!-- BEGIN attendance.maybe -->
                 <li>
                     <a href="{config.relative_path}/user/{attendance.maybe.userslug}">
                         <!-- IF attendance.maybe.picture -->
-                        <img class="user-img avatar avatar-md avatar-rounded" src="{attendance.maybe.picture}"
+                        <img class="user-img avatar avatar-md avatar-rounded attendance_maybe" src="{attendance.maybe.picture}"
                              title="{attendance.maybe.username} – {attendance.maybe.timestamp}"/>
                         <!-- ELSE -->
                         <div class="avatar avatar-md avatar-rounded"
@@ -47,11 +37,10 @@
                 <!-- END attendance.maybe -->
             </ul>
         </td>
-        <td class="thirdColumn"><a onclick="showAttendanceDetails('maybe');">Details</a></td>
+        
     </tr>
-    <tr>
-        <td class="firstColumn"><i class="fa fa-fw fa-user" style="color: #D21F1F;"></i> ABSAGEN
-            ({attendance.no.length})
+    <tr class="secondRow">
+        <td class="firstColumn"><i class="fa fa-fw fa-times-circle"></i>{attendance.no.length}
         </td>
         <td class="secondColumn">
             <ul>
@@ -59,7 +48,7 @@
                 <li>
                     <a href="{config.relative_path}/user/{attendance.no.userslug}">
                         <!-- IF attendance.no.picture -->
-                        <img class="user-img avatar avatar-md avatar-rounded" src="{attendance.no.picture}"
+                        <img class="user-img avatar avatar-md avatar-rounded attendance_no" src="{attendance.no.picture}"
                              title="{attendance.no.username} – {attendance.no.timestamp}">
                         <!-- ELSE -->
                         <div class="avatar avatar-md avatar-rounded"
@@ -71,7 +60,6 @@
                 <!-- END attendance.no -->
             </ul>
         </td>
-        <td class="thirdColumn"><a onclick="showAttendanceDetails('no');">Details</a></td>
     </tr>
 </table>
 
