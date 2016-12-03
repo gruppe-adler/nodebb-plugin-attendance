@@ -58,9 +58,9 @@
     };
 
     var colorMap = {
-        yes: "#96D21F",
-        maybe: "#D2A51F",
-        no: "#D21F1F"
+        yes: "#66aa66",
+        maybe: "#d18d1f",
+        no: "#c91106"
     };
 
     var addCommitmentCountToTopicHeader = function (categoryItem, attendance, myAttendance) {
