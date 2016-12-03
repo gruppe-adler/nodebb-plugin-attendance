@@ -118,7 +118,11 @@ module.exports = function (params, callback) {
         }
 
         async.parallel(
-            types.map(function (type) { return getAsyncAttendancesGetter(tid, type); }),
+            types.map(function (type) { return getAsyncAttendancesGetter(tid, type); }).concat([
+                function (next) {
+                    floatPersistence.get(tid, next);
+                }
+            ]),
             function (err, results) {
                 if (err) {
                     return res.status(500).json({error: err});
@@ -153,7 +157,8 @@ module.exports = function (params, callback) {
 
                     res.status(200).json({
                         myAttendance: getUserAttendance(attendance, currentUser),
-                        attendance: attendance
+                        attendance: attendance,
+                        probabilities: results[3]
                     });
                 });
             }
