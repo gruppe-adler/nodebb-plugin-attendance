@@ -3,7 +3,8 @@
     "version": "0.4.4",
     "dependencies": {
         "async": "^2.0",
-        "winston": "*"
+        "winston": "*",
+        "underscore": "*"
     },
     "engines" : {
         "npm" : ">3.0"
