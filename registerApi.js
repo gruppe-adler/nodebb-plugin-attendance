@@ -51,6 +51,7 @@ var getUserAttendance = function (attendance, uid) {
 
 var async = require('async');
 var winston = require('winston');
+var _ = require('underscore');
 
 var db = require('../../src/database');
 var users = require('../../src/user');
@@ -147,18 +148,23 @@ module.exports = function (params, callback) {
                             delete attendance.value;
                             attendance.timestamp = (new Date(attendance.score)).toISOString();
                             delete attendance.score;
-                            attendance.username  = u.username;
-                            attendance.userslug = u.userslug;
-                            attendance.picture = u.picture;
-                            attendance['icon:bgColor'] = u['icon:bgColor'];
-                            attendance['icon:text'] = u['icon:text'];
+                            _(attendance).extend(_(u).pick(['username', 'userslug', 'picture', 'icon:bgColor', 'icon:text']));
                         });
+                    });
+
+                    results[3].forEach(function (attendant) {
+                        var u = users.filter(function (user) { return user.uid == attendant.uid; }).pop();
+                        if (!u) {
+                            winston.warn('attendance: userid ' + attendant.uid + ' not found');
+                            return;
+                        }
+                        _(attendant).extend(_(u).pick(['username', 'userslug', 'picture', 'icon:bgColor', 'icon:text']));
                     });
 
                     res.status(200).json({
                         myAttendance: getUserAttendance(attendance, currentUser),
                         attendance: attendance,
-                        probabilities: results[3]
+                        allAttendants: results[3]
                     });
                 });
             }
