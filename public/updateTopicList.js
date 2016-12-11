@@ -48,9 +48,15 @@
         return title.trim().match(/([0-9]{4}-[0-9]{2}-[0-9]{2})([^0-9a-z])/i);
     };
 
-    var getUserSymbolElement = function (color) {
+    var symbolMap = {
+        yes: 'fa fa-fw fa-check-circle',
+        maybe: 'fa fa-fw fa-question-circle',
+        no: 'fa fa-fw fa-times-circle'
+    };
+
+    var getUserSymbolElement = function (color, myAttendance) {
         var img = document.createElement("i");
-        img.setAttribute('class', 'fa fa-fw fa-user');
+        img.setAttribute('class', symbolMap[myAttendance]);
         img.style.height = '24px';
         img.style.color = color;
 
@@ -58,9 +64,9 @@
     };
 
     var colorMap = {
-        yes: "#96D21F",
-        maybe: "#D2A51F",
-        no: "#D21F1F"
+        yes: "#66aa66",
+        maybe: "#d18d1f",
+        no: "#c91106"
     };
 
     var addCommitmentCountToTopicHeader = function (categoryItem, attendance, myAttendance) {
@@ -72,7 +78,7 @@
         var oneStatsDiv = statsDivs[0];
         var myAttendanceDiv = document.createElement('div');
         myAttendanceDiv.className = oneStatsDiv.className  + ' stats-attendance';
-        myAttendanceDiv.appendChild(getUserSymbolElement(colorMap[myAttendance] || '#777'));
+        myAttendanceDiv.appendChild(getUserSymbolElement(colorMap[myAttendance] || '#777',myAttendance));
         oneStatsDiv.parentNode.insertBefore(myAttendanceDiv, oneStatsDiv);
 
         var viewsDiv = document.createElement('div');
