@@ -68,12 +68,12 @@
         var statsDivs = categoryItem.querySelectorAll('.stats');
         var oneStatsDiv = statsDivs[0];
         var myAttendanceDiv = document.createElement('div');
-        myAttendanceDiv.className = oneStatsDiv.className;
+        myAttendanceDiv.className = oneStatsDiv.className  + ' stats-attendance';
         myAttendanceDiv.appendChild(getUserSymbolElement(colorMap[myAttendance] || '#777'));
         oneStatsDiv.parentNode.insertBefore(myAttendanceDiv, oneStatsDiv);
 
         var viewsDiv = document.createElement('div');
-        viewsDiv.className = oneStatsDiv.className;
+        viewsDiv.className = oneStatsDiv.className + ' stats-attendance';
         viewsDiv.innerHTML = oneStatsDiv.innerHTML;
         viewsDiv.querySelector('small').innerHTML = "Zusagen";
         viewsDiv.querySelector('[class="human-readable-number"]').innerHTML = attendance.yes.length;
@@ -133,6 +133,10 @@
         hideAttendanceDetails("no");
     };
 
+    var hasAttendanceClasses = function (node) {
+        return node.querySelector('.stats-attendance');
+    };
+
     var topicLoaded = function () {
         Array.prototype.forEach.call(document.querySelectorAll('[component="topic"]'), function (topicNode) {
             if (isMission(getTopicTitle(document))) {
@@ -181,6 +185,9 @@
 
     var topicsLoaded = function () {
         Array.prototype.forEach.call(document.querySelectorAll('[component="category/topic"]'), function (topicItem) {
+            if (hasAttendanceClasses(topicItem)) {
+                return;
+            }
             if (isMission(getTopicTitle(topicItem))) {
                 var topicId = parseInt(topicItem.getAttribute('data-tid'), 10);
                 getCommitments(topicId, function (response) {
@@ -193,7 +200,6 @@
     $(window).bind('action:topic.loaded', topicLoaded);
     $(window).bind('action:topics.loaded', topicsLoaded);
 }());
-
 
 var showAttendanceDetails = function (type) {
     document.querySelector(['[component="topic/attendance/', type, '-details"]'].join("")).style.display = 'block';
