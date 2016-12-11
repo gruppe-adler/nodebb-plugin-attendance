@@ -64,6 +64,9 @@
     };
 
     var addCommitmentCountToTopicHeader = function (categoryItem, attendance, myAttendance) {
+        if (hasAttendanceClasses(categoryItem)) {
+            return;
+        }
 
         var statsDivs = categoryItem.querySelectorAll('.stats');
         var oneStatsDiv = statsDivs[0];
