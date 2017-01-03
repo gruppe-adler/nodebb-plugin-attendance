@@ -114,21 +114,21 @@
     // baustelle
      var insertDecisionButtons = function () {
         
-            var decisionButtonMarkup = templates.parse(template, {});
+        //var decisionButtonMarkup = templates.parse(template, {});
 
-            var postBarNode = document.querySelector('[component="post"]');
-            //exit if isn't first page
-            if (postBarNode.getAttribute("data-index") != "0") {
-                return false;
-            }
-            
-            var x = getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.html?v=5', function (template) {
-                var node = document.createElement('div');
-                node.innerHTML = templates.parse(template, {});
-                postBarNode.appendChild(node);
+        var postBarNode = document.querySelector('[component="post"]');
+        //exit if isn't first page
+        if (postBarNode.getAttribute("data-index") != "0") {
+            return false;
+        }
+        
+        var x = getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.html?v=5', function (template) {
+            var node = document.createElement('div');
+            node.innerHTML = templates.parse(template, {});
+            postBarNode.appendChild(node);
 
-            };
         });
+        
     };
     
     // ende baustelle
