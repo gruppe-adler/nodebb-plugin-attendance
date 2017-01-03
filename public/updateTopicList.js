@@ -110,6 +110,22 @@
         });
     }
 
+
+    // baustelle
+     var getDecisionButtons = function () {
+        getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.html?v=5', function (template) {
+                        var decisionButtonMarkup = templates.parse(template, {});
+                           
+                            var node = document.createElement('div');
+                            node.setAttribute('component', 'topic/attendance');
+                            node.innerHTML = decisionButtonMarkup;
+
+                            return node.innerHTML;
+        });
+    };
+    
+    // ende baustelle
+
     var insertTopicAttendanceNode = function (topicComponentNode, attendanceNode) {
         var firstPost = topicComponentNode.querySelector('[component="post"]');
 
@@ -122,9 +138,7 @@
         var existingAttendanceComponentNode = firstPost.querySelector('[component="topic/attendance"]');
         if (existingAttendanceComponentNode) {
             firstPost.replaceChild(attendanceNode, existingAttendanceComponentNode);
-            hideAttendanceDetails("yes");
-            hideAttendanceDetails("maybe");
-            hideAttendanceDetails("no");
+            hideAttendanceDetails();
             return true;
         }
 
@@ -133,14 +147,20 @@
         //only insert attendance if the postbar exists (if this is the first post)
         if (postBarNode) {
             postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
+            
+            // todo: hook here to insert decision buttons into post-bar?
+            var postBarCode = getDecisionButtons();
+            // window.alert(postBarCode).
+            // postBarNode.parentNode.insertBefore(postBarCode, postBarNode);
+            
         } else if (topicComponentNode.children.length === 1) {
             firstPost.appendChild(attendanceNode);
         }
 
-        hideAttendanceDetails("yes");
-        hideAttendanceDetails("maybe");
-        hideAttendanceDetails("no");
+        hideAttendanceDetails();
     };
+
+
 
     var hasAttendanceClasses = function (node) {
         return node.querySelector('.stats-attendance');
@@ -206,15 +226,17 @@
         });
     };
 
+
     $(window).bind('action:topic.loaded', topicLoaded);
     $(window).bind('action:topics.loaded', topicsLoaded);
+
 }());
 
-var showAttendanceDetails = function (type) {
-    document.querySelector(['[component="topic/attendance/', type, '-details"]'].join("")).style.display = 'block';
+var showAttendanceDetails = function () {
+    document.querySelector('[component="topic/attendance/details"]').style.display = 'block';
     document.querySelector('[component="topic/attendance/backdrop"]').style.display = 'block';
 };
-var hideAttendanceDetails = function (type) {
-    document.querySelector(['[component="topic/attendance/', type, '-details"]'].join("")).style.display = 'none';
+var hideAttendanceDetails = function () {
+    document.querySelector('[component="topic/attendance/details"]').style.display = 'none';
     document.querySelector('[component="topic/attendance/backdrop"]').style.display = 'none';
 };
