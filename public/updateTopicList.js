@@ -112,15 +112,22 @@
 
 
     // baustelle
-     var getDecisionButtons = function () {
-        getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.html?v=5', function (template) {
-                        var decisionButtonMarkup = templates.parse(template, {});
-                           
-                            var node = document.createElement('div');
-                            node.setAttribute('component', 'topic/attendance');
-                            node.innerHTML = decisionButtonMarkup;
+     var insertDecisionButtons = function () {
+        
+            var decisionButtonMarkup = templates.parse(template, {});
 
-                            return node.innerHTML;
+            var postBarNode = document.querySelector('[component="post"]');
+            //exit if isn't first page
+            if (postBarNode.getAttribute("data-index") != "0") {
+                return false;
+            }
+            
+            var x = getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.html?v=5', function (template) {
+                var node = document.createElement('div');
+                node.innerHTML = templates.parse(template, {});
+                postBarNode.appendChild(node);
+
+            };
         });
     };
     
@@ -149,7 +156,7 @@
             postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
             
             // todo: hook here to insert decision buttons into post-bar?
-            var postBarCode = getDecisionButtons();
+            insertDecisionButtons();
             // window.alert(postBarCode).
             // postBarNode.parentNode.insertBefore(postBarCode, postBarNode);
             
