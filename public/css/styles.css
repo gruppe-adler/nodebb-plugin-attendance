@@ -1,16 +1,35 @@
-.attendance_btn_yes {
+@-webkit-keyframes fade-in-maybe {
+  100% { opacity: 0.35; }
+  0%   { opacity: 0; }
+  100% { opacity: 0.35; }
+}
+
+[component="topic/attendance"] .main-table tr .secondColumn .attendance_maybe {
+ -webkit-animation-name: fade-in-maybe;
+ -webkit-animation-duration: 0.3s;
+ -webkit-animation-iteration-count: 1;
+ -webkit-animation-timing-function: ease-in;
+ -webkit-animation-delay: 0s;
+}
+
+.stats-attendance i {
+  line-height: 40px;
+}
+
+
+.btn-primary[data-value="yes"], .attendance_btn_yes {
   background-color: #6a6;
   border-color: #339933;
   color: #fff;
 }
 
-.attendance_btn_maybe {
+.btn-primary[data-value="maybe"] , .attendance_btn_maybe {
   background-color: #d18d1f;
   border-color: #bb7e1c;
   color: #fff;
 }
 
-.attendance_btn_no {
+.btn-primary[data-value="no"] , .attendance_btn_no {
   background-color: #c91106;
   border-color: #c91106;
   color: #fff;
@@ -29,7 +48,7 @@
   font-weight: normal;
 }
 
-[component="topic/attendance"] .attendance_maybe img {
+[component="topic/attendance"] .main-table tr .secondColumn .attendance_maybe {
   opacity: 0.35;
 }
 
@@ -118,3 +137,12 @@
     max-height: 85vh;
 }
 
+[component="topic/attendance"] {
+    background-color: #f0f0f0;
+    height: 176px;
+    display: block;
+    margin: -10px;
+    padding: 20px;
+    margin-top: -20px;
+    padding-bottom: 0;
+}
