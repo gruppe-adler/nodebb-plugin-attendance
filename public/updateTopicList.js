@@ -10,7 +10,7 @@
     }());
 
     (function () {
-        $(document).on('click', 'button.attendance-control', function () {
+        $(document).on('click', '.attendance-control', function () {
             var $button = $(this);
             var value = $button.data('value');
             var tid = $button.data('tid');
