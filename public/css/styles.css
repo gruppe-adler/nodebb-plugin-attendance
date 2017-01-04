@@ -1,7 +1,17 @@
+@media (max-width: 1000px) { 
+  .topic-main-buttons .stats {
+    display: none;
+  }
+}
+
 @-webkit-keyframes fade-in-maybe {
   100% { opacity: 0.35; }
   0%   { opacity: 0; }
   100% { opacity: 0.35; }
+}
+
+.post-bar .clearfix .tags {
+  display: none;
 }
 
 [component="topic/attendance"] .main-table tr .secondColumn .attendance_maybe {
