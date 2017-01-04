@@ -112,23 +112,48 @@
 
 
     // baustelle
-     var insertDecisionButtons = function () {
+     var insertDecisionButtons = function (topicNode) {
         
-        //var decisionButtonMarkup = templates.parse(template, {});
+        var postBarNode = document.querySelector(".post-bar div");
 
-        var postBarNode = document.querySelector('[component="post"]');
-        //exit if isn't first page
-        if (postBarNode.getAttribute("data-index") != "0") {
-            return false;
-        }
+        var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
         
-        var x = getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.html?v=5', function (template) {
-            var node = document.createElement('div');
-            node.innerHTML = templates.parse(template, {});
-            postBarNode.appendChild(node);
+        getCommitments(topicId, function (response) {       
+           getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.html?v=5', function (template) {
+                var node = document.createElement('div');
+                var markup = templates.parse(template, {
+                    config: {
+                        relative_path: config.relative_path
+                    },
 
+                        attendance: response.attendance,
+                        yes: (function (v1) {
+                            if (v1 == "yes") {
+                                return 1
+                            } else {
+                                return 0
+                            }
+                        })(response.myAttendance),
+                        maybe: (function (v1) {
+                            if (v1 == "maybe") {
+                                return 1
+                            } else {
+                                return 0
+                            }
+                        })(response.myAttendance),
+                        no: (function (v1) {
+                            if (v1 == "no") {
+                                return 1
+                            } else {
+                                return 0
+                            }
+                        })(response.myAttendance),
+                        tid: topicId
+                });
+                node.innerHTML = markup; // templates.parse(template, {});
+                postBarNode.appendChild(node);
+            });
         });
-        
     };
     
     // ende baustelle
@@ -156,7 +181,7 @@
             postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
             
             // todo: hook here to insert decision buttons into post-bar?
-            insertDecisionButtons();
+            insertDecisionButtons(topicComponentNode);
             // window.alert(postBarCode).
             // postBarNode.parentNode.insertBefore(postBarCode, postBarNode);
             
@@ -180,6 +205,7 @@
                 getCommitments(topicId, function (response) {
                     getTemplate('/plugins/nodebb-plugin-attendance/templates/topic.html?v=5', function (template) {
                         var markup = templates.parse(template, {
+                           
                             config: {
                                 relative_path: config.relative_path
                             },
