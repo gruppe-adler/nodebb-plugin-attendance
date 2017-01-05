@@ -37,6 +37,7 @@
 
 
                     topicLoaded();
+
                 },
                 error: function () {
                     console.log(arguments);
@@ -128,7 +129,19 @@
         });
     }
 
+    // baustelle
+    var refreshToolTips = function () {
+         var attendanceAvatar = document.querySelectorAll(".avatar");
+         Array.prototype.forEach.call(attendanceAvatar, function (attendanceAvatar) {
+            if (!utils.isTouchDevice()) {
+                $(attendanceAvatar).tooltip({
+                    placement: 'top',
+                    title: $(attendanceAvatar).attr('title')
+                });
+            }
+         });
 
+    };
     
      var insertDecisionButtons = function (topicNode) {
         
@@ -136,8 +149,9 @@
 
         var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
 
-         // baustelle
+      
 
+         // baustelle
         
         getCommitments(topicId, function (response) {       
            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.html?v=5', function (template) {
@@ -187,6 +201,9 @@
     // ende baustelle
 
     var insertTopicAttendanceNode = function (topicComponentNode, attendanceNode) {
+
+        
+
         var firstPost = topicComponentNode.querySelector('[component="post"]');
 
         //exit if isn't first page
@@ -213,8 +230,10 @@
             var existingAttendancePostBarNode = firstPost.querySelector('[component="attendanceButtons"]');
             if (existingAttendancePostBarNode) {
                 // firstPost.replaceChild(attendanceNode, existingAttendancePostBarNode);
+                  refreshToolTips();
             } else {
                 insertDecisionButtons(topicComponentNode);
+                refreshToolTips();
             }
 
             
@@ -234,10 +253,17 @@
 
     var topicLoaded = function () {
         Array.prototype.forEach.call(document.querySelectorAll('[component="topic"]'), function (topicNode) {
+
+
+
             if (isMission(getTopicTitle(document))) {
                 var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
                 getCommitments(topicId, function (response) {
                     getTemplate('/plugins/nodebb-plugin-attendance/templates/topic.html?v=5', function (template) {
+
+                        app.createUserTooltips();
+                        
+
                         var markup = templates.parse(template, {
                            
                             config: {
