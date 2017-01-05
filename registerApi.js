@@ -143,7 +143,7 @@ module.exports = function (params, callback) {
                             var u = users.filter(function (user) { return user.uid == attendance.value; }).pop();
                             attendance.uid = u.uid;
                             delete attendance.value;
-                            attendance.timestamp = (new Date(attendance.score)).toISOString();
+                            attendance.timestamp = (new Date(attendance.score)).toLocaleString('en-GB');
                             delete attendance.score;
                             attendance.username  = u.username;
                             attendance.userslug = u.userslug;
