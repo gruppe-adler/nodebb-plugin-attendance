@@ -14,27 +14,27 @@
             var $button = $(this);
             var value = $button.data('value');
             var tid = $button.data('tid');
+            var btnType = $button.data('id');
+            console.log(btnType, value);
+
+            if (btnType == 'master') {
+                if (value == 'unknown') {
+                    value = 'yes';
+                    console.log("yes to yes");
+                } else {
+                    value = 'unknown';
+                    console.log("any to unknown");
+                }
+            }
+
             $.post({
                 url: config.relative_path + '/api/attendance/' + tid,
                 contentType: 'application/json',
                 data: JSON.stringify({"type": value}),
                 success: function () {
                     $button.disabled = true;
-                    var myfuckingButtonForReal = document.querySelector('.attendance-control');
-                     myfuckingButtonForReal.setAttribute('data-value',value);
-                    /*
-                    if (myfuckingButtonForReal.getAttribute('data-value') == 'unknown' ||
-                        myfuckingButtonForReal.getAttribute('data-value') == 'yes')
-                    {
-                        if (myfuckingButtonForReal.getAttribute('data-value') == 'unknown') {
-                            myfuckingButtonForReal.setAttribute('data-value','yes');
-                        } else {
-                            myfuckingButtonForReal.setAttribute('data-value','unknown');
-                        }
-                    } else {
-                        myfuckingButtonForReal.setAttribute('data-value',value);
-                    }*/
-
+                    var myfuckingButtonForReal = document.querySelector('button.attendance-control');
+                    myfuckingButtonForReal.setAttribute('data-value',value);
 
                     topicLoaded();
 
@@ -211,11 +211,14 @@
             return false;
         }
 
+
+
         //replace we updated data if the attendance component already exists
         var existingAttendanceComponentNode = firstPost.querySelector('[component="topic/attendance"]');
         if (existingAttendanceComponentNode) {
             firstPost.replaceChild(attendanceNode, existingAttendanceComponentNode);
             hideAttendanceDetails();
+            refreshToolTips();
             return true;
         }
 
@@ -230,10 +233,10 @@
             var existingAttendancePostBarNode = firstPost.querySelector('[component="attendanceButtons"]');
             if (existingAttendancePostBarNode) {
                 // firstPost.replaceChild(attendanceNode, existingAttendancePostBarNode);
-                  refreshToolTips();
+                  
             } else {
                 insertDecisionButtons(topicComponentNode);
-                refreshToolTips();
+               
             }
 
             
@@ -243,6 +246,7 @@
         }
 
         hideAttendanceDetails();
+        refreshToolTips();
     };
 
 
@@ -261,7 +265,7 @@
                 getCommitments(topicId, function (response) {
                     getTemplate('/plugins/nodebb-plugin-attendance/templates/topic.html?v=5', function (template) {
 
-                        app.createUserTooltips();
+                        // app.createUserTooltips();
                         
 
                         var markup = templates.parse(template, {
