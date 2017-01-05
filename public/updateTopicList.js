@@ -20,6 +20,22 @@
                 data: JSON.stringify({"type": value}),
                 success: function () {
                     $button.disabled = true;
+                    var myfuckingButtonForReal = document.querySelector('.attendance-control');
+                     myfuckingButtonForReal.setAttribute('data-value',value);
+                    /*
+                    if (myfuckingButtonForReal.getAttribute('data-value') == 'unknown' ||
+                        myfuckingButtonForReal.getAttribute('data-value') == 'yes')
+                    {
+                        if (myfuckingButtonForReal.getAttribute('data-value') == 'unknown') {
+                            myfuckingButtonForReal.setAttribute('data-value','yes');
+                        } else {
+                            myfuckingButtonForReal.setAttribute('data-value','unknown');
+                        }
+                    } else {
+                        myfuckingButtonForReal.setAttribute('data-value',value);
+                    }*/
+
+
                     topicLoaded();
                 },
                 error: function () {
@@ -49,6 +65,7 @@
     };
 
     var symbolMap = {
+        unknown: 'fa fa-fw fa-circle-o',
         yes: 'fa fa-fw fa-check-circle',
         maybe: 'fa fa-fw fa-question-circle',
         no: 'fa fa-fw fa-times-circle'
@@ -64,6 +81,7 @@
     };
 
     var colorMap = {
+        unknown: "#f0f0f0",
         yes: "#66aa66",
         maybe: "#d18d1f",
         no: "#c91106"
@@ -111,12 +129,15 @@
     }
 
 
-    // baustelle
+    
      var insertDecisionButtons = function (topicNode) {
         
         var postBarNode = document.querySelector(".post-bar div");
 
         var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
+
+         // baustelle
+
         
         getCommitments(topicId, function (response) {       
            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.html?v=5', function (template) {
@@ -127,6 +148,13 @@
                     },
 
                         attendance: response.attendance,
+                        unknown: (function (v1) {
+                            if (v1 == "unknown") {
+                                return 1
+                            } else {
+                                return 0
+                            }
+                        })(response.myAttendance),
                         yes: (function (v1) {
                             if (v1 == "yes") {
                                 return 1
@@ -181,9 +209,15 @@
             postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
             
             // todo: hook here to insert decision buttons into post-bar?
-            insertDecisionButtons(topicComponentNode);
-            // window.alert(postBarCode).
-            // postBarNode.parentNode.insertBefore(postBarCode, postBarNode);
+            // insertDecisionButtons(topicComponentNode);
+            var existingAttendancePostBarNode = firstPost.querySelector('[component="attendanceButtons"]');
+            if (existingAttendancePostBarNode) {
+                // firstPost.replaceChild(attendanceNode, existingAttendancePostBarNode);
+            } else {
+                insertDecisionButtons(topicComponentNode);
+            }
+
+            
             
         } else if (topicComponentNode.children.length === 1) {
             firstPost.appendChild(attendanceNode);
@@ -211,6 +245,13 @@
                             },
 
                             attendance: response.attendance,
+                            unknown: (function (v1) {
+                                if (v1 == "unknown") {
+                                    return 1
+                                } else {
+                                    return 0
+                                }
+                            })(response.myAttendance),
                             yes: (function (v1) {
                                 if (v1 == "yes") {
                                     return 1
