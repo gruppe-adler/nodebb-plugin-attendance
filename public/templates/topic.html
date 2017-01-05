@@ -11,9 +11,9 @@
                     <a href="{config.relative_path}/user/{attendance.yes.userslug}">
                         <!-- IF attendance.yes.picture -->
                         <img class="user-img avatar avatar-md avatar-rounded attendance_yes" src="{attendance.yes.picture}"
-                             title="{attendance.yes.username} – {attendance.yes.timestamp}">
+                             title="{attendance.yes.username} {attendance.yes.timestamp}">
                         <!-- ELSE -->
-                        <div class="avatar avatar-md avatar-rounded"
+                        <div class="avatar avatar-md avatar-rounded"  title="{attendance.yes.username}"
                              style="background-color: {attendance.yes.icon:bgColor};">{attendance.yes.icon:text}
                         </div>
                         <!-- ENDIF attendance.yes.picture -->
@@ -26,9 +26,9 @@
                     <a href="{config.relative_path}/user/{attendance.maybe.userslug}">
                         <!-- IF attendance.maybe.picture -->
                         <img class="user-img avatar avatar-md avatar-rounded attendance_maybe" src="{attendance.maybe.picture}"
-                             title="{attendance.maybe.username} – {attendance.maybe.timestamp}"/>
+                             title="{attendance,maybe.username}"/>
                         <!-- ELSE -->
-                        <div class="avatar avatar-md avatar-rounded attendance_maybe"
+                        <div class="avatar avatar-md avatar-rounded attendance_maybe"  title="{attendance,maybe.username}"
                              style="background-color: {attendance.maybe.icon:bgColor};">{attendance.maybe.icon:text}
                         </div>
                         <!-- ENDIF attendance.maybe.picture -->
@@ -49,9 +49,9 @@
                     <a href="{config.relative_path}/user/{attendance.no.userslug}">
                         <!-- IF attendance.no.picture -->
                         <img class="user-img avatar avatar-md avatar-rounded attendance_no" src="{attendance.no.picture}"
-                             title="{attendance.no.username} – {attendance.no.timestamp}">
+                             title="{attendance.no.username}">
                         <!-- ELSE -->
-                        <div class="avatar avatar-md avatar-rounded"
+                        <div class="avatar avatar-md avatar-rounded"  title="{attendance.no.username}"
                              style="background-color: {attendance.no.icon:bgColor};">{attendance.no.icon:text}
                         </div>
                         <!-- ENDIF attendance.no.picture -->
@@ -85,10 +85,9 @@
                         <td>
                             <a href="{config.relative_path}/user/{attendance.yes.userslug}">
                                 <!-- IF attendance.yes.picture -->
-                                <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.yes.picture}"
-                                     title="{attendance.yes.username} – {attendance.yes.timestamp}">
+                                <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.yes.picture}" title="">
                                 <!-- ELSE -->
-                                <div class="avatar avatar-sm avatar-rounded"
+                                <div class="avatar avatar-sm avatar-rounded" title=""
                                      style="background-color: {attendance.yes.icon:bgColor};">{attendance.yes.icon:text}
                                 </div>
                                 <!-- ENDIF attendance.yes.picture -->
@@ -113,9 +112,9 @@
                             <a href="{config.relative_path}/user/{attendance.maybe.userslug}">
                                 <!-- IF attendance.maybe.picture -->
                                 <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.maybe.picture}"
-                                     title="{attendance.maybe.username} – {attendance.maybe.timestamp}">
+                                     title="">
                                 <!-- ELSE -->
-                                <div class="avatar avatar-sm avatar-rounded"
+                                <div class="avatar avatar-sm avatar-rounded" title=""
                                      style="background-color: {attendance.maybe.icon:bgColor};">
                                     {attendance.maybe.icon:text}
                                 </div>
@@ -141,9 +140,9 @@
                             <a href="{config.relative_path}/user/{attendance.no.userslug}">
                                 <!-- IF attendance.no.picture -->
                                 <img class="user-img avatar avatar-sm avatar-rounded" src="{attendance.no.picture}"
-                                     title="{attendance.no.username} – {attendance.no.timestamp}">
+                                     title="">
                                 <!-- ELSE -->
-                                <div class="avatar avatar-sm avatar-rounded"
+                                <div class="avatar avatar-sm avatar-rounded" title=""
                                      style="background-color: {attendance.no.icon:bgColor};">{attendance.no.icon:text}
                                 </div>
                                 <!-- ENDIF attendance.no.picture -->
