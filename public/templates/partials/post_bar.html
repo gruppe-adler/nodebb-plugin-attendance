@@ -2,18 +2,18 @@
 <div class="clearfix">
 	
 	<div class="btn-group bottom-sheet pull-left" component="topic/attendanceButtons">	
-		<button class="attendance-control btn btn-<!-- IF yes -->primary<!-- ENDIF yes --><!-- IF maybe -->secondary<!-- ENDIF maybe --><!-- IF no -->primary<!-- ENDIF no --> dropdown-toggle" data-value="yes" data-tid="{tid}" type="button">
-			<span class="fa fa-fw fa-check-circle" style="color: #fff;"></span>
-			<span class="visible-sm-inline visible-md-inline visible-lg-inline">Angemeldet</span>
+		<button class="attendance-control btn btn-<!-- IF yes -->primary<!-- ENDIF yes --><!-- IF maybe -->secondary<!-- ENDIF maybe --><!-- IF no -->primary<!-- ENDIF no --> dropdown-toggle" data-value="unknown" data-tid="{tid}" type="button">
+			<span class="attendance-control-icon"></span>
+			<span class="attendance-control-text"></span>
 		</button>
 		<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
 			<span class="caret"></span>
 		</button>
 		<!-- todo: enable functionality-->
-		<ul class="dropdown-menu dropdown-menu-right">
-			<li><span class="attendance-control btn dropdown-toggle" data-value="yes" data-tid="{tid}" type="button"><i class="fa fa-fw fa-check-circle"></i>Ich nehme teil</span></li>
-			<li><span class="attendance-control btn dropdown-toggle" data-value="maybe" data-tid="{tid}" type="button"><i class="fa fa-fw fa-question-circle"></i>Bin Wackelkandidat</a></span></li>
-			<li><span class="attendance-control btn dropdown-toggle" data-value="no" data-tid="{tid}" type="button"><i class="fa fa-fw fa-minus-circle"></i>Ich nehme nicht teil</a></span></li>
+		<ul class="attendance-control dropdown-menu">
+			<li><a href="#" class="attendance-control" data-value="yes" data-tid="{tid}" type="button"><i class="fa fa-fw fa-check-circle"></i>Anmelden</a></li>
+			<li><a href="#" class="attendance-control" data-value="maybe" data-tid="{tid}" type="button"><i class="fa fa-fw fa-question-circle"></i>Vielleicht</a></a></li>
+			<li><a href="#" class="attendance-control" data-value="no" data-tid="{tid}" type="button"><i class="fa fa-fw fa-minus-circle"></i>Abmelden</a></a></li>
 		</ul>
 	</div>
 	
