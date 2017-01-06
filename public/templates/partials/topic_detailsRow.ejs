@@ -1,0 +1,20 @@
+<% /*global attendant */ %>
+<tr data-uid="<%= attendant.uid %>">
+	<td>
+		<a href="{config.relative_path}/user/<%= attendant.userslug %>">
+			<% if (attendant.picture) { %>
+				<img class="user-img avatar avatar-sm avatar-rounded" src="<%= attendant.picture %>" title="">
+			<% } else { %>
+				<div class="avatar avatar-sm avatar-rounded" title=""
+				 style="background-color: <%= attendant['icon:bgColor'] %>;"><%= attendant['icon:text'] %>
+			</div>
+			<% } %>
+		</a>
+	</td>
+	<td class="member-name">
+		<a href="<%= config.relative_path %>/user/<%= attendant.userslug %>"><%- attendant.username %></a>
+		<div class="pull-right">
+			<%= attendant.timestamp %>
+		</div>
+	</td>
+</tr>

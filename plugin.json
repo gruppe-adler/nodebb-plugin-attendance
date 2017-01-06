@@ -9,7 +9,9 @@
         "css": "./public/css"
     },
     "scripts": [
+        "../../node_modules/underscore/underscore-min.js",
         "./public/updateTopicList.js"
+
     ],
     "hooks": [
         {

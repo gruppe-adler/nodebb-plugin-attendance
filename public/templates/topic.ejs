@@ -1,0 +1,56 @@
+<% /*global yesListMarkup, maybeListMarkup, noListMarkup, userRowsMarkupYes, userRowsMarkupMaybe, userRowsMarkupNo,  */ %>
+<!-- EJS -->
+<div style="float:left; margin-left: 10px; margin-bottom:10px; text-transform: uppercase; color: #777; font-weight: 300; font-size: 12px;">Teilnehmer (BETA)</div>
+<div class="showAttendanceDetails" style="float:right; cursor: pointer;"><a onclick="showAttendanceDetails();">Details</a></div>
+<table class="main-table">
+    <tr class="firstRow">
+        <td class="firstColumn">
+            <span class="attendance_pill_yes"><i class="fa fa-fw fa-check-circle"></i><%= yesListMarkup.length %></span>
+            <span class="attendance_pill_maybe">+ <%= maybeListMarkup.length %></span>
+        </td>
+        <td class="secondColumn">
+            <ul>
+                <%= yesListMarkup.join('') %>
+                <li><span style="margin-left: 30px;"></span></li>
+                <%= maybeListMarkup.join('') %>
+            </ul>
+        </td>
+    </tr>
+    <tr class="secondRow">
+        <td class="firstColumn">
+            <span class="attendance_pill_no"><i class="fa fa-fw fa-times-circle"></i><%=noListMarkup.length %></span>
+        </td>
+        <td class="secondColumn">
+            <ul><%= noListMarkup.join('') %></ul>
+        </td>
+    </tr>
+</table>
+<!-- <hr/> -->
+<div class="modal-backdrop fade in" component="topic/attendance/backdrop"></div>
+<div class="bootbox modal fade vote-modal in" component="topic/attendance/details" abindex="-1" role="dialog"
+     style="display: none; padding-right: 16px;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" onclick="hideAttendanceDetails();" class="bootbox-close-button close"
+                        data-dismiss="modal" aria-hidden="true">×
+                </button>
+                <h4 class="modal-title">Details</h4>
+            </div>
+            <div class="modal-body">
+            <h4 class="modal-title">Zusagen</h4>
+                <table component="groups/members" class="table table-striped table-hover" data-nextstart="20">
+                    <tbody><%= userRowsMarkupYes.join('') %></tbody>
+                </table>
+                <h4 class="modal-title">Vielleicht</h4>
+                <table component="groups/members" class="table table-striped table-hover" data-nextstart="20">
+                    <tbody><%= userRowsMarkupMaybe.join('') %></tbody>
+                </table>
+                <h4 class="modal-title">Absagen</h4>
+                <table component="groups/members" class="table table-striped table-hover" data-nextstart="20">
+                    <tbody><%= userRowsMarkupNo.join('') %></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

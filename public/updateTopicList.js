@@ -1,4 +1,4 @@
-/*global $, templates */
+/*global $, templates, _ */
 
 (function () {
     (function () {
@@ -52,7 +52,7 @@
 
     function getCurrentButtonValue (button) {
         return button.data('value');
-    };
+    }
 
     var getTemplate = (function () {
         var loadedTemplates = {};
@@ -240,30 +240,58 @@
             if (isMission(getTopicTitle(document))) {
                 var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
                 getCommitments(topicId, function (response) {
-                    getTemplate('/plugins/nodebb-plugin-attendance/templates/topic.html?v=5', function (template) {
+                    getTemplate('/plugins/nodebb-plugin-attendance/templates/topic.ejs?v=1', function (template) {
+                        getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_userbadge.ejs?v=1', function (userbadgeTemplate) {
+                            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_detailsRow.ejs?v=1', function (userRowTemplate) {
 
-                        // app.createUserTooltips();
-                        
+                                var compiledUserbadgeTemplate = _.template(userbadgeTemplate);
+                                var userbadgeListsMarkup = ['yes', 'maybe', 'no'].map(function (attendanceState) {
+                                    return response.attendance[attendanceState].map(function (attendant) {
+                                        return compiledUserbadgeTemplate({
+                                            attendant: attendant,
+                                            attendanceState: attendanceState
+                                        })
+                                    });
+                                });
 
-                        var markup = templates.parse(template, {
-                           
-                            config: {
-                                relative_path: config.relative_path
-                            },
+                                var compiledUserRowTemplate = _.template(userRowTemplate);
+                                var userRowsMarkup = ['yes', 'maybe', 'no'].map(function (attendanceState) {
+                                    return response.attendance[attendanceState].map(function (attendant) {
+                                        return compiledUserRowTemplate({
+                                            attendant: attendant,
+                                            attendanceState: attendanceState,
+                                            config: config
+                                        })
+                                    });
+                                });
 
-                            attendance: response.attendance,
-                            unknown:    response.myAttendance == "unknown",
-                            yes:        response.myAttendance == "yes",
-                            maybe:      response.myAttendance == "maybe",
-                            no:         response.myAttendance == "no",
-                            tid: topicId
+                                var markup = _.template(template)({
+
+                                    config: {
+                                        relative_path: config.relative_path
+                                    },
+
+
+                                    yesListMarkup: userbadgeListsMarkup[0],
+                                    maybeListMarkup: userbadgeListsMarkup[1],
+                                    noListMarkup: userbadgeListsMarkup[2],
+                                    userRowsMarkupYes: userRowsMarkup[0],
+                                    userRowsMarkupMaybe: userRowsMarkup[1],
+                                    userRowsMarkupNo: userRowsMarkup[2],
+                                    unknown: response.myAttendance == "unknown",
+                                    yes: response.myAttendance == "yes",
+                                    maybe: response.myAttendance == "maybe",
+                                    no: response.myAttendance == "no",
+                                    tid: topicId
+                                });
+
+                                var node = document.createElement('div');
+                                node.setAttribute('component', 'topic/attendance');
+                                node.innerHTML = markup;
+
+                                insertTopicAttendanceNode(topicNode, node);
+                            })
                         });
-                        
-                        var node = document.createElement('div');
-                        node.setAttribute('component', 'topic/attendance');
-                        node.innerHTML = markup;
-
-                        insertTopicAttendanceNode(topicNode, node);
                     });
                 });
             }
