@@ -12,22 +12,23 @@
     (function () {
         $(document).on('click', '.attendance-control', function () {
             var $button = $(this);
-            var value = $button.data('value');
+            var value = getCurrentButtonValue($button);
             var tid = $button.data('tid');
             var btnType = $button.data('id');
-            console.log(btnType, value);
+            // console.log(value, tid, btnType);
 
             if (btnType == 'master') {
                 if (value == 'unknown') {
                     value = 'yes';
-                    console.log("yes to yes");
+                    $button.data("value", "yes");
+                    // console.log("yes to yes");
                 } else {
                     value = 'unknown';
-                    console.log("any to unknown");
+                    $button.data("value", "unknown");
+                    // console.log("any to unknown");
                 }
             }
-
-            $.post({
+             $.post({
                 url: config.relative_path + '/api/attendance/' + tid,
                 contentType: 'application/json',
                 data: JSON.stringify({"type": value}),
@@ -44,8 +45,14 @@
                 }
             });
 
+            
+
         });
     }());
+
+    function getCurrentButtonValue (button) {
+        return button.data('value');
+    };
 
     var getTemplate = (function () {
         var loadedTemplates = {};
@@ -143,15 +150,14 @@
 
     };
     
-     var insertDecisionButtons = function (topicNode) {
+     function insertDecisionButtons (topicNode) {
         
         var postBarNode = document.querySelector(".post-bar div");
 
         var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
 
-      
 
-         // baustelle
+        // baustelle
         
         getCommitments(topicId, function (response) {       
            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.html?v=5', function (template) {
@@ -162,34 +168,10 @@
                     },
 
                         attendance: response.attendance,
-                        unknown: (function (v1) {
-                            if (v1 == "unknown") {
-                                return 1
-                            } else {
-                                return 0
-                            }
-                        })(response.myAttendance),
-                        yes: (function (v1) {
-                            if (v1 == "yes") {
-                                return 1
-                            } else {
-                                return 0
-                            }
-                        })(response.myAttendance),
-                        maybe: (function (v1) {
-                            if (v1 == "maybe") {
-                                return 1
-                            } else {
-                                return 0
-                            }
-                        })(response.myAttendance),
-                        no: (function (v1) {
-                            if (v1 == "no") {
-                                return 1
-                            } else {
-                                return 0
-                            }
-                        })(response.myAttendance),
+                        unknown:    response.myAttendance == "unknown",
+                        yes:        response.myAttendance == "yes",
+                        maybe:      response.myAttendance == "maybe",
+                        no:         response.myAttendance == "no",
                         tid: topicId
                 });
                 node.innerHTML = markup; // templates.parse(template, {});
@@ -228,19 +210,14 @@
         if (postBarNode) {
             postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
             
-            // todo: hook here to insert decision buttons into post-bar?
-            // insertDecisionButtons(topicComponentNode);
-            var existingAttendancePostBarNode = firstPost.querySelector('[component="attendanceButtons"]');
+            var existingAttendancePostBarNode = firstPost.querySelector('[data-id="master"]');
             if (existingAttendancePostBarNode) {
-                // firstPost.replaceChild(attendanceNode, existingAttendancePostBarNode);
-                  
+                // firstPost.replaceChild(topicComponentNode, existingAttendancePostBarNode);
             } else {
                 insertDecisionButtons(topicComponentNode);
-               
             }
 
-            
-            
+
         } else if (topicComponentNode.children.length === 1) {
             firstPost.appendChild(attendanceNode);
         }
@@ -275,36 +252,13 @@
                             },
 
                             attendance: response.attendance,
-                            unknown: (function (v1) {
-                                if (v1 == "unknown") {
-                                    return 1
-                                } else {
-                                    return 0
-                                }
-                            })(response.myAttendance),
-                            yes: (function (v1) {
-                                if (v1 == "yes") {
-                                    return 1
-                                } else {
-                                    return 0
-                                }
-                            })(response.myAttendance),
-                            maybe: (function (v1) {
-                                if (v1 == "maybe") {
-                                    return 1
-                                } else {
-                                    return 0
-                                }
-                            })(response.myAttendance),
-                            no: (function (v1) {
-                                if (v1 == "no") {
-                                    return 1
-                                } else {
-                                    return 0
-                                }
-                            })(response.myAttendance),
+                            unknown:    response.myAttendance == "unknown",
+                            yes:        response.myAttendance == "yes",
+                            maybe:      response.myAttendance == "maybe",
+                            no:         response.myAttendance == "no",
                             tid: topicId
                         });
+                        
                         var node = document.createElement('div');
                         node.setAttribute('component', 'topic/attendance');
                         node.innerHTML = markup;
