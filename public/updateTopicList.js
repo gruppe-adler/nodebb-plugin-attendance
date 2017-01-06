@@ -160,9 +160,9 @@
         // baustelle
         
         getCommitments(topicId, function (response) {       
-           getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.html?v=5', function (template) {
+           getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=1', function (templateString) {
                 var node = document.createElement('div');
-                var markup = templates.parse(template, {
+                var markup = _.template(templateString)({
                     config: {
                         relative_path: config.relative_path
                     },
@@ -178,7 +178,7 @@
                 postBarNode.appendChild(node);
             });
         });
-    };
+    }
     
     // ende baustelle
 

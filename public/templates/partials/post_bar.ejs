@@ -1,0 +1,39 @@
+<% /*global tid*/ %>
+<!-- begin nomi edit, kicked out TAGS for this type of thread -->
+<div class="clearfix">
+	<div class="btn-group bottom-sheet pull-left" component="topic/attendanceButtons">
+		<button class="attendance-control btn dropdown-toggle" data-value="yes" data-tid="<%= tid %>" type="button"
+				data-id="master">
+			<span class="attendance-control-icon"></span>
+			<span class="attendance-control-text"></span>
+		</button>
+		<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+			<span class="caret"></span>
+		</button>
+		<!-- todo: enable functionality-->
+		<ul class="attendance-control dropdown-menu">
+			<li>
+				<a href="#" class="attendance-control" data-value="yes" data-tid="<%= tid %>" type="button"
+				   data-id="slave">
+					<i class="fa fa-fw fa-check-circle"></i>
+					Anmelden
+				</a>
+			</li>
+			<li>
+				<a href="#" class="attendance-control" data-value="maybe" data-tid="<%= tid %>" type="button"
+				   data-id="slave">
+					<i class="fa fa-fw fa-question-circle"></i>
+					Vielleicht
+				</a>
+			</li>
+			<li>
+				<a href="#" class="attendance-control" data-value="no" data-tid="<%= tid %>" type="button"
+				   data-id="slave">
+					<i class="fa fa-fw fa-minus-circle"></i>
+					Abmelden
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<!-- end nomi edit -->
