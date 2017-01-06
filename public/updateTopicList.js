@@ -150,36 +150,27 @@
 
     };
     
-     function insertDecisionButtons (topicNode) {
-        
+     function insertDecisionButtons (topicNode, myAttendanceState) {
         var postBarNode = document.querySelector(".post-bar div");
-
         var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
 
-
-        // baustelle
-        
-        getCommitments(topicId, function (response) {       
-           getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=1', function (templateString) {
-                var node = document.createElement('div');
-                var markup = _.template(templateString)({
-                    config: {
-                        relative_path: config.relative_path
-                    },
-                    myAttendanceState: response.myAttendance,
-                    tid: topicId
-                });
-                node.innerHTML = markup; // templates.parse(template, {});
-                postBarNode.appendChild(node);
+       getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=1', function (templateString) {
+            var node = document.createElement('div');
+            var markup = _.template(templateString)({
+                config: {
+                    relative_path: config.relative_path
+                },
+                myAttendanceState: myAttendanceState,
+                tid: topicId
             });
+            node.innerHTML = markup;
+            postBarNode.appendChild(node);
         });
     }
     
     // ende baustelle
 
-    var insertTopicAttendanceNode = function (topicComponentNode, attendanceNode) {
-
-        
+    var insertTopicAttendanceNode = function (topicComponentNode, attendanceNode, myAttendanceState) {
 
         var firstPost = topicComponentNode.querySelector('[component="post"]');
 
@@ -187,8 +178,6 @@
         if (firstPost.getAttribute("data-index") != "0") {
             return false;
         }
-
-
 
         //replace we updated data if the attendance component already exists
         var existingAttendanceComponentNode = firstPost.querySelector('[component="topic/attendance"]');
@@ -209,7 +198,7 @@
             if (existingAttendancePostBarNode) {
                 // firstPost.replaceChild(topicComponentNode, existingAttendancePostBarNode);
             } else {
-                insertDecisionButtons(topicComponentNode);
+                insertDecisionButtons(topicComponentNode, myAttendanceState);
             }
 
 
@@ -229,8 +218,6 @@
 
     var topicLoaded = function () {
         Array.prototype.forEach.call(document.querySelectorAll('[component="topic"]'), function (topicNode) {
-
-
 
             if (isMission(getTopicTitle(document))) {
                 var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
@@ -281,7 +268,7 @@
                                 node.setAttribute('component', 'topic/attendance');
                                 node.innerHTML = markup;
 
-                                insertTopicAttendanceNode(topicNode, node);
+                                insertTopicAttendanceNode(topicNode, node, response.myAttendance);
                             })
                         });
                     });
