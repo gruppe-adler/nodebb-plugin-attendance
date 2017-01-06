@@ -1,6 +1,11 @@
-@media (max-width: 1000px) { 
+@media (max-width: 1280px) { 
   .topic-main-buttons .stats {
     display: none;
+  }
+}
+@media (max-width: 1280px) { 
+  [component="topic/watch"] .visible-lg-inline, [component="topic/mark-unread"] .visible-lg-inline {
+    display: none !important;
   }
 }
 
@@ -37,14 +42,14 @@
 /* ATTENDING UNKNOWN */
 
 .btn[data-value="unknown"] {
-  background-color: #f0f0f0 !important;
+  background-color: #f9f9f9 !important;
   border-color: #adadad !important;
   color: #333 !important;
   min-width: 128px;
 }
 
 .btn[data-value="unknown"]:hover {
-  background-color: #adadad !important;
+  background-color: #d6d6d6 !important;
 }
 
 .btn[data-value="unknown"] .attendance-control-icon:after {
@@ -70,7 +75,7 @@
 }
 
 .btn[data-value="yes"]:hover {
-  background-color: #339933 !important;
+  background-color: #4D914D !important;
 }
 
 .btn[data-value="yes"] .attendance-control-icon:after {
@@ -197,12 +202,12 @@
 
 [component="topic/attendance"] .main-table tr .secondColumn ul {
     padding: 0px;
+    list-style: none;
     height: 40px;
     overflow: hidden;
 }
 
 [component="topic/attendance"] .main-table tr .secondColumn ul li {
-    list-style-type: none;
     display: inline;
 }
 
@@ -225,7 +230,7 @@
 }
 
 [component="topic/attendance"] {
-    background-color: #f0f0f0;
+    background-color: #f9f9f9;
     height: 176px;
     display: block;
     margin: -10px;
