@@ -149,13 +149,14 @@
          });
 
     };
-    
-     function insertDecisionButtons (topicNode, myAttendanceState) {
+
+    function insertDecisionButtons(topicNode, myAttendanceState) {
         var postBarNode = document.querySelector(".post-bar div");
         var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
 
-       getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=1', function (templateString) {
-            var node = document.createElement('div');
+        getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=1', function (templateString) {
+            var buttonsNode = document.createElement('div');
+            var existingButtonsNode = postBarNode.querySelector('[data-id="master"]');
             var markup = _.template(templateString)({
                 config: {
                     relative_path: config.relative_path
@@ -163,8 +164,12 @@
                 myAttendanceState: myAttendanceState,
                 tid: topicId
             });
-            node.innerHTML = markup;
-            postBarNode.appendChild(node);
+            buttonsNode.innerHTML = markup;
+
+            if (!existingButtonsNode) {
+                console.log('addign buttonsNode…');
+                postBarNode.appendChild(buttonsNode);
+            }
         });
     }
     
@@ -193,15 +198,7 @@
         //only insert attendance if the postbar exists (if this is the first post)
         if (postBarNode) {
             postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
-            
-            var existingAttendancePostBarNode = firstPost.querySelector('[data-id="master"]');
-            if (existingAttendancePostBarNode) {
-                // firstPost.replaceChild(topicComponentNode, existingAttendancePostBarNode);
-            } else {
-                insertDecisionButtons(topicComponentNode, myAttendanceState);
-            }
-
-
+            insertDecisionButtons(topicComponentNode, myAttendanceState);
         } else if (topicComponentNode.children.length === 1) {
             firstPost.appendChild(attendanceNode);
         }
