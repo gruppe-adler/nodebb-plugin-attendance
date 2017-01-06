@@ -197,12 +197,12 @@
 
 [component="topic/attendance"] .main-table tr .secondColumn ul {
     padding: 0px;
-    list-style: none;
     height: 40px;
     overflow: hidden;
 }
 
 [component="topic/attendance"] .main-table tr .secondColumn ul li {
+    list-style-type: none;
     display: inline;
 }
 
