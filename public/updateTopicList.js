@@ -13,9 +13,9 @@
         $(document).on('click', '.attendance-control', function () {
             var $button = $(this);
             var value = getCurrentButtonValue($button);
-            var tid = $button.data('tid');
-            var btnType = $button.data('id');
-            // console.log(value, tid, btnType);
+            var tid = $button.attr('data-tid');
+            var btnType = $button.attr('data-id');
+            console.log(value, tid, btnType);
 
             if (btnType == 'master') {
                 if (value == 'unknown') {
@@ -51,7 +51,7 @@
     }());
 
     function getCurrentButtonValue (button) {
-        return button.data('value');
+        return button.attr('data-value');
     }
 
     var getTemplate = (function () {
@@ -166,13 +166,8 @@
                     config: {
                         relative_path: config.relative_path
                     },
-
-                        attendance: response.attendance,
-                        unknown:    response.myAttendance == "unknown",
-                        yes:        response.myAttendance == "yes",
-                        maybe:      response.myAttendance == "maybe",
-                        no:         response.myAttendance == "no",
-                        tid: topicId
+                    myAttendanceState: response.myAttendance,
+                    tid: topicId
                 });
                 node.innerHTML = markup; // templates.parse(template, {});
                 postBarNode.appendChild(node);
@@ -278,10 +273,7 @@
                                     userRowsMarkupYes: userRowsMarkup[0],
                                     userRowsMarkupMaybe: userRowsMarkup[1],
                                     userRowsMarkupNo: userRowsMarkup[2],
-                                    unknown: response.myAttendance == "unknown",
-                                    yes: response.myAttendance == "yes",
-                                    maybe: response.myAttendance == "maybe",
-                                    no: response.myAttendance == "no",
+                                    myAttendanceState: response.myAttendance,
                                     tid: topicId
                                 });
 
