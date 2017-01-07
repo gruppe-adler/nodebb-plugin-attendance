@@ -1,10 +1,12 @@
 var types = [
+    'unknown',
     'yes',
     'maybe',
     'no'
 ];
 
 var stringTypeFloatMap = {
+    unknown: 2,
     yes: 1,
     maybe: 0.5,
     no: 0
@@ -13,7 +15,8 @@ var stringTypeFloatMap = {
 var floatTypeStringMap = {
     0: 'no',
     0.5: 'maybe',
-    1: 'yes'
+    1: 'yes',
+    2: 'unknown'
 };
 
 var ensureFloatType = function (type) {
@@ -146,7 +149,7 @@ module.exports = function (params, callback) {
                             var u = users.filter(function (user) { return user.uid == attendance.value; }).pop();
                             attendance.uid = u.uid;
                             delete attendance.value;
-                            attendance.timestamp = (new Date(attendance.score)).toISOString();
+                            attendance.timestamp = (new Date(attendance.score)).toLocaleString('en-GB');
                             delete attendance.score;
                             _(attendance).extend(_(u).pick(['username', 'userslug', 'picture', 'icon:bgColor', 'icon:text']));
                         });

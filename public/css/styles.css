@@ -1,20 +1,137 @@
-.attendance_btn_yes {
-  background-color: #6a6;
-  border-color: #339933;
-  color: #fff;
+@media (max-width: 1280px) { 
+  .topic-main-buttons .stats {
+    display: none;
+  }
+}
+@media (max-width: 1280px) { 
+  [component="topic/watch"] .visible-lg-inline, [component="topic/mark-unread"] .visible-lg-inline {
+    display: none !important;
+  }
 }
 
-.attendance_btn_maybe {
-  background-color: #d18d1f;
-  border-color: #bb7e1c;
-  color: #fff;
+@-webkit-keyframes fade-in-maybe {
+  100% { opacity: 0.35; }
+  0%   { opacity: 0; }
+  100% { opacity: 0.35; }
 }
 
-.attendance_btn_no {
-  background-color: #c91106;
-  border-color: #c91106;
-  color: #fff;
+.post-bar {
+    margin-top: 35px;
 }
+
+.post-bar .clearfix .tags {
+  display: none;
+}
+
+[component="topic/attendance"] .main-table tr .secondColumn .attendance_maybe {
+ -webkit-animation-name: fade-in-maybe;
+ -webkit-animation-duration: 0.3s;
+ -webkit-animation-iteration-count: 1;
+ -webkit-animation-timing-function: ease-in;
+ -webkit-animation-delay: 0s;
+}
+
+.stats-attendance i {
+  line-height: 40px;
+}
+
+.attendance-control-icon, .attendance-control-text {
+  color: #fff;  
+}
+
+/* ATTENDING UNKNOWN */
+
+.btn[data-value="unknown"] {
+  background-color: #f9f9f9 !important;
+  border-color: #adadad !important;
+  color: #333 !important;
+  min-width: 128px;
+}
+
+.btn[data-value="unknown"]:hover {
+  background-color: #d6d6d6 !important;
+}
+
+.btn[data-value="unknown"] .attendance-control-icon:after {
+  font-family: "FontAwesome";
+  content: "\f10c";
+  color: #333 !important;
+}
+
+.btn[data-value="unknown"] .attendance-control-text:after {
+  color: #333;
+  content: "Anmelden";
+}
+
+
+
+/* SURELY ATTENDING*/
+
+.btn[data-value="yes"] {
+  background-color: #6a6 !important;
+  border-color: #339933 !important;
+  color: #fff !important;
+  min-width: 128px;
+}
+
+.btn[data-value="yes"]:hover {
+  background-color: #4D914D !important;
+}
+
+.btn[data-value="yes"] .attendance-control-icon:after {
+  font-family: "FontAwesome";
+  content: "\f058";
+}
+
+.btn[data-value="yes"] .attendance-control-text:after {
+  content: "Angemeldet";
+}
+
+/* MAYBE ATTENDING*/
+
+.btn[data-value="maybe"] {
+  background-color: #d18d1f !important;
+  border-color: #bb7e1c !important;
+  color: #fff !important;
+  min-width: 128px;
+}
+
+.btn[data-value="maybe"]:hover {
+  background-color: #a56f18 !important;
+  border-color: #a56f18 !important;
+}
+
+.btn[data-value="maybe"] .attendance-control-icon:after {
+  font-family: "FontAwesome";
+  content: "\f059";
+}
+
+.btn[data-value="maybe"] .attendance-control-text:after {
+  content: "Vielleicht";
+}
+
+/* NOT ATTENDING */
+
+.btn[data-value="no"] {
+  background-color: #c91106 !important;
+  border-color: #c91106 !important;
+  color: #fff !important;
+  min-width: 128px;
+}
+
+.btn[data-value="no"]:hover {
+  background-color: #c91106 !important;
+}
+
+.btn[data-value="no"] .attendance-control-icon:after {
+  font-family: "FontAwesome";
+  content: "\f057";
+}
+
+.btn[data-value="no"] .attendance-control-text:after {
+  content: "Nicht dabei";
+}
+
 
 .attendance_btn_default {
   background-color: #fff;
@@ -29,7 +146,7 @@
   font-weight: normal;
 }
 
-[component="topic/attendance"] .attendance_maybe img {
+[component="topic/attendance"] .main-table tr .secondColumn .attendance_maybe {
   opacity: 0.35;
 }
 
@@ -45,12 +162,6 @@
   padding: 5px;
   font-size: 20px;
   font-weight: normal;
-}
-
-[component="topic/attendance"] {
-    margin: 10px 0;
-    background-color: #f9f9f9;
-    height: 176px;
 }
 
 [component="topic/attendance"] div {
@@ -118,3 +229,14 @@
     max-height: 85vh;
 }
 
+[component="topic/attendance"] {
+    background-color: #f9f9f9;
+    height: 176px;
+    display: block;
+    margin: -10px;
+    padding: 20px;
+    margin-top: -21px;
+    padding-bottom: 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}

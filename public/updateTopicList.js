@@ -1,4 +1,4 @@
-/*global $, templates */
+/*global $, templates, _ */
 
 (function () {
     (function () {
@@ -10,26 +10,50 @@
     }());
 
     (function () {
-        $(document).on('click', 'button.attendance-control', function () {
+        $(document).on('click', '.attendance-control', function () {
             var $button = $(this);
-            var value = $button.data('value');
+            var value = getCurrentButtonValue($button);
             var probability = $button.data('probability');
-            var tid = $button.data('tid');
-            $.post({
+            var tid = $button.attr('data-tid');
+            var btnType = $button.attr('data-id');
+            console.log(value, tid, btnType);
+
+            if (btnType == 'master') {
+                if (value == 'unknown') {
+                    value = 'yes';
+                    $button.data("value", "yes");
+                    // console.log("yes to yes");
+                } else {
+                    value = 'unknown';
+                    $button.data("value", "unknown");
+                    // console.log("any to unknown");
+                }
+            }
+             $.post({
                 url: config.relative_path + '/api/attendance/' + tid,
                 contentType: 'application/json',
                 data: JSON.stringify({type: value, probability: probability}),
                 success: function () {
                     $button.disabled = true;
+                    var myfuckingButtonForReal = document.querySelector('button.attendance-control');
+                    myfuckingButtonForReal.setAttribute('data-value',value);
+
                     topicLoaded();
+
                 },
                 error: function () {
                     console.log(arguments);
                 }
             });
 
+            
+
         });
     }());
+
+    function getCurrentButtonValue (button) {
+        return button.attr('data-value');
+    }
 
     var getTemplate = (function () {
         var loadedTemplates = {};
@@ -50,6 +74,7 @@
     };
 
     var symbolMap = {
+        unknown: 'fa fa-fw fa-circle-o',
         yes: 'fa fa-fw fa-check-circle',
         maybe: 'fa fa-fw fa-question-circle',
         no: 'fa fa-fw fa-times-circle'
@@ -65,6 +90,7 @@
     };
 
     var colorMap = {
+        unknown: "#f0f0f0",
         yes: "#66aa66",
         maybe: "#d18d1f",
         no: "#c91106"
@@ -111,7 +137,47 @@
         });
     }
 
-    var insertTopicAttendanceNode = function (topicComponentNode, attendanceNode) {
+    // baustelle
+    var refreshToolTips = function () {
+         var attendanceAvatar = document.querySelectorAll(".avatar");
+         Array.prototype.forEach.call(attendanceAvatar, function (attendanceAvatar) {
+            if (!utils.isTouchDevice()) {
+                $(attendanceAvatar).tooltip({
+                    placement: 'top',
+                    title: $(attendanceAvatar).attr('title')
+                });
+            }
+         });
+
+    };
+
+    function insertDecisionButtons(topicNode, myAttendanceState) {
+        var postBarNode = document.querySelector(".post-bar div");
+        var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
+
+        getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=1', function (templateString) {
+            var buttonsNode = document.createElement('div');
+            var existingButtonsNode = postBarNode.querySelector('[data-id="master"]');
+            var markup = _.template(templateString)({
+                config: {
+                    relative_path: config.relative_path
+                },
+                myAttendanceState: myAttendanceState,
+                tid: topicId
+            });
+            buttonsNode.innerHTML = markup;
+
+            if (!existingButtonsNode) {
+                console.log('addign buttonsNode…');
+                postBarNode.appendChild(buttonsNode);
+            }
+        });
+    }
+    
+    // ende baustelle
+
+    var insertTopicAttendanceNode = function (topicComponentNode, attendanceNode, myAttendanceState) {
+
         var firstPost = topicComponentNode.querySelector('[component="post"]');
 
         //exit if isn't first page
@@ -123,9 +189,8 @@
         var existingAttendanceComponentNode = firstPost.querySelector('[component="topic/attendance"]');
         if (existingAttendanceComponentNode) {
             firstPost.replaceChild(attendanceNode, existingAttendanceComponentNode);
-            hideAttendanceDetails("yes");
-            hideAttendanceDetails("maybe");
-            hideAttendanceDetails("no");
+            hideAttendanceDetails();
+            refreshToolTips();
             return true;
         }
 
@@ -134,14 +199,16 @@
         //only insert attendance if the postbar exists (if this is the first post)
         if (postBarNode) {
             postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
+            insertDecisionButtons(topicComponentNode, myAttendanceState);
         } else if (topicComponentNode.children.length === 1) {
             firstPost.appendChild(attendanceNode);
         }
 
-        hideAttendanceDetails("yes");
-        hideAttendanceDetails("maybe");
-        hideAttendanceDetails("no");
+        hideAttendanceDetails();
+        refreshToolTips();
     };
+
+
 
     var hasAttendanceClasses = function (node) {
         return node.querySelector('.stats-attendance');
@@ -149,44 +216,59 @@
 
     var topicLoaded = function () {
         Array.prototype.forEach.call(document.querySelectorAll('[component="topic"]'), function (topicNode) {
+
             if (isMission(getTopicTitle(document))) {
                 var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
                 getCommitments(topicId, function (response) {
-                    getTemplate('/plugins/nodebb-plugin-attendance/templates/topic.html?v=5', function (template) {
-                        var markup = templates.parse(template, {
-                            config: {
-                                relative_path: config.relative_path
-                            },
+                    getTemplate('/plugins/nodebb-plugin-attendance/templates/topic.ejs?v=1', function (template) {
+                        getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_userbadge.ejs?v=1', function (userbadgeTemplate) {
+                            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_detailsRow.ejs?v=1', function (userRowTemplate) {
 
-                            attendance: response.attendance,
-                            yes: (function (v1) {
-                                if (v1 == "yes") {
-                                    return 1
-                                } else {
-                                    return 0
-                                }
-                            })(response.myAttendance),
-                            maybe: (function (v1) {
-                                if (v1 == "maybe") {
-                                    return 1
-                                } else {
-                                    return 0
-                                }
-                            })(response.myAttendance),
-                            no: (function (v1) {
-                                if (v1 == "no") {
-                                    return 1
-                                } else {
-                                    return 0
-                                }
-                            })(response.myAttendance),
-                            tid: topicId
+                                var compiledUserbadgeTemplate = _.template(userbadgeTemplate);
+                                var userbadgeListsMarkup = ['yes', 'maybe', 'no'].map(function (attendanceState) {
+                                    return response.attendance[attendanceState].map(function (attendant) {
+                                        return compiledUserbadgeTemplate({
+                                            attendant: attendant,
+                                            attendanceState: attendanceState
+                                        })
+                                    });
+                                });
+
+                                var compiledUserRowTemplate = _.template(userRowTemplate);
+                                var userRowsMarkup = ['yes', 'maybe', 'no'].map(function (attendanceState) {
+                                    return response.attendance[attendanceState].map(function (attendant) {
+                                        return compiledUserRowTemplate({
+                                            attendant: attendant,
+                                            attendanceState: attendanceState,
+                                            config: config
+                                        })
+                                    });
+                                });
+
+                                var markup = _.template(template)({
+
+                                    config: {
+                                        relative_path: config.relative_path
+                                    },
+
+
+                                    yesListMarkup: userbadgeListsMarkup[0],
+                                    maybeListMarkup: userbadgeListsMarkup[1],
+                                    noListMarkup: userbadgeListsMarkup[2],
+                                    userRowsMarkupYes: userRowsMarkup[0],
+                                    userRowsMarkupMaybe: userRowsMarkup[1],
+                                    userRowsMarkupNo: userRowsMarkup[2],
+                                    myAttendanceState: response.myAttendance,
+                                    tid: topicId
+                                });
+
+                                var node = document.createElement('div');
+                                node.setAttribute('component', 'topic/attendance');
+                                node.innerHTML = markup;
+
+                                insertTopicAttendanceNode(topicNode, node, response.myAttendance);
+                            })
                         });
-                        var node = document.createElement('div');
-                        node.setAttribute('component', 'topic/attendance');
-                        node.innerHTML = markup;
-
-                        insertTopicAttendanceNode(topicNode, node);
                     });
                 });
             }
@@ -207,15 +289,17 @@
         });
     };
 
+
     $(window).bind('action:topic.loaded', topicLoaded);
     $(window).bind('action:topics.loaded', topicsLoaded);
+
 }());
 
-var showAttendanceDetails = function (type) {
-    document.querySelector(['[component="topic/attendance/', type, '-details"]'].join("")).style.display = 'block';
+var showAttendanceDetails = function () {
+    document.querySelector('[component="topic/attendance/details"]').style.display = 'block';
     document.querySelector('[component="topic/attendance/backdrop"]').style.display = 'block';
 };
-var hideAttendanceDetails = function (type) {
-    document.querySelector(['[component="topic/attendance/', type, '-details"]'].join("")).style.display = 'none';
+var hideAttendanceDetails = function () {
+    document.querySelector('[component="topic/attendance/details"]').style.display = 'none';
     document.querySelector('[component="topic/attendance/backdrop"]').style.display = 'none';
 };

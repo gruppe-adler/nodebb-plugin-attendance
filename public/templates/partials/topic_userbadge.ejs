@@ -1,0 +1,13 @@
+<% /*global attendant, attendanceState */ %>
+<li>
+	<a href="<%= config.relative_path %>/user/<%=attendant.userslug %>">
+		<% if (attendant.picture) { %>
+		<img class="user-img avatar avatar-md avatar-rounded attendance_<%= attendanceState %>" src="<%=attendant.picture %>"
+			 title="<%= attendant.username%> <%=attendant.timestamp %>">
+		<% } else { %>
+		<div class="avatar avatar-md avatar-rounded attendance_<%= attendanceState %>"  title="<%= attendant.username %>"
+			 style="background-color: <%=attendant['icon:bgColor'] %>"><%=attendant['icon:text'] %>
+		</div>
+		<% } %>
+	</a>
+</li>
