@@ -32,7 +32,7 @@
  -webkit-animation-name: fade-in-maybe;
  -webkit-animation-duration: 0.3s;
  -webkit-animation-iteration-count: 1;
- -webkit-animation-timing-function: ease-in;
+ -webkit-animation-timing-function: ease-in-out;
  -webkit-animation-delay: 0s;
 }
 
@@ -51,10 +51,26 @@
   border-color: #adadad !important;
   color: #333 !important;
   min-width: 128px;
+    -webkit-transition: background-color 150ms ease-in-out;
+  -moz-transition: background-color 150ms ease-in-out;
+  -o-transition: background-color 150ms ease-in-out;
+  -ms-transition: background-color 150ms ease-in-out;
+  transition: background-color 150ms ease-in-out;
 }
 
 .btn[data-value="unknown"]:hover, .btn[data-value=""]:hover {
-  background-color: #d6d6d6 !important;
+  background-color: #4D914D !important;
+  border-color: #339933 !important;
+  -webkit-transition: background-color 150ms ease-in-out;
+  -moz-transition: background-color 150ms ease-in-out;
+  -o-transition: background-color 150ms ease-in-out;
+  -ms-transition: background-color 150ms ease-in-out;
+  transition: background-color 150ms ease-in-out;
+   -webkit-transition: border-color 100ms ease-in-out;
+  -moz-transition: border-color 100ms ease-in-out;
+  -o-transition: border-color 100ms ease-in-out;
+  -ms-transition: border-color 100ms ease-in-out;
+  transition: border-color 100ms ease-in-out;
 }
 
 .btn[data-value="unknown"] .attendance-control-icon:after ,.btn[data-value=""] .attendance-control-icon:after {
@@ -64,10 +80,23 @@
 }
 
 .btn[data-value="unknown"] .attendance-control-text:after, .btn[data-value=""] .attendance-control-text:after{
-  color: #333;
-  content: "Anmelden";
+  color: #333 !important;
+  content: "\00a0 Zusagen";
 }
 
+
+
+
+.btn[data-value="unknown"]:hover .attendance-control-icon:after ,.btn[data-value=""]:hover .attendance-control-icon:after {
+  font-family: "FontAwesome";
+  content: "\f058";
+  color: #fff !important;
+}
+
+.btn[data-value="unknown"]:hover .attendance-control-text:after, .btn[data-value=""]:hover .attendance-control-text:after{
+  color: #fff !important;
+  content: "\00a0 Zusagen";
+}
 
 
 /* SURELY ATTENDING*/
@@ -77,10 +106,21 @@
   border-color: #339933 !important;
   color: #fff !important;
   min-width: 128px;
+   -webkit-transition: background-color 150ms ease-in-out;
+  -moz-transition: background-color 150ms ease-in-out;
+  -o-transition: background-color 150ms ease-in-out;
+  -ms-transition: background-color 150ms ease-in-out;
+  transition: background-color 150ms ease-in-out;
 }
 
 .btn[data-value="yes"]:hover {
-  background-color: #4D914D !important;
+  background-color: #c91106 !important;
+  border-color: #c91106 !important;
+   -webkit-transition: background-color 150ms ease-in-out;
+  -moz-transition: background-color 150ms ease-in-out;
+  -o-transition: background-color 150ms ease-in-out;
+  -ms-transition: background-color 150ms ease-in-out;
+  transition: background-color 150ms ease-in-out;
 }
 
 .btn[data-value="yes"] .attendance-control-icon:after {
@@ -89,7 +129,16 @@
 }
 
 .btn[data-value="yes"] .attendance-control-text:after {
-  content: "Angemeldet";
+  content: "\00a0 Zusage";
+}
+
+.btn[data-value="yes"]:hover .attendance-control-icon:after {
+  font-family: "FontAwesome";
+  content: "\f057";
+}
+
+.btn[data-value="yes"]:hover .attendance-control-text:after {
+  content: "\00a0 Absagen";
 }
 
 /* MAYBE ATTENDING*/
@@ -99,11 +148,31 @@
   border-color: #bb7e1c !important;
   color: #fff !important;
   min-width: 128px;
+   -webkit-transition: background-color 150ms ease-in-out;
+  -moz-transition: background-color 150ms ease-in-out;
+  -o-transition: background-color 150ms ease-in-out;
+  -ms-transition: background-color 150ms ease-in-out;
+  transition: background-color 150ms ease-in-out;
+   -webkit-transition: border-color 100ms ease-in-out;
+  -moz-transition: border-color 100ms ease-in-out;
+  -o-transition: border-color 100ms ease-in-out;
+  -ms-transition: border-color 100ms ease-in-out;
+  transition: border-color 100ms ease-in-out;
 }
 
 .btn[data-value="maybe"]:hover {
   background-color: #a56f18 !important;
   border-color: #a56f18 !important;
+   -webkit-transition: background-color 150ms ease-in-out;
+  -moz-transition: background-color 150ms ease-in-out;
+  -o-transition: background-color 150ms ease-in-out;
+  -ms-transition: background-color 150ms ease-in-out;
+  transition: background-color 150ms ease-in-out;
+   -webkit-transition: border-color 100ms ease-in-out;
+  -moz-transition: border-color 100ms ease-in-out;
+  -o-transition: border-color 100ms ease-in-out;
+  -ms-transition: border-color 100ms ease-in-out;
+  transition: border-color 100ms ease-in-out;
 }
 
 .btn[data-value="maybe"] .attendance-control-icon:after {
@@ -112,7 +181,7 @@
 }
 
 .btn[data-value="maybe"] .attendance-control-text:after {
-  content: "Vielleicht";
+  content: "\00a0 Unsicher";
 }
 
 /* NOT ATTENDING */
@@ -122,10 +191,31 @@
   border-color: #c91106 !important;
   color: #fff !important;
   min-width: 128px;
+   -webkit-transition: background-color 150ms ease-in-out;
+  -moz-transition: background-color 150ms ease-in-out;
+  -o-transition: background-color 150ms ease-in-out;
+  -ms-transition: background-color 150ms ease-in-out;
+  transition: background-color 150ms ease-in-out;
+   -webkit-transition: border-color 100ms ease-in-out;
+  -moz-transition: border-color 100ms ease-in-out;
+  -o-transition: border-color 100ms ease-in-out;
+  -ms-transition: border-color 100ms ease-in-out;
+  transition: border-color 100ms ease-in-out;
 }
 
 .btn[data-value="no"]:hover {
-  background-color: #c91106 !important;
+  background-color: #4D914D !important;
+  border-color: #339933 !important;
+  -webkit-transition: background-color 150ms ease-in-out;
+  -moz-transition: background-color 150ms ease-in-out;
+  -o-transition: background-color 150ms ease-in-out;
+  -ms-transition: background-color 150ms ease-in-out;
+  transition: background-color 150ms ease-in-out;
+   -webkit-transition: border-color 100ms ease-in-out;
+  -moz-transition: border-color 100ms ease-in-out;
+  -o-transition: border-color 100ms ease-in-out;
+  -ms-transition: border-color 100ms ease-in-out;
+  transition: border-color 100ms ease-in-out;
 }
 
 .btn[data-value="no"] .attendance-control-icon:after {
@@ -134,8 +224,19 @@
 }
 
 .btn[data-value="no"] .attendance-control-text:after {
-  content: "Nicht dabei";
+  content: "\00a0 Absage";
 }
+
+.btn[data-value="no"]:hover .attendance-control-icon:after {
+  font-family: "FontAwesome";
+  content: "\f058";
+}
+
+.btn[data-value="no"]:hover .attendance-control-text:after {
+  content: "\00a0 Zusagen";
+}
+
+
 
 
 .attendance_btn_default {
