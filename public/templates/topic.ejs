@@ -1,12 +1,12 @@
 <% /*global yesListMarkup, maybeListMarkup, noListMarkup, userRowsMarkupYes, userRowsMarkupMaybe, userRowsMarkupNo,  */ %>
 <!-- EJS -->
-<div style="float:left; margin-left: 10px; margin-bottom:10px; text-transform: uppercase; color: #777; font-weight: 300; font-size: 12px;">Teilnehmer (BETA)</div>
+<div style="float:left; margin-left: 10px; margin-bottom:10px; text-transform: uppercase; color: #777; font-weight: 300; font-size: 12px;">Teilnehmer</div>
 <div class="showAttendanceDetails" style="float:right; cursor: pointer;"><a onclick="showAttendanceDetails();">Details</a></div>
 <table class="main-table">
     <tr class="firstRow">
         <td class="firstColumn">
             <span class="attendance_pill_yes"><i class="fa fa-fw fa-check-circle"></i><%= yesListMarkup.length %></span>
-            <span class="attendance_pill_maybe">+ <%= maybeListMarkup.length %></span>
+            <span class="attendance_pill_maybe" data-number="<%= maybeListMarkup.length %>">+ <%= maybeListMarkup.length %></span>
         </td>
         <td class="secondColumn">
             <ul>
