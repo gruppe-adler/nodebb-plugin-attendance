@@ -18,13 +18,13 @@
             console.log(value, tid, btnType);
 
             if (btnType == 'master') {
-                if (value == 'unknown' || value == '') {
+                if (value == 'unknown' || value == '' || value == 'no') {
                     value = 'yes';
                     $button.data("value", "yes");
                     // console.log("yes to yes");
                 } else {
-                    value = 'unknown';
-                    $button.data("value", "unknown");
+                    value = 'no';
+                    $button.data("value", "no");
                     // console.log("any to unknown");
                 }
             }
@@ -154,6 +154,7 @@
 
     };
 
+    // github original
     function insertDecisionButtons(topicNode, myAttendanceState) {
         var postBarNode = document.querySelectorAll(".post-bar .clearfix");
         var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
@@ -179,7 +180,34 @@
             });
         })
     }
+    /*
+    function insertDecisionButtons(topicNode, myAttendanceState) {
+        Array.prototype.forEach.call(document.querySelectorAll('.post-bar .clearfix'), function (topicNode) {
+        
+        
+        var topicId = parseInt(topicNode.getAttribute('data-tid'));
+
+            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=1', function (templateString) {
+                var buttonsNode = document.createElement('div');
+                var existingButtonsNode = topicNode.querySelector('[data-id="master"]');
+                var markup = _.template(templateString)({
+                    config: {
+                        relative_path: config.relative_path
+                    },
+                    myAttendanceState: myAttendanceState,
+                    tid: topicId
+                });
+                buttonsNode.innerHTML = markup;
+
+                if (!existingButtonsNode) {
+                    console.log('adding buttonsNode…');
+                    topicNode.appendChild(buttonsNode);
+                }
+            });
+        });
+    }*/
     
+    // ende baustelle
 
     var insertTopicAttendanceNode = function (topicComponentNode, attendanceNode, myAttendanceState) {
 
