@@ -201,6 +201,7 @@
             insertDecisionButtons(topicComponentNode, myAttendanceState);
         } else if (topicComponentNode.children.length === 1) {
             firstPost.appendChild(attendanceNode);
+            insertDecisionButtons(topicComponentNode, myAttendanceState);
         }
 
         hideAttendanceDetails();
