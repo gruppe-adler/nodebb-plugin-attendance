@@ -18,7 +18,7 @@
             console.log(value, tid, btnType);
 
             if (btnType == 'master') {
-                if (value == 'unknown') {
+                if (value == 'unknown' || value == '') {
                     value = 'yes';
                     $button.data("value", "yes");
                     // console.log("yes to yes");
@@ -34,8 +34,12 @@
                 data: JSON.stringify({"type": value}),
                 success: function () {
                     $button.disabled = true;
-                    var myfuckingButtonForReal = document.querySelector('button.attendance-control');
-                    myfuckingButtonForReal.setAttribute('data-value',value);
+                    var myfuckingButtonForReal = document.querySelectorAll('button.attendance-control');
+
+                    Array.prototype.forEach.call(myfuckingButtonForReal, function (myfuckingButtonForReal) {
+                        myfuckingButtonForReal.setAttribute('data-value',value);
+                    })
+                    
 
                     topicLoaded();
 
@@ -151,29 +155,31 @@
     };
 
     function insertDecisionButtons(topicNode, myAttendanceState) {
-        var postBarNode = document.querySelector(".post-bar div");
+        var postBarNode = document.querySelectorAll(".post-bar .clearfix");
         var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
 
-        getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=1', function (templateString) {
-            var buttonsNode = document.createElement('div');
-            var existingButtonsNode = postBarNode.querySelector('[data-id="master"]');
-            var markup = _.template(templateString)({
-                config: {
-                    relative_path: config.relative_path
-                },
-                myAttendanceState: myAttendanceState,
-                tid: topicId
-            });
-            buttonsNode.innerHTML = markup;
+        Array.prototype.forEach.call(postBarNode, function (postBarNode) {
 
-            if (!existingButtonsNode) {
-                console.log('addign buttonsNode…');
-                postBarNode.appendChild(buttonsNode);
-            }
-        });
+            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=1', function (templateString) {
+                var buttonsNode = document.createElement('div');
+                var existingButtonsNode = postBarNode.querySelector('[data-id="master"]');
+                var markup = _.template(templateString)({
+                    config: {
+                        relative_path: config.relative_path
+                    },
+                    myAttendanceState: myAttendanceState,
+                    tid: topicId
+                });
+                buttonsNode.innerHTML = markup;
+
+                if (!existingButtonsNode) {
+                    console.log('adding buttonsNode…');
+                    postBarNode.appendChild(buttonsNode);
+                }
+            });
+        })
     }
     
-    // ende baustelle
 
     var insertTopicAttendanceNode = function (topicComponentNode, attendanceNode, myAttendanceState) {
 
