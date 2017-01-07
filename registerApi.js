@@ -167,7 +167,7 @@ module.exports = function (params, callback) {
                     res.status(200).json({
                         myAttendance: getUserAttendance(attendance, currentUser),
                         attendance: attendance,
-                        allAttendants: results[3]
+                        allAttendants: results.reduce(function (prev, cur) { return prev.concat(cur); }, [])
                     });
                 });
             }
