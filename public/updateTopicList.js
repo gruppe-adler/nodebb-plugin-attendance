@@ -39,7 +39,7 @@
 
                     Array.prototype.forEach.call(myfuckingButtonForReal, function (myfuckingButtonForReal) {
                         myfuckingButtonForReal.setAttribute('data-value',value);
-                    })
+                    });
                     
 
                     topicLoaded();
@@ -58,6 +58,13 @@
     function getCurrentButtonValue (button) {
         return button.attr('data-value');
     }
+
+    var probabilityToYesMaybeNo = {
+        1: "yes",
+        0.5: "maybe",
+        0: "no",
+        2: "unknown"
+    };
 
     var getTemplate = (function () {
         var loadedTemplates = {};
@@ -100,7 +107,7 @@
         no: "#c91106"
     };
 
-    var addCommitmentCountToTopicHeader = function (categoryItem, attendance, myAttendance) {
+    var addCommitmentCountToTopicHeader = function (categoryItem, yesCount, myAttendance) {
         if (hasAttendanceClasses(categoryItem)) {
             return;
         }
@@ -116,7 +123,7 @@
         viewsDiv.className = oneStatsDiv.className + ' stats-attendance';
         viewsDiv.innerHTML = oneStatsDiv.innerHTML;
         viewsDiv.querySelector('small').innerHTML = "Zusagen";
-        viewsDiv.querySelector('[class="human-readable-number"]').innerHTML = attendance.yes.length;
+        viewsDiv.querySelector('[class="human-readable-number"]').innerHTML = yesCount;
 
         oneStatsDiv.parentNode.insertBefore(viewsDiv, oneStatsDiv);
 
@@ -259,40 +266,29 @@
                         getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_userbadge.ejs?v=1', function (userbadgeTemplate) {
                             getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_detailsRow.ejs?v=1', function (userRowTemplate) {
 
-                                var compiledUserbadgeTemplate = _.template(userbadgeTemplate);
-                                var userbadgeListsMarkup = ['yes', 'maybe', 'no'].map(function (attendanceState) {
-                                    return response.attendance[attendanceState].map(function (attendant) {
-                                        return compiledUserbadgeTemplate({
-                                            attendant: attendant,
-                                            attendanceState: attendanceState
-                                        })
-                                    });
-                                });
-
-                                var compiledUserRowTemplate = _.template(userRowTemplate);
-                                var userRowsMarkup = ['yes', 'maybe', 'no'].map(function (attendanceState) {
-                                    return response.attendance[attendanceState].map(function (attendant) {
-                                        return compiledUserRowTemplate({
+                                var getUserMarkupList = function (compiledTemplate, attendanceState) {
+                                    return response.attendants.filter(function (attendant) {
+                                        return probabilityToYesMaybeNo[attendant.probability] == attendanceState;
+                                    }).map(function (attendant) {
+                                        return compiledTemplate({
                                             attendant: attendant,
                                             attendanceState: attendanceState,
                                             config: config
-                                        })
+                                        });
                                     });
-                                });
+
+                                };
+                                var compiledUserbadgeTemplate = _.template(userbadgeTemplate);
+                                var compiledUserRowTemplate = _.template(userRowTemplate);
 
                                 var markup = _.template(template)({
-
-                                    config: {
-                                        relative_path: config.relative_path
-                                    },
-
-
-                                    yesListMarkup: userbadgeListsMarkup[0],
-                                    maybeListMarkup: userbadgeListsMarkup[1],
-                                    noListMarkup: userbadgeListsMarkup[2],
-                                    userRowsMarkupYes: userRowsMarkup[0],
-                                    userRowsMarkupMaybe: userRowsMarkup[1],
-                                    userRowsMarkupNo: userRowsMarkup[2],
+                                    config: config,
+                                    yesListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'yes'),
+                                    maybeListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'maybe'),
+                                    noListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'no'),
+                                    userRowsMarkupYes: getUserMarkupList(compiledUserRowTemplate, 'yes'),
+                                    userRowsMarkupMaybe: getUserMarkupList(compiledUserRowTemplate, 'maybe'),
+                                    userRowsMarkupNo: getUserMarkupList(compiledUserRowTemplate, 'no'),
                                     myAttendanceState: response.myAttendance,
                                     tid: topicId
                                 });
@@ -318,7 +314,8 @@
             if (isMission(getTopicTitle(topicItem))) {
                 var topicId = parseInt(topicItem.getAttribute('data-tid'), 10);
                 getCommitments(topicId, function (response) {
-                    addCommitmentCountToTopicHeader(topicItem, response.attendance, response.myAttendance);
+                    var yesCount = response.attendants.filter(function (attendant) { return probabilityToYesMaybeNo[attendant.probability] === 'yes'}).length;
+                    addCommitmentCountToTopicHeader(topicItem, yesCount, response.myAttendance);
                 });
             }
         });
