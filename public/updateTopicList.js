@@ -338,3 +338,13 @@ var hideAttendanceDetails = function () {
     document.querySelector('[component="topic/attendance/details"]').style.display = 'none';
     document.querySelector('[component="topic/attendance/backdrop"]').style.display = 'none';
 };
+
+function nodebbPluginAttendanceCustomISODateString (d) {
+    d = new Date(d);
+    function pad(n) {return n<10 ? '0'+n : n}
+    return d.getUTCFullYear()+'-'
+        + pad(d.getUTCMonth()+1)+'-'
+        + pad(d.getUTCDate())+' '
+        + pad(d.getUTCHours())+':'
+        + pad(d.getUTCMinutes())
+}

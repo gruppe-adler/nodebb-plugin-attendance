@@ -14,7 +14,7 @@
 	<td class="member-name">
 		<a href="<%= config.relative_path %>/user/<%= attendant.userslug %>"><%- attendant.username %></a>
 		<div class="pull-right">
-			<%= attendant.timestamp %>
+			<%= nodebbPluginAttendanceCustomISODateString(attendant.timestamp) %>
 		</div>
 	</td>
 </tr>

@@ -52,15 +52,6 @@ var getUserAttendance = function (attendance, uid) {
     }).pop();
 };
 
-function customISODateString(d) {
-    function pad(n) {return n<10 ? '0'+n : n}
-    return d.getUTCFullYear()+'-'
-         + pad(d.getUTCMonth()+1)+'-'
-         + pad(d.getUTCDate())+' '
-         + pad(d.getUTCHours())+':'
-         + pad(d.getUTCMinutes())
-}
-
 /*
 var getCurrentUser = function (attendance, uid) {
     return types.filter(function (type) {
@@ -119,7 +110,7 @@ module.exports = function (params, callback) {
                 {
                     uid: uid,
                     probability: probability || ensureFloatType(type),
-                    lastUpdatedAt: (new Date()).getTime()
+                    timestamp: timestamp
                 },
                 function (err, result) {
                     if (err) {
@@ -164,10 +155,9 @@ module.exports = function (params, callback) {
                         attendance[type].forEach(function (attendance) {
                             var u = users.filter(function (user) { return user.uid == attendance.value; }).pop();
                             attendance.uid = u.uid;
+                            attendance.probability = stringTypeFloatMap[type];
                             delete attendance.value;
-                            attendance.timestamp = customISODateString(new Date(attendance.score));
-
-                            // attendance.timestamp = (new Date(attendance.score)).toISOString('[]', {hour: '2-digit', minute:'2-digit'});
+                            attendance.timestamp = attendance.score;
                             delete attendance.score;
                             _(attendance).extend(_(u).pick(['username', 'userslug', 'picture', 'icon:bgColor', 'icon:text']));
                         });
@@ -179,6 +169,7 @@ module.exports = function (params, callback) {
                             winston.warn('attendance: userid ' + attendant.uid + ' not found');
                             return;
                         }
+                        console.warn(u);
                         _(attendant).extend(_(u).pick(['username', 'userslug', 'picture', 'icon:bgColor', 'icon:text']));
                     });
 
