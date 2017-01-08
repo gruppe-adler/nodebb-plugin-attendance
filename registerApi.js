@@ -152,31 +152,27 @@ module.exports = function (params, callback) {
                     }
 
                     types.forEach(function (type) {
-                        attendance[type].forEach(function (attendance) {
-                            var u = users.filter(function (user) { return user.uid == attendance.value; }).pop();
-                            attendance.uid = u.uid;
-                            attendance.probability = stringTypeFloatMap[type];
-                            delete attendance.value;
-                            attendance.timestamp = attendance.score;
-                            delete attendance.score;
-                            _(attendance).extend(_(u).pick(['username', 'userslug', 'picture', 'icon:bgColor', 'icon:text']));
+                        attendance[type].forEach(function (attendant) {
+                            var u = users.filter(function (user) { return user.uid == attendant.value; }).pop();
+                            attendant.uid = u.uid;
+                            attendant.probability = stringTypeFloatMap[type];
+                            delete attendant.value;
+                            attendant.timestamp = attendant.score;
+                            delete attendant.score;
+                            _(attendant).extend(_(u).pick(['username', 'userslug', 'picture', 'icon:bgColor', 'icon:text']));
                         });
                     });
 
-                    results[3].forEach(function (attendant) {
+                    results[types.length].forEach(function (attendant) {
                         var u = users.filter(function (user) { return user.uid == attendant.uid; }).pop();
-                        if (!u) {
-                            winston.warn('attendance: userid ' + attendant.uid + ' not found');
-                            return;
-                        }
-                        console.warn(u);
+
                         _(attendant).extend(_(u).pick(['username', 'userslug', 'picture', 'icon:bgColor', 'icon:text']));
                     });
 
                     res.status(200).json({
                         myAttendance: getUserAttendance(attendance, currentUser),
                         attendance: attendance,
-                        allAttendants: results.reduce(function (prev, cur) { return prev.concat(cur); }, [])
+                        attendants: results[types.length]
                     });
                 });
             }
