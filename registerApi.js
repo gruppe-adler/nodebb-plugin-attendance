@@ -52,6 +52,22 @@ var getUserAttendance = function (attendance, uid) {
     }).pop();
 };
 
+function customISODateString(d) {
+    function pad(n) {return n<10 ? '0'+n : n}
+    return d.getUTCFullYear()+'-'
+         + pad(d.getUTCMonth()+1)+'-'
+         + pad(d.getUTCDate())+' '
+         + pad(d.getUTCHours())+':'
+         + pad(d.getUTCMinutes())
+}
+
+/*
+var getCurrentUser = function (attendance, uid) {
+    return types.filter(function (type) {
+        return attendance[type].some(function (a) { return a.uid == uid; });
+    }).pop();
+};*/
+
 var async = require('async');
 var winston = require('winston');
 
@@ -143,7 +159,9 @@ module.exports = function (params, callback) {
                             var u = users.filter(function (user) { return user.uid == attendance.value; }).pop();
                             attendance.uid = u.uid;
                             delete attendance.value;
-                            attendance.timestamp = (new Date(attendance.score)).toLocaleString('en-GB');
+                            attendance.timestamp = customISODateString(new Date(attendance.score));
+
+                            // attendance.timestamp = (new Date(attendance.score)).toISOString('[]', {hour: '2-digit', minute:'2-digit'});
                             delete attendance.score;
                             attendance.username  = u.username;
                             attendance.userslug = u.userslug;
