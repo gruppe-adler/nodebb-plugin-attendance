@@ -25,6 +25,9 @@ ex.
 
 	wget --progress=dot --method=POST --header="Content-Type:application/json" --body-data='{"type":"yes"}' --save-headers  -O - "http://localhost:4567/api/attendance/1"
 
+### GET /api/attendance/:tid/user/:uid/history
+
+
 
 ----
 

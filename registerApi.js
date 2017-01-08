@@ -192,5 +192,16 @@ module.exports = function (params, callback) {
         );
     });
 
+    router.get('/api/attendance/:tid/user/:uid/history', function (req, res, next) {
+        var tid = req.params.tid;
+        var uid = req.params.uid;
+
+        floatPersistence.getUserHistory(tid, uid, function (err, results) {
+            if (err) {
+                return res.status(500).json({err: err});
+            }
+            res.status(200).json(results);
+        });
+    });
     callback();
 };
