@@ -13,6 +13,7 @@
         $(document).on('click', '.attendance-control', function () {
             var $button = $(this);
             var value = getCurrentButtonValue($button);
+            var probability = $button.data('probability');
             var tid = $button.attr('data-tid');
             var btnType = $button.attr('data-id');
             console.log(value, tid, btnType);
@@ -31,7 +32,7 @@
              $.post({
                 url: config.relative_path + '/api/attendance/' + tid,
                 contentType: 'application/json',
-                data: JSON.stringify({"type": value}),
+                data: JSON.stringify({type: value, probability: probability}),
                 success: function () {
                     $button.disabled = true;
                     var myfuckingButtonForReal = document.querySelectorAll('button.attendance-control');
@@ -337,3 +338,13 @@ var hideAttendanceDetails = function () {
     document.querySelector('[component="topic/attendance/details"]').style.display = 'none';
     document.querySelector('[component="topic/attendance/backdrop"]').style.display = 'none';
 };
+
+function nodebbPluginAttendanceCustomISODateString (d) {
+    d = new Date(d);
+    function pad(n) {return n<10 ? '0'+n : n}
+    return d.getUTCFullYear()+'-'
+        + pad(d.getUTCMonth()+1)+'-'
+        + pad(d.getUTCDate())+' '
+        + pad(d.getUTCHours())+':'
+        + pad(d.getUTCMinutes())
+}
