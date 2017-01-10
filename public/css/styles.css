@@ -1,352 +1,233 @@
-@media (max-width: 1280px) { 
-  .topic-main-buttons .stats {
+
+@media (max-width: 600px) { 
+
+[component="topic/mark-unread"] {
     display: none;
   }
-}
-@media (max-width: 1280px) { 
-  [component="topic/watch"] .visible-lg-inline, [component="topic/mark-unread"] .visible-lg-inline {
-    display: none !important;
+  
+  [component="topic/watch"] {
+    display: none;
   }
-  .stats-attendance {
-    display: inline-block;
+
+}
+
+@media (max-width: 480px) { 
+  /* REPLY BUTTON */
+
+  [component="topic/reply"].btn {
+    max-width:50px;
+    color: transparent; 
+    
   }
-}
 
-@-webkit-keyframes fade-in-maybe {
-  100% { opacity: 0.35; }
-  0%   { opacity: 0; }
-  100% { opacity: 0.35; }
-}
+  [component="topic/reply"].btn:before {
+    font-family: "FontAwesome";
+    content:"\f112";
+    color: #fff;
+  }
 
-.post-bar {
-    margin-top: 35px;
-}
+  [component="thread/sort"] {
+    display: none;
+  }
 
-.post-bar .clearfix .tags {
-  display: none;
-}
+  [component="topic/mark-unread"] {
+    display: none;
+  }
 
-[component="topic/attendance"] .main-table tr .secondColumn .attendance_maybe {
- -webkit-animation-name: fade-in-maybe;
- -webkit-animation-duration: 0.3s;
- -webkit-animation-iteration-count: 1;
- -webkit-animation-timing-function: ease-in-out;
- -webkit-animation-delay: 0s;
-}
+   [component="topic/watch"] {
+    display: none;
+  }
 
-.stats-attendance i {
-  line-height: 40px;
-}
 
-.attendance-control-icon, .attendance-control-text {
-  color: #fff;  
-}
+  /* ATTENDING UNKNOWN */
 
-/* ATTENDING UNKNOWN */
-
-.btn[data-value="unknown"], .btn[data-value=""] {
-  background-color: #f9f9f9 !important;
-  border-color: #adadad !important;
-  color: #333 !important;
-  min-width: 128px;
+  .btn[data-value="unknown"], .btn[data-value=""] {
+    background-color: #f9f9f9 !important;
+    border-color: #adadad !important;
+    color: #333 !important;
+    min-width: 50px;
     -webkit-transition: background-color 150ms ease-in-out;
-  -moz-transition: background-color 150ms ease-in-out;
-  -o-transition: background-color 150ms ease-in-out;
-  -ms-transition: background-color 150ms ease-in-out;
-  transition: background-color 150ms ease-in-out;
-}
+    -moz-transition: background-color 150ms ease-in-out;
+    -o-transition: background-color 150ms ease-in-out;
+    -ms-transition: background-color 150ms ease-in-out;
+    transition: background-color 150ms ease-in-out;
+  }
 
-.btn[data-value="unknown"]:hover, .btn[data-value=""]:hover {
-  background-color: #4D914D !important;
-  border-color: #339933 !important;
-  -webkit-transition: background-color 150ms ease-in-out;
-  -moz-transition: background-color 150ms ease-in-out;
-  -o-transition: background-color 150ms ease-in-out;
-  -ms-transition: background-color 150ms ease-in-out;
-  transition: background-color 150ms ease-in-out;
-   -webkit-transition: border-color 100ms ease-in-out;
-  -moz-transition: border-color 100ms ease-in-out;
-  -o-transition: border-color 100ms ease-in-out;
-  -ms-transition: border-color 100ms ease-in-out;
-  transition: border-color 100ms ease-in-out;
-}
+  .btn[data-value="unknown"]:hover, .btn[data-value=""]:hover {
+    background-color: #4D914D !important;
+    border-color: #339933 !important;
+    -webkit-transition: background-color 150ms ease-in-out;
+    -moz-transition: background-color 150ms ease-in-out;
+    -o-transition: background-color 150ms ease-in-out;
+    -ms-transition: background-color 150ms ease-in-out;
+    transition: background-color 150ms ease-in-out;
+     -webkit-transition: border-color 100ms ease-in-out;
+    -moz-transition: border-color 100ms ease-in-out;
+    -o-transition: border-color 100ms ease-in-out;
+    -ms-transition: border-color 100ms ease-in-out;
+    transition: border-color 100ms ease-in-out;
+  }
 
-.btn[data-value="unknown"] .attendance-control-icon:after ,.btn[data-value=""] .attendance-control-icon:after {
-  font-family: "FontAwesome";
-  content: "\f10c";
-  color: #333 !important;
-}
+  .btn[data-value="unknown"] .attendance-control-icon:after ,.btn[data-value=""] .attendance-control-icon:after {
+    font-family: "FontAwesome";
+    content: "\f10c";
+    color: #333 !important;
+  }
 
-.btn[data-value="unknown"] .attendance-control-text:after, .btn[data-value=""] .attendance-control-text:after{
-  color: #333 !important;
-  content: "\00a0 Zusagen";
-}
-
-
-
-
-.btn[data-value="unknown"]:hover .attendance-control-icon:after ,.btn[data-value=""]:hover .attendance-control-icon:after {
-  font-family: "FontAwesome";
-  content: "\f058";
-  color: #fff !important;
-}
-
-.btn[data-value="unknown"]:hover .attendance-control-text:after, .btn[data-value=""]:hover .attendance-control-text:after{
-  color: #fff !important;
-  content: "\00a0 Zusagen";
-}
-
-
-/* SURELY ATTENDING*/
-
-.btn[data-value="yes"] {
-  background-color: #6a6 !important;
-  border-color: #339933 !important;
-  color: #fff !important;
-  min-width: 128px;
-   -webkit-transition: background-color 150ms ease-in-out;
-  -moz-transition: background-color 150ms ease-in-out;
-  -o-transition: background-color 150ms ease-in-out;
-  -ms-transition: background-color 150ms ease-in-out;
-  transition: background-color 150ms ease-in-out;
-}
-
-.btn[data-value="yes"]:hover {
-  background-color: #c91106 !important;
-  border-color: #c91106 !important;
-   -webkit-transition: background-color 150ms ease-in-out;
-  -moz-transition: background-color 150ms ease-in-out;
-  -o-transition: background-color 150ms ease-in-out;
-  -ms-transition: background-color 150ms ease-in-out;
-  transition: background-color 150ms ease-in-out;
-}
-
-.btn[data-value="yes"] .attendance-control-icon:after {
-  font-family: "FontAwesome";
-  content: "\f058";
-}
-
-.btn[data-value="yes"] .attendance-control-text:after {
-  content: "\00a0 Zusage";
-}
-
-.btn[data-value="yes"]:hover .attendance-control-icon:after {
-  font-family: "FontAwesome";
-  content: "\f057";
-}
-
-.btn[data-value="yes"]:hover .attendance-control-text:after {
-  content: "\00a0 Absagen";
-}
-
-/* MAYBE ATTENDING*/
-
-.btn[data-value="maybe"] {
-  background-color: #d18d1f !important;
-  border-color: #bb7e1c !important;
-  color: #fff !important;
-  min-width: 128px;
-   -webkit-transition: background-color 150ms ease-in-out;
-  -moz-transition: background-color 150ms ease-in-out;
-  -o-transition: background-color 150ms ease-in-out;
-  -ms-transition: background-color 150ms ease-in-out;
-  transition: background-color 150ms ease-in-out;
-   -webkit-transition: border-color 100ms ease-in-out;
-  -moz-transition: border-color 100ms ease-in-out;
-  -o-transition: border-color 100ms ease-in-out;
-  -ms-transition: border-color 100ms ease-in-out;
-  transition: border-color 100ms ease-in-out;
-}
-
-.btn[data-value="maybe"]:hover {
-  background-color: #a56f18 !important;
-  border-color: #a56f18 !important;
-   -webkit-transition: background-color 150ms ease-in-out;
-  -moz-transition: background-color 150ms ease-in-out;
-  -o-transition: background-color 150ms ease-in-out;
-  -ms-transition: background-color 150ms ease-in-out;
-  transition: background-color 150ms ease-in-out;
-   -webkit-transition: border-color 100ms ease-in-out;
-  -moz-transition: border-color 100ms ease-in-out;
-  -o-transition: border-color 100ms ease-in-out;
-  -ms-transition: border-color 100ms ease-in-out;
-  transition: border-color 100ms ease-in-out;
-}
-
-.btn[data-value="maybe"] .attendance-control-icon:after {
-  font-family: "FontAwesome";
-  content: "\f059";
-}
-
-.btn[data-value="maybe"] .attendance-control-text:after {
-  content: "\00a0 Unsicher";
-}
-
-/* NOT ATTENDING */
-
-.btn[data-value="no"] {
-  background-color: #c91106 !important;
-  border-color: #c91106 !important;
-  color: #fff !important;
-  min-width: 128px;
-   -webkit-transition: background-color 150ms ease-in-out;
-  -moz-transition: background-color 150ms ease-in-out;
-  -o-transition: background-color 150ms ease-in-out;
-  -ms-transition: background-color 150ms ease-in-out;
-  transition: background-color 150ms ease-in-out;
-   -webkit-transition: border-color 100ms ease-in-out;
-  -moz-transition: border-color 100ms ease-in-out;
-  -o-transition: border-color 100ms ease-in-out;
-  -ms-transition: border-color 100ms ease-in-out;
-  transition: border-color 100ms ease-in-out;
-}
-
-.btn[data-value="no"]:hover {
-  background-color: #4D914D !important;
-  border-color: #339933 !important;
-  -webkit-transition: background-color 150ms ease-in-out;
-  -moz-transition: background-color 150ms ease-in-out;
-  -o-transition: background-color 150ms ease-in-out;
-  -ms-transition: background-color 150ms ease-in-out;
-  transition: background-color 150ms ease-in-out;
-   -webkit-transition: border-color 100ms ease-in-out;
-  -moz-transition: border-color 100ms ease-in-out;
-  -o-transition: border-color 100ms ease-in-out;
-  -ms-transition: border-color 100ms ease-in-out;
-  transition: border-color 100ms ease-in-out;
-}
-
-.btn[data-value="no"] .attendance-control-icon:after {
-  font-family: "FontAwesome";
-  content: "\f057";
-}
-
-.btn[data-value="no"] .attendance-control-text:after {
-  content: "\00a0 Absage";
-}
-
-.btn[data-value="no"]:hover .attendance-control-icon:after {
-  font-family: "FontAwesome";
-  content: "\f058";
-}
-
-.btn[data-value="no"]:hover .attendance-control-text:after {
-  content: "\00a0 Zusagen";
-}
+  .btn[data-value="unknown"] .attendance-control-text:after, .btn[data-value=""] .attendance-control-text:after{
+    color: #333 !important;
+    content: "";
+  }
 
 
 
 
-.attendance_btn_default {
-  background-color: #fff;
-  border-color: #333;
-  color: #666;
-}
+  .btn[data-value="unknown"]:hover .attendance-control-icon:after ,.btn[data-value=""]:hover .attendance-control-icon:after {
+    font-family: "FontAwesome";
+    content: "\f058";
+    color: #fff !important;
+  }
 
-[component="topic/attendance"] .attendance_pill_yes {
-  color: #666 !important;
-  padding: 5px;
-  font-size: 20px;
-  font-weight: normal;
-}
-
-[component="topic/attendance"] .main-table tr .secondColumn .attendance_maybe {
-  opacity: 0.35;
-}
-
-[component="topic/attendance"] .attendance_pill_maybe {
-  color: #999 !important;
-  padding: 5px;
-  font-size: 14px;
-  font-weight: normal;
-}
-
-[component="topic/attendance"] .attendance_pill_maybe[data-number="0"] {
-  display: none;
-}
-
-[component="topic/attendance"] .attendance_pill_no {
-  color: #666 !important;
-  padding: 5px;
-  font-size: 20px;
-  font-weight: normal;
-}
-
-[component="topic/attendance"] div {
-    text-align: center;
-}
-
-[component="topic/attendance"] div button {
-    padding: 10px;
-    padding-top: 7px;
-    padding-bottom: 7px;
-}
-
-[component="topic/attendance"] .attendance-current {
-    font-weight: normal;
-}
-
-[component="topic/attendance"] .main-table {
-    margin: 10px 0px 10px 0px;
-    width: 100%;
-}
-
-[component="topic/attendance"] .main-table tr {
-    line-height: 40px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    border-top: 1px solid #d6d6d6;
-    border-bottom: none;
-}
-
-[component="topic/attendance"] .main-table td {
-    border: none;
-}
+  .btn[data-value="unknown"]:hover .attendance-control-text:after, .btn[data-value=""]:hover .attendance-control-text:after{
+    color: #fff !important;
+    content: "";
+  }
 
 
-[component="topic/attendance"] .main-table tr .firstColumn {
-    width: 100px;
-}
+  /* SURELY ATTENDING*/
 
-[component="topic/attendance"] .main-table tr .secondColumn ul {
-    padding: 0px;
-    list-style: none;
-    height: 40px;
-    overflow: hidden;
-}
+  .btn[data-value="yes"] {
+    background-color: #6a6 !important;
+    border-color: #339933 !important;
+    color: #fff !important;
+    min-width: 50px;
+     -webkit-transition: background-color 150ms ease-in-out;
+    -moz-transition: background-color 150ms ease-in-out;
+    -o-transition: background-color 150ms ease-in-out;
+    -ms-transition: background-color 150ms ease-in-out;
+    transition: background-color 150ms ease-in-out;
+  }
 
-[component="topic/attendance"] .main-table tr .secondColumn ul li {
-    display: inline;
-}
+  .btn[data-value="yes"]:hover {
+    background-color: #c91106 !important;
+    border-color: #c91106 !important;
+     -webkit-transition: background-color 150ms ease-in-out;
+    -moz-transition: background-color 150ms ease-in-out;
+    -o-transition: background-color 150ms ease-in-out;
+    -ms-transition: background-color 150ms ease-in-out;
+    transition: background-color 150ms ease-in-out;
+  }
 
-[component="topic/attendance"] .main-table tr .secondColumn ul li img {
-    width: 30px;
-    height: 30px;
-}
+  .btn[data-value="yes"] .attendance-control-icon:after {
+    font-family: "FontAwesome";
+    content: "\f058";
+  }
 
-[component="topic/attendance"] .main-table tr .thirdColumn {
-    width: 60px;
-}
+  .btn[data-value="yes"] .attendance-control-text:after {
+    content: "";
+  }
 
-[component="topic/attendance"] .main-table tr .thirdColumn a {
-    cursor: pointer;
-}
+  .btn[data-value="yes"]:hover .attendance-control-icon:after {
+    font-family: "FontAwesome";
+    content: "\f057";
+  }
 
-[component="topic/attendance"] .modal-body {
-    overflow-y: scroll;
-    max-height: 85vh;
-}
+  .btn[data-value="yes"]:hover .attendance-control-text:after {
+    content: "";
+  }
 
+  /* MAYBE ATTENDING*/
 
+  .btn[data-value="maybe"] {
+    background-color: #d18d1f !important;
+    border-color: #bb7e1c !important;
+    color: #fff !important;
+    min-width: 50px;
+     -webkit-transition: background-color 150ms ease-in-out;
+    -moz-transition: background-color 150ms ease-in-out;
+    -o-transition: background-color 150ms ease-in-out;
+    -ms-transition: background-color 150ms ease-in-out;
+    transition: background-color 150ms ease-in-out;
+     -webkit-transition: border-color 100ms ease-in-out;
+    -moz-transition: border-color 100ms ease-in-out;
+    -o-transition: border-color 100ms ease-in-out;
+    -ms-transition: border-color 100ms ease-in-out;
+    transition: border-color 100ms ease-in-out;
+  }
 
-[component="topic/attendance"] {
-    background-color: #f9f9f9;
-    height: 176px;
-    display: block;
-    margin: -10px;
-    padding: 20px;
-    margin-top: -21px;
-    padding-bottom: 0;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
+  .btn[data-value="maybe"]:hover {
+    background-color: #a56f18 !important;
+    border-color: #a56f18 !important;
+     -webkit-transition: background-color 150ms ease-in-out;
+    -moz-transition: background-color 150ms ease-in-out;
+    -o-transition: background-color 150ms ease-in-out;
+    -ms-transition: background-color 150ms ease-in-out;
+    transition: background-color 150ms ease-in-out;
+     -webkit-transition: border-color 100ms ease-in-out;
+    -moz-transition: border-color 100ms ease-in-out;
+    -o-transition: border-color 100ms ease-in-out;
+    -ms-transition: border-color 100ms ease-in-out;
+    transition: border-color 100ms ease-in-out;
+  }
+
+  .btn[data-value="maybe"] .attendance-control-icon:after {
+    font-family: "FontAwesome";
+    content: "\f059";
+  }
+
+  .btn[data-value="maybe"] .attendance-control-text:after {
+    content: "";
+  }
+
+  /* NOT ATTENDING */
+
+  .btn[data-value="no"] {
+    background-color: #c91106 !important;
+    border-color: #c91106 !important;
+    color: #fff !important;
+    min-width: 50px;
+     -webkit-transition: background-color 150ms ease-in-out;
+    -moz-transition: background-color 150ms ease-in-out;
+    -o-transition: background-color 150ms ease-in-out;
+    -ms-transition: background-color 150ms ease-in-out;
+    transition: background-color 150ms ease-in-out;
+     -webkit-transition: border-color 100ms ease-in-out;
+    -moz-transition: border-color 100ms ease-in-out;
+    -o-transition: border-color 100ms ease-in-out;
+    -ms-transition: border-color 100ms ease-in-out;
+    transition: border-color 100ms ease-in-out;
+  }
+
+  .btn[data-value="no"]:hover {
+    background-color: #4D914D !important;
+    border-color: #339933 !important;
+    -webkit-transition: background-color 150ms ease-in-out;
+    -moz-transition: background-color 150ms ease-in-out;
+    -o-transition: background-color 150ms ease-in-out;
+    -ms-transition: background-color 150ms ease-in-out;
+    transition: background-color 150ms ease-in-out;
+     -webkit-transition: border-color 100ms ease-in-out;
+    -moz-transition: border-color 100ms ease-in-out;
+    -o-transition: border-color 100ms ease-in-out;
+    -ms-transition: border-color 100ms ease-in-out;
+    transition: border-color 100ms ease-in-out;
+  }
+
+  .btn[data-value="no"] .attendance-control-icon:after {
+    font-family: "FontAwesome";
+    content: "\f057";
+  }
+
+  .btn[data-value="no"] .attendance-control-text:after {
+    content: "";
+  }
+
+  .btn[data-value="no"]:hover .attendance-control-icon:after {
+    font-family: "FontAwesome";
+    content: "\f058";
+  }
+
+  .btn[data-value="no"]:hover .attendance-control-text:after {
+    content: "";
+  }
 }
