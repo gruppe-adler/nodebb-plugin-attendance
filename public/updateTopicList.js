@@ -348,3 +348,8 @@ function nodebbPluginAttendanceCustomISODateString (d) {
         + pad(d.getUTCHours())+':'
         + pad(d.getUTCMinutes())
 }
+
+function nodebbPluginAttendanceTotalPotentialAttendees (min,pot) {
+    var max = min + pot;
+    return max;
+}
