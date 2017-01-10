@@ -63,7 +63,7 @@
         var loadedTemplates = {};
         return function (templateName, cb) {
             if (loadedTemplates[templateName]) {
-                cb(loadedTemplates[templateName]);
+                return cb(loadedTemplates[templateName]);
             }
             $.get(templateName, function (response) {
                 loadedTemplates[templateName] = response;
@@ -256,8 +256,8 @@
                 var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
                 getCommitments(topicId, function (response) {
                     getTemplate('/plugins/nodebb-plugin-attendance/templates/topic.ejs?v=1', function (template) {
-                        getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_userbadge.ejs?v=1', function (userbadgeTemplate) {
-                            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_detailsRow.ejs?v=1', function (userRowTemplate) {
+                        getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_userbadge.ejs?v=2', function (userbadgeTemplate) {
+                            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_detailsRow.ejs?v=2', function (userRowTemplate) {
 
                                 var compiledUserbadgeTemplate = _.template(userbadgeTemplate);
                                 var userbadgeListsMarkup = ['yes', 'maybe', 'no'].map(function (attendanceState) {
@@ -350,6 +350,5 @@ function nodebbPluginAttendanceCustomISODateString (d) {
 }
 
 function nodebbPluginAttendanceTotalPotentialAttendees (min,pot) {
-    var max = min + pot;
-    return max;
+    return min + pot;
 }
