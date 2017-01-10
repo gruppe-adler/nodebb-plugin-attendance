@@ -52,6 +52,15 @@ var getUserAttendance = function (attendance, uid) {
     }).pop();
 };
 
+function customISODateString(d) {
+    function pad(n) {return n<10 ? '0'+n : n}
+    return d.getUTCFullYear()+'-'
+         + pad(d.getUTCMonth()+1)+'-'
+         + pad(d.getUTCDate())+' '
+         + pad(d.getUTCHours())+':'
+         + pad(d.getUTCMinutes())
+}
+
 /*
 var getCurrentUser = function (attendance, uid) {
     return types.filter(function (type) {
@@ -61,7 +70,6 @@ var getCurrentUser = function (attendance, uid) {
 
 var async = require('async');
 var winston = require('winston');
-var _ = require('underscore');
 
 var db = require('../../src/database');
 var users = require('../../src/user');
@@ -75,7 +83,6 @@ module.exports = function (params, callback) {
     router.post('/api/attendance/:tid',
         function (req, res, next) {
             var type = req.body.type;
-            var probability = req.body.probability;
             var tid = req.params.tid;
             var uid = req.uid;
             var stringType = floatTypeStringMap[type] || type;
@@ -109,8 +116,8 @@ module.exports = function (params, callback) {
                 tid,
                 {
                     uid: uid,
-                    probability: probability || ensureFloatType(type),
-                    timestamp: timestamp
+                    probability: ensureFloatType(type),
+                    lastUpdatedAt: (new Date()).getTime()
                 },
                 function (err, result) {
                     if (err) {
@@ -129,11 +136,7 @@ module.exports = function (params, callback) {
         }
 
         async.parallel(
-            types.map(function (type) { return getAsyncAttendancesGetter(tid, type); }).concat([
-                function (next) {
-                    floatPersistence.get(tid, next);
-                }
-            ]),
+            types.map(function (type) { return getAsyncAttendancesGetter(tid, type); }),
             function (err, results) {
                 if (err) {
                     return res.status(500).json({error: err});
@@ -152,43 +155,30 @@ module.exports = function (params, callback) {
                     }
 
                     types.forEach(function (type) {
-                        attendance[type].forEach(function (attendant) {
-                            var u = users.filter(function (user) { return user.uid == attendant.value; }).pop();
-                            attendant.uid = u.uid;
-                            attendant.probability = stringTypeFloatMap[type];
-                            delete attendant.value;
-                            attendant.timestamp = attendant.score;
-                            delete attendant.score;
-                            _(attendant).extend(_(u).pick(['username', 'userslug', 'picture', 'icon:bgColor', 'icon:text']));
+                        attendance[type].forEach(function (attendance) {
+                            var u = users.filter(function (user) { return user.uid == attendance.value; }).pop();
+                            attendance.uid = u.uid;
+                            delete attendance.value;
+                            attendance.timestamp = customISODateString(new Date(attendance.score));
+
+                            // attendance.timestamp = (new Date(attendance.score)).toISOString('[]', {hour: '2-digit', minute:'2-digit'});
+                            delete attendance.score;
+                            attendance.username  = u.username;
+                            attendance.userslug = u.userslug;
+                            attendance.picture = u.picture;
+                            attendance['icon:bgColor'] = u['icon:bgColor'];
+                            attendance['icon:text'] = u['icon:text'];
                         });
-                    });
-
-                    results[types.length].forEach(function (attendant) {
-                        var u = users.filter(function (user) { return user.uid == attendant.uid; }).pop();
-
-                        _(attendant).extend(_(u).pick(['username', 'userslug', 'picture', 'icon:bgColor', 'icon:text']));
                     });
 
                     res.status(200).json({
                         myAttendance: getUserAttendance(attendance, currentUser),
-                        attendance: attendance,
-                        attendants: results[types.length]
+                        attendance: attendance
                     });
                 });
             }
         );
     });
 
-    router.get('/api/attendance/:tid/user/:uid/history', function (req, res, next) {
-        var tid = req.params.tid;
-        var uid = req.params.uid;
-
-        floatPersistence.getUserHistory(tid, uid, function (err, results) {
-            if (err) {
-                return res.status(500).json({err: err});
-            }
-            res.status(200).json(results);
-        });
-    });
     callback();
 };
