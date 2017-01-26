@@ -48,8 +48,8 @@
 /* ATTENDING UNKNOWN */
 
 .btn[data-value="unknown"], .btn[data-value=""] {
-  background-color: #f9f9f9 !important;
-  border-color: #adadad !important;
+    background-color: #4a5559 !important;
+    border-color: #3e484b !important;
   color: #333 !important;
   min-width: 128px;
     -webkit-transition: background-color 150ms ease-in-out;
@@ -77,11 +77,11 @@
 .btn[data-value="unknown"] .attendance-control-icon:after ,.btn[data-value=""] .attendance-control-icon:after {
   font-family: "FontAwesome";
   content: "\f10c";
-  color: #333 !important;
+  color: #fff !important;
 }
 
 .btn[data-value="unknown"] .attendance-control-text:after, .btn[data-value=""] .attendance-control-text:after{
-  color: #333 !important;
+  color: #fff !important;
   content: "\00a0 Zusagen";
 }
 
