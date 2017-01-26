@@ -30,34 +30,30 @@ var ensureFloatType = function (type) {
     return stringTypeFloatMap[type];
 };
 
-var getZsetKey = function (topic_id, type) {
-    return 'tid:%s:attendance:%s'.replace('%s', topic_id).replace('%s', type);
-};
-
-var getAsyncAttendancesGetter = function (tid, type) {
-    return function (next) {
-        db.getSortedSetRangeWithScores(getZsetKey(tid, type), 0, -1, next);
-    };
-};
-
-var getAsyncAttendancesDeleter = function (tid, uid, type) {
-    return function (next) {
-        db.sortedSetRemove(getZsetKey(tid, type), uid, next);
-    };
-};
-
-var getUserAttendance = function (attendance, uid) {
-    return types.filter(function (type) {
-        return attendance[type].some(function (a) { return a.uid == uid; });
+var getUserAttendance = function (attendants, uid) {
+    return attendants.filter(function (a) {
+        return a.uid == uid;
     }).pop();
 };
 
-/*
-var getCurrentUser = function (attendance, uid) {
-    return types.filter(function (type) {
-        return attendance[type].some(function (a) { return a.uid == uid; });
-    }).pop();
-};*/
+var getUsersWithFields = function (currentUser, attendants, next) {
+    users.getUsersWithFields(
+        attendants.map(function (attendant) {
+            return attendant.uid;
+        }),
+        ['uid', 'username', 'userslug', 'picture', 'icon:bgColor', 'icon:text'],
+        currentUser,
+        function (err, results) {
+            if (err) {return next(err); }
+
+            users = {};
+            results.forEach(function (user) {
+                users[user.uid] = user;
+            });
+            next(null, users);
+        }
+    );
+};
 
 var async = require('async');
 var winston = require('winston');
@@ -74,43 +70,22 @@ module.exports = function (params, callback) {
 
     router.post('/api/attendance/:tid',
         function (req, res, next) {
-            var type = req.body.type;
             var probability = req.body.probability;
             var tid = req.params.tid;
             var uid = req.uid;
-            var stringType = floatTypeStringMap[type] || type;
-            var timestamp = (new Date()).getTime();
 
             try {
-                ensureFloatType(type);
+                probability = ensureFloatType(req.body.type || probability);
             } catch (e) {
                 return res.status(400).json({"error": e.message});
             }
-
-            async.parallel(
-                types.map(function (type) { return getAsyncAttendancesDeleter(tid, uid, type); }),
-                function (err, results) {
-                    if (err) {
-                        return res.status(500).json({error: err});
-                    }
-                    db.sortedSetAdd(getZsetKey(tid, stringType), timestamp, uid, function (err, data) {
-                        if (err) {
-                            return next(res.status(500).json({error: err}));
-                        }
-                        res.status(200).json({
-                            added: type,
-                            user: uid
-                        });
-                    });
-                }
-            );
 
             floatPersistence.set(
                 tid,
                 {
                     uid: uid,
-                    probability: probability || ensureFloatType(type),
-                    timestamp: timestamp
+                    probability: probability,
+                    timestamp: (new Date()).getTime()
                 },
                 function (err, result) {
                     if (err) {
@@ -128,55 +103,32 @@ module.exports = function (params, callback) {
             return res.status(401).json({});
         }
 
-        async.parallel(
-            types.map(function (type) { return getAsyncAttendancesGetter(tid, type); }).concat([
-                function (next) {
-                    floatPersistence.get(tid, next);
-                }
-            ]),
-            function (err, results) {
-                if (err) {
-                    return res.status(500).json({error: err});
-                }
-
-                var attendance = {};
-                var userIds = [];
-                types.forEach(function (type, idx) {
-                    attendance[type] = results[idx];
-                    userIds = userIds.concat(results[idx].map(function (res) {return Number(res.value); }));
-                });
-
-                users.getUsersWithFields(userIds, ['uid', 'username', 'userslug', 'picture', 'icon:bgColor', 'icon:text'], currentUser, function (err, users) {
-                    if (err) {
-                        return res.status(500).json({err: err});
-                    }
-
-                    types.forEach(function (type) {
-                        attendance[type].forEach(function (attendant) {
-                            var u = users.filter(function (user) { return user.uid == attendant.value; }).pop();
-                            attendant.uid = u.uid;
-                            attendant.probability = stringTypeFloatMap[type];
-                            delete attendant.value;
-                            attendant.timestamp = attendant.score;
-                            delete attendant.score;
-                            _(attendant).extend(_(u).pick(['username', 'userslug', 'picture', 'icon:bgColor', 'icon:text']));
-                        });
-                    });
-
-                    results[types.length].forEach(function (attendant) {
-                        var u = users.filter(function (user) { return user.uid == attendant.uid; }).pop();
-
-                        _(attendant).extend(_(u).pick(['username', 'userslug', 'picture', 'icon:bgColor', 'icon:text']));
-                    });
-
-                    res.status(200).json({
-                        myAttendance: getUserAttendance(attendance, currentUser),
-                        attendance: attendance,
-                        attendants: results[types.length]
-                    });
-                });
+        floatPersistence.get(tid, function (err, results) {
+            if (err) {
+                return res.status(500).json({error: err});
             }
-        );
+
+            var attendants = results;
+
+            getUsersWithFields(currentUser, attendants, function (err, users) {
+                if (err) {
+                    return res.status(500).json({err: err});
+                }
+
+                attendants.forEach(function (attendant) {
+                    var u = users[attendant];
+                    if (!u) {
+                        return winston.error('unknown user with id ' + attendant.uid);
+                    }
+                    _(attendant).extend(_(u).pick(['username', 'userslug', 'picture', 'icon:bgColor', 'icon:text']));
+                });
+
+                return res.status(200).json({
+                    myAttendance: getUserAttendance(attendants, currentUser),
+                    attendants: attendants
+                });
+            });
+        });
     });
 
     router.get('/api/attendance/:tid/user/:uid/history', function (req, res, next) {
