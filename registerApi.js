@@ -55,6 +55,20 @@ var getUsersWithFields = function (currentUser, attendants, next) {
     );
 };
 
+var canAttend = function (uid) {
+
+    async.parallel([
+        _.partial(Groups.isMember, uid, 'administrators'),
+        _.partial(Groups.isMember, uid, 'gastspieler'),
+        _.partial(Groups.isMember, uid, 'stammspieler'),
+        _.partial(Groups.isMember, uid, 'anwärter'),
+        _.partial(Groups.isMember, uid, 'adler')
+    ], function (err, results) {
+        callback(err, results.indexOf(true) !== -1);
+    });
+
+};
+
 var async = require('async');
 var winston = require('winston');
 var _ = require('underscore');
@@ -68,6 +82,15 @@ floatPersistence.setDatabase(db);
 module.exports = function (params, callback) {
     var router = params.router;
 
+    router.post('/api/attendance/:tid', function (req, res, next) {
+        canAttend(req.uid, function (err, canAttend) {
+            if (!canAttend) {
+                return res.status(401).json({});
+            } else {
+                next();
+            }
+        });
+    });
     router.post('/api/attendance/:tid',
         function (req, res, next) {
             var probability = req.body.probability;
