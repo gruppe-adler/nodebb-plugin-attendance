@@ -172,11 +172,18 @@
             getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=1', function (templateString) {
                 var buttonsNode = document.createElement('div');
                 var existingButtonsNode = postBarNode.querySelector('[data-id="master"]');
+
+                var topicDateString = isMission(getTopicTitle(document))[1];
+                console.log("topicDateString: " + topicDateString);
+                var isLocked = checkDateLock(topicDateString);
+                console.log("isLocked: " + isLocked);
+
                 var markup = _.template(templateString)({
                     config: {
                         relative_path: config.relative_path
                     },
                     myAttendanceState: myAttendanceState,
+                    isLockedMarkup: isLocked,
                     tid: topicId
                 });
                 buttonsNode.innerHTML = markup;
@@ -281,6 +288,8 @@
                                 var compiledUserbadgeTemplate = _.template(userbadgeTemplate);
                                 var compiledUserRowTemplate = _.template(userRowTemplate);
 
+                                
+
                                 var markup = _.template(template)({
                                     config: config,
                                     yesListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'yes'),
@@ -344,6 +353,19 @@ function nodebbPluginAttendanceCustomISODateString (d) {
         + pad(d.getUTCDate())+' '
         + pad(d.getUTCHours())+':'
         + pad(d.getUTCMinutes())
+}
+
+function checkDateLock (d) {
+    var now = (new Date());
+
+    fillDate = new Date(d);
+    fillDate.setHours(20);
+    fillDate.setMinutes(0);
+
+    var itsHistory = (Date.parse(now) > Date.parse(fillDate));
+    console.log ("now is: " + now + " - fillDate is: " + fillDate);
+
+    return itsHistory;
 }
 
 function nodebbPluginAttendanceTotalPotentialAttendees (min,pot) {

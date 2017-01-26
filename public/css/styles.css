@@ -13,6 +13,9 @@
 }
 
 
+[component="topic/attendanceButtons"][data-invisible="true"] {
+  display: none !important;
+}
 
 
 @-webkit-keyframes fade-in-maybe {

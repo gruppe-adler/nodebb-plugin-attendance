@@ -1,7 +1,7 @@
 <% /*global tid, myAttendanceState */ %>
 <!-- begin nomi edit, kicked out TAGS for this type of thread -->
 <div class="clearfix">
-	<div class="btn-group bottom-sheet pull-left" component="topic/attendanceButtons">
+	<div class="btn-group bottom-sheet pull-left" component="topic/attendanceButtons" data-invisible="<%= isLockedMarkup %>">
 		<button class="attendance-control btn dropdown-toggle" data-value="<%= myAttendanceState %>" data-tid="<%= tid %>" type="button"
 				data-id="master">
 			<span class="attendance-control-icon"></span>
