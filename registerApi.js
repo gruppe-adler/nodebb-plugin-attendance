@@ -54,10 +54,10 @@ var canAttend = function (uid, callback) {
 
     async.parallel([
         _.partial(groups.isMember, uid, 'administrators'),
-        _.partial(groups.isMember, uid, 'gastspieler'),
-        _.partial(groups.isMember, uid, 'stammspieler'),
-        _.partial(groups.isMember, uid, 'anwärter'),
-        _.partial(groups.isMember, uid, 'adler')
+        _.partial(groups.isMember, uid, 'Gastspieler'),
+        _.partial(groups.isMember, uid, 'Stammspieler'),
+        _.partial(groups.isMember, uid, 'Anwärter'),
+        _.partial(groups.isMember, uid, 'Adler')
     ], function (err, results) {
         callback(err, results.indexOf(true) !== -1);
     });
