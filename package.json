@@ -1,6 +1,6 @@
 {
     "name": "nodebb-plugin-attendance",
-    "version": "0.6.2",
+    "version": "0.7.0",
     "dependencies": {
         "async": "^2.0",
         "winston": "*",
