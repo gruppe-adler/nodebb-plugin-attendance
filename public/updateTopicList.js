@@ -283,12 +283,9 @@
                                             config: config
                                         });
                                     });
-
                                 };
                                 var compiledUserbadgeTemplate = _.template(userbadgeTemplate);
                                 var compiledUserRowTemplate = _.template(userRowTemplate);
-
-                                
 
                                 var markup = _.template(template)({
                                     config: config,
@@ -298,7 +295,6 @@
                                     userRowsMarkupYes: getUserMarkupList(compiledUserRowTemplate, 'yes'),
                                     userRowsMarkupMaybe: getUserMarkupList(compiledUserRowTemplate, 'maybe'),
                                     userRowsMarkupNo: getUserMarkupList(compiledUserRowTemplate, 'no'),
-                                    myAttendanceState: response.myAttendance,
                                     tid: topicId
                                 });
 
@@ -306,7 +302,7 @@
                                 node.setAttribute('component', 'topic/attendance');
                                 node.innerHTML = markup;
 
-                                insertTopicAttendanceNode(topicNode, node, response.myAttendance);
+                                insertTopicAttendanceNode(topicNode, node, probabilityToYesMaybeNo[response.myAttendance.probability]);
                             })
                         });
                     });
@@ -324,7 +320,7 @@
                 var topicId = parseInt(topicItem.getAttribute('data-tid'), 10);
                 getCommitments(topicId, function (response) {
                     var yesCount = response.attendants.filter(function (attendant) { return probabilityToYesMaybeNo[attendant.probability] === 'yes'}).length;
-                    addCommitmentCountToTopicHeader(topicItem, yesCount, response.myAttendance);
+                    addCommitmentCountToTopicHeader(topicItem, yesCount, probabilityToYesMaybeNo[response.myAttendance.probability]);
                 });
             }
         });
@@ -358,11 +354,11 @@ function nodebbPluginAttendanceCustomISODateString (d) {
 function checkDateLock (d) {
     var now = (new Date());
 
-    fillDate = new Date(d);
+    var fillDate = new Date(d);
     fillDate.setHours(20);
     fillDate.setMinutes(0);
 
-    var itsHistory = (Date.parse(now) > Date.parse(fillDate));
+    var itsHistory = (now.getTime() > fillDate.getTime());
     console.log ("now is: " + now + " - fillDate is: " + fillDate);
 
     return itsHistory;

@@ -12,13 +12,6 @@ var stringTypeFloatMap = {
     no: 0
 };
 
-var floatTypeStringMap = {
-    0: 'no',
-    0.5: 'maybe',
-    1: 'yes',
-    2: 'unknown'
-};
-
 var ensureFloatType = function (type) {
     if (typeof type === 'number') {
         return type;
@@ -46,7 +39,7 @@ var getUsersWithFields = function (currentUser, attendants, next) {
         function (err, results) {
             if (err) {return next(err); }
 
-            users = {};
+            var users = {};
             results.forEach(function (user) {
                 users[user.uid] = user;
             });
@@ -55,14 +48,14 @@ var getUsersWithFields = function (currentUser, attendants, next) {
     );
 };
 
-var canAttend = function (uid) {
+var canAttend = function (uid, callback) {
 
     async.parallel([
-        _.partial(Groups.isMember, uid, 'administrators'),
-        _.partial(Groups.isMember, uid, 'gastspieler'),
-        _.partial(Groups.isMember, uid, 'stammspieler'),
-        _.partial(Groups.isMember, uid, 'anwärter'),
-        _.partial(Groups.isMember, uid, 'adler')
+        _.partial(groups.isMember, uid, 'administrators'),
+        _.partial(groups.isMember, uid, 'gastspieler'),
+        _.partial(groups.isMember, uid, 'stammspieler'),
+        _.partial(groups.isMember, uid, 'anwärter'),
+        _.partial(groups.isMember, uid, 'adler')
     ], function (err, results) {
         callback(err, results.indexOf(true) !== -1);
     });
@@ -75,6 +68,7 @@ var _ = require('underscore');
 
 var db = require('../../src/database');
 var users = require('../../src/user');
+var groups = require('../../src/groups');
 
 var floatPersistence = require('./lib/persistence-float');
 floatPersistence.setDatabase(db);
@@ -84,6 +78,9 @@ module.exports = function (params, callback) {
 
     router.post('/api/attendance/:tid', function (req, res, next) {
         canAttend(req.uid, function (err, canAttend) {
+            if (err) {
+                return res.status(500).json(err);
+            }
             if (!canAttend) {
                 return res.status(401).json({});
             } else {
@@ -113,10 +110,13 @@ module.exports = function (params, callback) {
                 function (err, result) {
                     if (err) {
                         winston.error('error saving attendance value ' + err);
+                        return res.status(500).json(err);
                     }
+                    res.status(204).json(null);
                 }
             );
-        });
+        }
+    );
 
     router.get('/api/attendance/:tid', function (req, res, next) {
         var tid = req.params.tid;
