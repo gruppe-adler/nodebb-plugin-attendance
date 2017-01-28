@@ -302,7 +302,9 @@
                                 node.setAttribute('component', 'topic/attendance');
                                 node.innerHTML = markup;
 
-                                insertTopicAttendanceNode(topicNode, node, probabilityToYesMaybeNo[response.myAttendance.probability]);
+                                if (response.myAttendance) {
+                                    insertTopicAttendanceNode(topicNode, node, probabilityToYesMaybeNo[response.myAttendance.probability]);
+                                }
                             })
                         });
                     });

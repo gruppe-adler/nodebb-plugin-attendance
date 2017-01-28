@@ -122,9 +122,9 @@ module.exports = function (params, callback) {
         var tid = req.params.tid;
         var currentUser = req.uid;
 
-        if (!currentUser) {
-            return res.status(401).json({});
-        }
+        //if (!currentUser) {
+        //    return res.status(401).json({});
+        //}
 
         floatPersistence.get(tid, function (err, results) {
             if (err) {
