@@ -139,7 +139,7 @@ module.exports = function (params, callback) {
                 }
 
                 attendants.forEach(function (attendant) {
-                    var u = users[attendant];
+                    var u = users[attendant.uid];
                     if (!u) {
                         return winston.error('unknown user with id ' + attendant.uid);
                     }

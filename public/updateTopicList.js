@@ -169,7 +169,7 @@
 
         Array.prototype.forEach.call(postBarNode, function (postBarNode) {
 
-            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=1', function (templateString) {
+            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=2', function (templateString) {
                 var buttonsNode = document.createElement('div');
                 var existingButtonsNode = postBarNode.querySelector('[data-id="master"]');
 
@@ -247,11 +247,16 @@
         //only insert attendance if the postbar exists (if this is the first post)
         if (postBarNode) {
             postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
-            insertDecisionButtons(topicComponentNode, myAttendanceState);
+            if (myAttendanceState) {
+                insertDecisionButtons(topicComponentNode, myAttendanceState);
+            }
         } else if (topicComponentNode.children.length === 1) {
             firstPost.appendChild(attendanceNode);
-            insertDecisionButtons(topicComponentNode, myAttendanceState);
+            if (myAttendanceState) {
+                insertDecisionButtons(topicComponentNode, myAttendanceState);
+            }
         }
+
 
         hideAttendanceDetails();
         refreshToolTips();
@@ -269,9 +274,9 @@
             if (isMission(getTopicTitle(document))) {
                 var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
                 getCommitments(topicId, function (response) {
-                    getTemplate('/plugins/nodebb-plugin-attendance/templates/topic.ejs?v=1', function (template) {
-                        getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_userbadge.ejs?v=2', function (userbadgeTemplate) {
-                            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_detailsRow.ejs?v=2', function (userRowTemplate) {
+                    getTemplate('/plugins/nodebb-plugin-attendance/templates/topic.ejs?v=2', function (template) {
+                        getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_userbadge.ejs?v=3', function (userbadgeTemplate) {
+                            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_detailsRow.ejs?v=3', function (userRowTemplate) {
 
                                 var getUserMarkupList = function (compiledTemplate, attendanceState) {
                                     return response.attendants.filter(function (attendant) {
@@ -302,9 +307,8 @@
                                 node.setAttribute('component', 'topic/attendance');
                                 node.innerHTML = markup;
 
-                                if (response.myAttendance) {
-                                    insertTopicAttendanceNode(topicNode, node, probabilityToYesMaybeNo[response.myAttendance.probability]);
-                                }
+                                insertTopicAttendanceNode(topicNode, node, response.myAttendance ? probabilityToYesMaybeNo[response.myAttendance.probability] : '');
+
                             })
                         });
                     });
@@ -322,7 +326,10 @@
                 var topicId = parseInt(topicItem.getAttribute('data-tid'), 10);
                 getCommitments(topicId, function (response) {
                     var yesCount = response.attendants.filter(function (attendant) { return probabilityToYesMaybeNo[attendant.probability] === 'yes'}).length;
-                    addCommitmentCountToTopicHeader(topicItem, yesCount, probabilityToYesMaybeNo[response.myAttendance.probability]);
+                    addCommitmentCountToTopicHeader(
+                        topicItem,
+                        yesCount,
+                        probabilityToYesMaybeNo[response.myAttendance ? response.myAttendance.probability : 0]);
                 });
             }
         });
