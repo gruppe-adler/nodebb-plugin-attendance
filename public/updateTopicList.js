@@ -184,9 +184,10 @@ require(['async'], function (async) {
 
         Array.prototype.forEach.call(postBarNode, function (postBarNode) {
 
-            getTemplates('partials/post_bar.ejs', function (err, templateString) {
+            getTemplates('partials/post_bar.ejs', function (err, templates) {
                 var buttonsNode = document.createElement('div');
                 var existingButtonsNode = postBarNode.querySelector('[data-id="master"]');
+                var templateString = templates[0];
 
                 var topicDateString = isMission(getTopicTitle(document))[1];
                 console.log("topicDateString: " + topicDateString);
