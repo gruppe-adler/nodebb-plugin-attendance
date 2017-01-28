@@ -37,7 +37,9 @@ var getUsersWithFields = function (currentUser, attendants, next) {
         ['uid', 'username', 'userslug', 'picture', 'icon:bgColor', 'icon:text'],
         currentUser,
         function (err, results) {
-            if (err) {return next(err); }
+            if (err) {
+                return next(err);
+            }
 
             var users = {};
             results.forEach(function (user) {
@@ -122,36 +124,40 @@ module.exports = function (params, callback) {
         var tid = req.params.tid;
         var currentUser = req.uid;
 
-        //if (!currentUser) {
-        //    return res.status(401).json({});
-        //}
-
-        floatPersistence.get(tid, function (err, results) {
-            if (err) {
-                return res.status(500).json({error: err});
-            }
-
-            var attendants = results;
-
-            getUsersWithFields(currentUser, attendants, function (err, users) {
+        async.parallel(
+            [
+                _.partial(floatPersistence.get, tid),
+                _.partial(canAttend, currentUser)
+            ],
+            function (err, results) {
                 if (err) {
-                    return res.status(500).json({err: err});
+                    return res.status(500).json({error: err});
                 }
 
-                attendants.forEach(function (attendant) {
-                    var u = users[attendant.uid];
-                    if (!u) {
-                        return winston.error('unknown user with id ' + attendant.uid);
-                    }
-                    _(attendant).extend(_(u).pick(['username', 'userslug', 'picture', 'icon:bgColor', 'icon:text']));
-                });
+                var attendants = results[0];
+                var canAttend = results[1];
 
-                return res.status(200).json({
-                    myAttendance: getUserAttendance(attendants, currentUser),
-                    attendants: attendants
+                getUsersWithFields(currentUser, attendants, function (err, users) {
+                    if (err) {
+                        return res.status(500).json({err: err});
+                    }
+
+                    attendants.forEach(function (attendant) {
+                        var u = users[attendant.uid];
+                        if (!u) {
+                            return winston.error('unknown user with id ' + attendant.uid);
+                        }
+                        _(attendant).extend(_(u).pick(['username', 'userslug', 'picture', 'icon:bgColor', 'icon:text']));
+                    });
+
+                    return res.status(200).json({
+                        myAttendance: getUserAttendance(attendants, currentUser),
+                        canAttend: canAttend,
+                        attendants: attendants
+                    });
                 });
-            });
-        });
+            }
+        );
     });
 
     router.get('/api/attendance/:tid/user/:uid/history', function (req, res, next) {

@@ -29,7 +29,7 @@
                     // console.log("any to unknown");
                 }
             }
-             $.post({
+            $.post({
                 url: config.relative_path + '/api/attendance/' + tid,
                 contentType: 'application/json',
                 data: JSON.stringify({type: value, probability: probability}),
@@ -38,9 +38,9 @@
                     var myfuckingButtonForReal = document.querySelectorAll('button.attendance-control');
 
                     Array.prototype.forEach.call(myfuckingButtonForReal, function (myfuckingButtonForReal) {
-                        myfuckingButtonForReal.setAttribute('data-value',value);
+                        myfuckingButtonForReal.setAttribute('data-value', value);
                     });
-                    
+
 
                     topicLoaded();
 
@@ -50,12 +50,11 @@
                 }
             });
 
-            
 
         });
     }());
 
-    function getCurrentButtonValue (button) {
+    function getCurrentButtonValue(button) {
         return button.attr('data-value');
     }
 
@@ -115,8 +114,8 @@
         var statsDivs = categoryItem.querySelectorAll('.stats');
         var oneStatsDiv = statsDivs[0];
         var myAttendanceDiv = document.createElement('div');
-        myAttendanceDiv.className = oneStatsDiv.className  + ' stats-attendance';
-        myAttendanceDiv.appendChild(getUserSymbolElement(colorMap[myAttendance] || '#777',myAttendance));
+        myAttendanceDiv.className = oneStatsDiv.className + ' stats-attendance';
+        myAttendanceDiv.appendChild(getUserSymbolElement(colorMap[myAttendance] || '#777', myAttendance));
         oneStatsDiv.parentNode.insertBefore(myAttendanceDiv, oneStatsDiv);
 
         var viewsDiv = document.createElement('div');
@@ -150,20 +149,19 @@
 
     // baustelle
     var refreshToolTips = function () {
-         var attendanceAvatar = document.querySelectorAll(".avatar");
-         Array.prototype.forEach.call(attendanceAvatar, function (attendanceAvatar) {
+        var attendanceAvatar = document.querySelectorAll(".avatar");
+        Array.prototype.forEach.call(attendanceAvatar, function (attendanceAvatar) {
             if (!utils.isTouchDevice()) {
                 $(attendanceAvatar).tooltip({
                     placement: 'top',
                     title: $(attendanceAvatar).attr('title')
                 });
             }
-         });
-
+        });
     };
 
     // github original
-    function insertDecisionButtons(topicNode, myAttendanceState) {
+    function insertDecisionButtons(topicNode, myAttendance) {
         var postBarNode = document.querySelectorAll(".post-bar .clearfix");
         var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
 
@@ -182,7 +180,7 @@
                     config: {
                         relative_path: config.relative_path
                     },
-                    myAttendanceState: myAttendanceState,
+                    myAttendanceState: probabilityToYesMaybeNo[myAttendance ? myAttendance.probability : 2],
                     isLockedMarkup: isLocked,
                     tid: topicId
                 });
@@ -195,36 +193,37 @@
             });
         })
     }
+
     /*
-    function insertDecisionButtons(topicNode, myAttendanceState) {
-        Array.prototype.forEach.call(document.querySelectorAll('.post-bar .clearfix'), function (topicNode) {
-        
-        
-        var topicId = parseInt(topicNode.getAttribute('data-tid'));
+     function insertDecisionButtons(topicNode, myAttendanceState) {
+     Array.prototype.forEach.call(document.querySelectorAll('.post-bar .clearfix'), function (topicNode) {
 
-            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=1', function (templateString) {
-                var buttonsNode = document.createElement('div');
-                var existingButtonsNode = topicNode.querySelector('[data-id="master"]');
-                var markup = _.template(templateString)({
-                    config: {
-                        relative_path: config.relative_path
-                    },
-                    myAttendanceState: myAttendanceState,
-                    tid: topicId
-                });
-                buttonsNode.innerHTML = markup;
 
-                if (!existingButtonsNode) {
-                    console.log('adding buttonsNode…');
-                    topicNode.appendChild(buttonsNode);
-                }
-            });
-        });
-    }*/
-    
+     var topicId = parseInt(topicNode.getAttribute('data-tid'));
+
+     getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=1', function (templateString) {
+     var buttonsNode = document.createElement('div');
+     var existingButtonsNode = topicNode.querySelector('[data-id="master"]');
+     var markup = _.template(templateString)({
+     config: {
+     relative_path: config.relative_path
+     },
+     myAttendanceState: myAttendanceState,
+     tid: topicId
+     });
+     buttonsNode.innerHTML = markup;
+
+     if (!existingButtonsNode) {
+     console.log('adding buttonsNode…');
+     topicNode.appendChild(buttonsNode);
+     }
+     });
+     });
+     }*/
+
     // ende baustelle
 
-    var insertTopicAttendanceNode = function (topicComponentNode, attendanceNode, myAttendanceState) {
+    var insertTopicAttendanceNode = function (topicComponentNode, attendanceNode, myAttendanceState, canAttend) {
 
         var firstPost = topicComponentNode.querySelector('[component="post"]');
 
@@ -247,21 +246,19 @@
         //only insert attendance if the postbar exists (if this is the first post)
         if (postBarNode) {
             postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
-            if (myAttendanceState) {
+            if (canAttend) {
                 insertDecisionButtons(topicComponentNode, myAttendanceState);
             }
         } else if (topicComponentNode.children.length === 1) {
             firstPost.appendChild(attendanceNode);
-            if (myAttendanceState) {
+            if (canAttend) {
                 insertDecisionButtons(topicComponentNode, myAttendanceState);
             }
         }
 
-
         hideAttendanceDetails();
         refreshToolTips();
     };
-
 
 
     var hasAttendanceClasses = function (node) {
@@ -307,7 +304,7 @@
                                 node.setAttribute('component', 'topic/attendance');
                                 node.innerHTML = markup;
 
-                                insertTopicAttendanceNode(topicNode, node, response.myAttendance ? probabilityToYesMaybeNo[response.myAttendance.probability] : '');
+                                insertTopicAttendanceNode(topicNode, node, response.myAttendance, response.canAttend);
 
                             })
                         });
@@ -325,7 +322,9 @@
             if (isMission(getTopicTitle(topicItem))) {
                 var topicId = parseInt(topicItem.getAttribute('data-tid'), 10);
                 getCommitments(topicId, function (response) {
-                    var yesCount = response.attendants.filter(function (attendant) { return probabilityToYesMaybeNo[attendant.probability] === 'yes'}).length;
+                    var yesCount = response.attendants.filter(function (attendant) {
+                        return probabilityToYesMaybeNo[attendant.probability] === 'yes'
+                    }).length;
                     addCommitmentCountToTopicHeader(
                         topicItem,
                         yesCount,
@@ -350,17 +349,20 @@ var hideAttendanceDetails = function () {
     document.querySelector('[component="topic/attendance/backdrop"]').style.display = 'none';
 };
 
-function nodebbPluginAttendanceCustomISODateString (d) {
+function nodebbPluginAttendanceCustomISODateString(d) {
     d = new Date(d);
-    function pad(n) {return n<10 ? '0'+n : n}
-    return d.getUTCFullYear()+'-'
-        + pad(d.getUTCMonth()+1)+'-'
-        + pad(d.getUTCDate())+' '
-        + pad(d.getUTCHours())+':'
+    function pad(n) {
+        return n < 10 ? '0' + n : n
+    }
+
+    return d.getUTCFullYear() + '-'
+        + pad(d.getUTCMonth() + 1) + '-'
+        + pad(d.getUTCDate()) + ' '
+        + pad(d.getUTCHours()) + ':'
         + pad(d.getUTCMinutes())
 }
 
-function checkDateLock (d) {
+function checkDateLock(d) {
     var now = (new Date());
 
     var fillDate = new Date(d);
@@ -368,11 +370,11 @@ function checkDateLock (d) {
     fillDate.setMinutes(0);
 
     var itsHistory = (now.getTime() > fillDate.getTime());
-    console.log ("now is: " + now + " - fillDate is: " + fillDate);
+    console.log("now is: " + now + " - fillDate is: " + fillDate);
 
     return itsHistory;
 }
 
-function nodebbPluginAttendanceTotalPotentialAttendees (min,pot) {
+function nodebbPluginAttendanceTotalPotentialAttendees(min, pot) {
     return min + pot;
 }
