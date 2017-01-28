@@ -1,6 +1,6 @@
 /*global $, templates, _ */
 
-(function () {
+require(['async'], function (async) {
     (function () {
         var css = document.createElement('link');
         css.rel = 'stylesheet';
@@ -65,9 +65,27 @@
         2: "unknown"
     };
 
+    var cachebuster = '3';
+    var getTemplates = function (templatePaths /*array of paths relative to public/templates*/, callback) {
+        if (typeof templatePaths === 'string') {
+            templatePaths = [templatePaths];
+        }
+        async.parallel(
+            templatePaths.map(function (templatePath) {
+                return function (next) {
+                    getTemplate(templatePath + '?' + cachebuster, function (template) {
+                        next(null, template);
+                    });
+                };
+            }),
+            callback
+        );
+    };
+
     var getTemplate = (function () {
         var loadedTemplates = {};
         return function (templateName, cb) {
+            templateName = '/plugins/nodebb-plugin-attendance/templates/' + templateName;
             if (loadedTemplates[templateName]) {
                 return cb(loadedTemplates[templateName]);
             }
@@ -77,7 +95,6 @@
             });
         }
     }());
-
 
     var isMission = function (title) {
         return title.trim().match(/([0-9]{4}-[0-9]{2}-[0-9]{2})([^0-9a-z])/i);
@@ -167,7 +184,7 @@
 
         Array.prototype.forEach.call(postBarNode, function (postBarNode) {
 
-            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=2', function (templateString) {
+            getTemplates('partials/post_bar.ejs', function (err, templateString) {
                 var buttonsNode = document.createElement('div');
                 var existingButtonsNode = postBarNode.querySelector('[data-id="master"]');
 
@@ -260,7 +277,6 @@
         refreshToolTips();
     };
 
-
     var hasAttendanceClasses = function (node) {
         return node.querySelector('.stats-attendance');
     };
@@ -271,43 +287,41 @@
             if (isMission(getTopicTitle(document))) {
                 var topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
                 getCommitments(topicId, function (response) {
-                    getTemplate('/plugins/nodebb-plugin-attendance/templates/topic.ejs?v=2', function (template) {
-                        getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_userbadge.ejs?v=3', function (userbadgeTemplate) {
-                            getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/topic_detailsRow.ejs?v=3', function (userRowTemplate) {
-
-                                var getUserMarkupList = function (compiledTemplate, attendanceState) {
-                                    return response.attendants.filter(function (attendant) {
-                                        return probabilityToYesMaybeNo[attendant.probability] == attendanceState;
-                                    }).map(function (attendant) {
-                                        return compiledTemplate({
-                                            attendant: attendant,
-                                            attendanceState: attendanceState,
-                                            config: config
-                                        });
-                                    });
-                                };
-                                var compiledUserbadgeTemplate = _.template(userbadgeTemplate);
-                                var compiledUserRowTemplate = _.template(userRowTemplate);
-
-                                var markup = _.template(template)({
-                                    config: config,
-                                    yesListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'yes'),
-                                    maybeListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'maybe'),
-                                    noListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'no'),
-                                    userRowsMarkupYes: getUserMarkupList(compiledUserRowTemplate, 'yes'),
-                                    userRowsMarkupMaybe: getUserMarkupList(compiledUserRowTemplate, 'maybe'),
-                                    userRowsMarkupNo: getUserMarkupList(compiledUserRowTemplate, 'no'),
-                                    tid: topicId
+                    getTemplates(['topic.ejs', 'partials/topic_userbadge.ejs', 'partials/topic_detailsRow.ejs'], function (err, templates) {
+                        var
+                            template = templates[0],
+                            userbadgeTemplate = templates[1],
+                            userRowTemplate = templates[2];
+                        var getUserMarkupList = function (compiledTemplate, attendanceState) {
+                            return response.attendants.filter(function (attendant) {
+                                return probabilityToYesMaybeNo[attendant.probability] == attendanceState;
+                            }).map(function (attendant) {
+                                return compiledTemplate({
+                                    attendant: attendant,
+                                    attendanceState: attendanceState,
+                                    config: config
                                 });
+                            });
+                        };
+                        var compiledUserbadgeTemplate = _.template(userbadgeTemplate);
+                        var compiledUserRowTemplate = _.template(userRowTemplate);
 
-                                var node = document.createElement('div');
-                                node.setAttribute('component', 'topic/attendance');
-                                node.innerHTML = markup;
-
-                                insertTopicAttendanceNode(topicNode, node, response.myAttendance, response.canAttend);
-
-                            })
+                        var markup = _.template(template)({
+                            config: config,
+                            yesListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'yes'),
+                            maybeListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'maybe'),
+                            noListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'no'),
+                            userRowsMarkupYes: getUserMarkupList(compiledUserRowTemplate, 'yes'),
+                            userRowsMarkupMaybe: getUserMarkupList(compiledUserRowTemplate, 'maybe'),
+                            userRowsMarkupNo: getUserMarkupList(compiledUserRowTemplate, 'no'),
+                            tid: topicId
                         });
+
+                        var node = document.createElement('div');
+                        node.setAttribute('component', 'topic/attendance');
+                        node.innerHTML = markup;
+
+                        insertTopicAttendanceNode(topicNode, node, response.myAttendance, response.canAttend);
                     });
                 });
             }
@@ -338,7 +352,7 @@
     $(window).bind('action:topic.loaded', topicLoaded);
     $(window).bind('action:topics.loaded', topicsLoaded);
 
-}());
+});
 
 var showAttendanceDetails = function () {
     document.querySelector('[component="topic/attendance/details"]').style.display = 'block';
