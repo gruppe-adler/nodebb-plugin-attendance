@@ -317,11 +317,9 @@
 [component="topic/attendance"] .main-table tr .secondColumn ul {
     padding: 0px;
     list-style: none;
-    height: 40px;
-    overflow: hidden;
+    height: 100%;
+    overflow: auto;
     width: calc(100% + 25px);
-    overflow-y: hidden;
-  overflow-x: hidden;
 }
 
 .left_mask , .right_mask {
@@ -378,7 +376,7 @@
 
 [component="topic/attendance"] {
     background-color: #f9f9f9;
-    height: 176px;
+    height: 100%;
     display: block;
     margin: -10px;
     padding: 20px;
