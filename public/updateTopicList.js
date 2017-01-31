@@ -352,6 +352,9 @@ require(['async'], function (async) {
 
     $(window).bind('action:topic.loaded', topicLoaded);
     $(window).bind('action:topics.loaded', topicsLoaded);
+    if (app.template === 'category') {
+        topicsLoaded();
+    }
 
 });
 
