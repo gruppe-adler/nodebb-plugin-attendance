@@ -117,7 +117,7 @@ require(['async'], function (async) {
     };
 
     var colorMap = {
-        unknown: "#f0f0f0",
+        unknown: "#eee",
         yes: "#66aa66",
         maybe: "#d18d1f",
         no: "#c91106"
