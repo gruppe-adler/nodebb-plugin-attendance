@@ -444,31 +444,9 @@
   /* ATTENDING UNKNOWN */
 
   .btn[data-value="unknown"], .btn[data-value=""] {
-    background-color: #f9f9f9 !important;
-    border-color: #adadad !important;
-    color: #333 !important;
-    min-width: 50px;
-    -webkit-transition: background-color 150ms ease-in-out;
-    -moz-transition: background-color 150ms ease-in-out;
-    -o-transition: background-color 150ms ease-in-out;
-    -ms-transition: background-color 150ms ease-in-out;
-    transition: background-color 150ms ease-in-out;
+    min-width: 50px; 
   }
 
-  .btn[data-value="unknown"]:hover, .btn[data-value=""]:hover {
-    background-color: #4D914D !important;
-    border-color: #339933 !important;
-    -webkit-transition: background-color 150ms ease-in-out;
-    -moz-transition: background-color 150ms ease-in-out;
-    -o-transition: background-color 150ms ease-in-out;
-    -ms-transition: background-color 150ms ease-in-out;
-    transition: background-color 150ms ease-in-out;
-     -webkit-transition: border-color 100ms ease-in-out;
-    -moz-transition: border-color 100ms ease-in-out;
-    -o-transition: border-color 100ms ease-in-out;
-    -ms-transition: border-color 100ms ease-in-out;
-    transition: border-color 100ms ease-in-out;
-  }
 
   .btn[data-value="unknown"] .attendance-control-icon:after ,.btn[data-value=""] .attendance-control-icon:after {
     font-family: "FontAwesome";
@@ -498,27 +476,11 @@
 
   /* SURELY ATTENDING*/
 
-  .btn[data-value="yes"] {
-    background-color: #6a6 !important;
-    border-color: #339933 !important;
-    color: #fff !important;
-    min-width: 50px;
-     -webkit-transition: background-color 150ms ease-in-out;
-    -moz-transition: background-color 150ms ease-in-out;
-    -o-transition: background-color 150ms ease-in-out;
-    -ms-transition: background-color 150ms ease-in-out;
-    transition: background-color 150ms ease-in-out;
+  .btn[data-value="yes"] {  
+    min-width: 50px; 
   }
 
-  .btn[data-value="yes"]:hover {
-    background-color: #c91106 !important;
-    border-color: #c91106 !important;
-     -webkit-transition: background-color 150ms ease-in-out;
-    -moz-transition: background-color 150ms ease-in-out;
-    -o-transition: background-color 150ms ease-in-out;
-    -ms-transition: background-color 150ms ease-in-out;
-    transition: background-color 150ms ease-in-out;
-  }
+  
 
   .btn[data-value="yes"] .attendance-control-icon:after {
     font-family: "FontAwesome";
@@ -541,36 +503,9 @@
   /* MAYBE ATTENDING*/
 
   .btn[data-value="maybe"] {
-    background-color: #d18d1f !important;
-    border-color: #bb7e1c !important;
-    color: #fff !important;
     min-width: 50px;
-     -webkit-transition: background-color 150ms ease-in-out;
-    -moz-transition: background-color 150ms ease-in-out;
-    -o-transition: background-color 150ms ease-in-out;
-    -ms-transition: background-color 150ms ease-in-out;
-    transition: background-color 150ms ease-in-out;
-     -webkit-transition: border-color 100ms ease-in-out;
-    -moz-transition: border-color 100ms ease-in-out;
-    -o-transition: border-color 100ms ease-in-out;
-    -ms-transition: border-color 100ms ease-in-out;
-    transition: border-color 100ms ease-in-out;
   }
 
-  .btn[data-value="maybe"]:hover {
-    background-color: #a56f18 !important;
-    border-color: #a56f18 !important;
-     -webkit-transition: background-color 150ms ease-in-out;
-    -moz-transition: background-color 150ms ease-in-out;
-    -o-transition: background-color 150ms ease-in-out;
-    -ms-transition: background-color 150ms ease-in-out;
-    transition: background-color 150ms ease-in-out;
-     -webkit-transition: border-color 100ms ease-in-out;
-    -moz-transition: border-color 100ms ease-in-out;
-    -o-transition: border-color 100ms ease-in-out;
-    -ms-transition: border-color 100ms ease-in-out;
-    transition: border-color 100ms ease-in-out;
-  }
 
   .btn[data-value="maybe"] .attendance-control-icon:after {
     font-family: "FontAwesome";
@@ -584,35 +519,7 @@
   /* NOT ATTENDING */
 
   .btn[data-value="no"] {
-    background-color: #c91106 !important;
-    border-color: #c91106 !important;
-    color: #fff !important;
     min-width: 50px;
-     -webkit-transition: background-color 150ms ease-in-out;
-    -moz-transition: background-color 150ms ease-in-out;
-    -o-transition: background-color 150ms ease-in-out;
-    -ms-transition: background-color 150ms ease-in-out;
-    transition: background-color 150ms ease-in-out;
-     -webkit-transition: border-color 100ms ease-in-out;
-    -moz-transition: border-color 100ms ease-in-out;
-    -o-transition: border-color 100ms ease-in-out;
-    -ms-transition: border-color 100ms ease-in-out;
-    transition: border-color 100ms ease-in-out;
-  }
-
-  .btn[data-value="no"]:hover {
-    background-color: #4D914D !important;
-    border-color: #339933 !important;
-    -webkit-transition: background-color 150ms ease-in-out;
-    -moz-transition: background-color 150ms ease-in-out;
-    -o-transition: background-color 150ms ease-in-out;
-    -ms-transition: background-color 150ms ease-in-out;
-    transition: background-color 150ms ease-in-out;
-     -webkit-transition: border-color 100ms ease-in-out;
-    -moz-transition: border-color 100ms ease-in-out;
-    -o-transition: border-color 100ms ease-in-out;
-    -ms-transition: border-color 100ms ease-in-out;
-    transition: border-color 100ms ease-in-out;
   }
 
   .btn[data-value="no"] .attendance-control-icon:after {
