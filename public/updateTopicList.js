@@ -343,7 +343,7 @@ require(['async'], function (async) {
                     addCommitmentCountToTopicHeader(
                         topicItem,
                         yesCount,
-                        probabilityToYesMaybeNo[response.myAttendance ? response.myAttendance.probability : 0]);
+                        probabilityToYesMaybeNo[response.myAttendance ? response.myAttendance.probability : 2]);
                 });
             }
         });
