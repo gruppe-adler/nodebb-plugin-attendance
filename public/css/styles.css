@@ -389,6 +389,16 @@
 
 @media (max-width: 600px) { 
 
+  /* remove space intensive first column */
+  [component="topic/attendance"] .main-table tr {
+     display: block;
+  }
+
+  /* remove space intensive first column */
+  [component="topic/attendance"] .main-table tr .firstColumn {
+    display: block;
+  }
+
 [component="topic/mark-unread"] {
     display: none;
   }
@@ -400,6 +410,10 @@
 }
 
 @media (max-width: 480px) { 
+
+  
+
+
   /* REPLY BUTTON */
 
   [component="topic/reply"].btn {
