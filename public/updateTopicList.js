@@ -15,10 +15,9 @@ require(['async'], function (async) {
             var value = getCurrentButtonValue($button);
             var probability = $button.data('probability');
             var tid = $button.attr('data-tid');
-            var btnType = $button.attr('data-id');
-            console.log(value, tid, btnType);
+            var isMasterButton = $button.hasClass('attendance-master-button');
 
-            if (btnType == 'master') {
+            if (isMasterButton) {
                 if (value == 'unknown' || value == '' || value == 'no') {
                     value = 'yes';
                     $button.data("value", "yes");
@@ -186,7 +185,7 @@ require(['async'], function (async) {
 
             getTemplates('partials/post_bar.ejs', function (err, templates) {
                 var buttonsNode = document.createElement('div');
-                var existingButtonsNode = postBarNode.querySelector('[data-id="master"]');
+                var existingButtonsNode = postBarNode.querySelector('.attendance-master-button');
                 var templateString = templates[0];
 
                 var topicDateString = isMission(getTopicTitle(document))[1];
@@ -221,7 +220,7 @@ require(['async'], function (async) {
 
      getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=1', function (templateString) {
      var buttonsNode = document.createElement('div');
-     var existingButtonsNode = topicNode.querySelector('[data-id="master"]');
+     var existingButtonsNode = topicNode.querySelector('.attendance-master-button');
      var markup = _.template(templateString)({
      config: {
      relative_path: config.relative_path
