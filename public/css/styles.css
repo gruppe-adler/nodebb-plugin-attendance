@@ -51,7 +51,7 @@
 /* ATTENDING UNKNOWN */
 
 .btn[data-value="unknown"], .btn[data-value=""] {
-    background-color: #4a5559 !important;
+    background-color: #4a5559;
     border-color: #3e484b !important;
   color: #333 !important;
   min-width: 128px;
@@ -63,7 +63,7 @@
 }
 
 .btn[data-value="unknown"]:hover, .btn[data-value=""]:hover {
-  background-color: #4D914D !important;
+  background-color: #4D914D;
   border-color: #339933 !important;
   -webkit-transition: background-color 150ms ease-in-out;
   -moz-transition: background-color 150ms ease-in-out;
@@ -451,11 +451,11 @@
   .btn[data-value="unknown"] .attendance-control-icon:after ,.btn[data-value=""] .attendance-control-icon:after {
     font-family: "FontAwesome";
     content: "\f10c";
-    color: #333 !important;
+    color: #fff;
   }
 
   .btn[data-value="unknown"] .attendance-control-text:after, .btn[data-value=""] .attendance-control-text:after{
-    color: #333 !important;
+    color: #fff;
     content: "";
   }
 
