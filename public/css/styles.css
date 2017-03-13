@@ -54,7 +54,6 @@
     background-color: #4a5559;
     border-color: #3e484b !important;
   color: #333 !important;
-  min-width: 128px;
     -webkit-transition: background-color 150ms ease-in-out;
   -moz-transition: background-color 150ms ease-in-out;
   -o-transition: background-color 150ms ease-in-out;
@@ -109,7 +108,7 @@
   background-color: #6a6 !important;
   border-color: #339933 !important;
   color: #fff !important;
-  min-width: 128px;
+  min-width: 67px;
    -webkit-transition: background-color 150ms ease-in-out;
   -moz-transition: background-color 150ms ease-in-out;
   -o-transition: background-color 150ms ease-in-out;
@@ -151,7 +150,7 @@
   background-color: #d18d1f !important;
   border-color: #bb7e1c !important;
   color: #fff !important;
-  min-width: 128px;
+  min-width: 67px;
    -webkit-transition: background-color 150ms ease-in-out;
   -moz-transition: background-color 150ms ease-in-out;
   -o-transition: background-color 150ms ease-in-out;
@@ -194,7 +193,7 @@
   background-color: #c91106 !important;
   border-color: #c91106 !important;
   color: #fff !important;
-  min-width: 128px;
+  min-width: 67px;
    -webkit-transition: background-color 150ms ease-in-out;
   -moz-transition: background-color 150ms ease-in-out;
   -o-transition: background-color 150ms ease-in-out;
