@@ -2,7 +2,7 @@
 	var draggable = attendanceState === 'yes' ? 'true' : 'false'
 %>
 <li>
-	<a href="<%= config.relative_path %>/user/<%-attendant.userslug %>">
+	<div style="cursor:pointer; display: inline-block;">
 		<% if (attendant.picture) { %>
 		<img class="user-img avatar avatar-md avatar-rounded attendance_<%- attendanceState %>" src="<%-attendant.picture %>"
 			 data-uid="<%-attendant.uid%>" data-username="<%-attendant.username%>"
@@ -19,5 +19,5 @@
 			<%-attendant['icon:text'] %>
 		</div>
 		<% } %>
-	</a>
+	</div>
 </li>
