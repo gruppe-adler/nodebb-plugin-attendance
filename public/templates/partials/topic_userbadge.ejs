@@ -1,12 +1,22 @@
-<% /*global attendant, attendanceState */ %>
+<% /*global attendant, attendanceState */
+	var draggable = attendanceState === 'yes' ? 'true' : 'false'
+%>
 <li>
-	<a href="<%= config.relative_path %>/user/<%=attendant.userslug %>">
+	<a href="<%= config.relative_path %>/user/<%-attendant.userslug %>">
 		<% if (attendant.picture) { %>
-		<img class="user-img avatar avatar-md avatar-rounded attendance_<%= attendanceState %>" src="<%=attendant.picture %>"
-			 title="<%= attendant.username%>">
+		<img class="user-img avatar avatar-md avatar-rounded attendance_<%- attendanceState %>" src="<%-attendant.picture %>"
+			 data-uid="<%-attendant.uid%>" data-username="<%-attendant.username%>"
+			 title="<%- attendant.username%>"
+			 draggable="<%-draggable%>"
+		/>
 		<% } else { %>
-		<div class="avatar avatar-md avatar-rounded attendance_<%= attendanceState %>"  title="<%= attendant.username%>"
-			 style="background-color: <%=attendant['icon:bgColor'] %>"><%=attendant['icon:text'] %>
+		<div class="avatar avatar-md avatar-rounded attendance_<%- attendanceState %>"
+			 data-uid="<%-attendant.uid%>" data-username="<%-attendant.username%>"
+			 title="<%- attendant.username%>"
+			 style="background-color: <%=attendant['icon:bgColor'] %>"
+			 draggable="<%-draggable%>"
+		>
+			<%-attendant['icon:text'] %>
 		</div>
 		<% } %>
 	</a>
