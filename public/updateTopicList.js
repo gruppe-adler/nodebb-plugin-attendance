@@ -13,8 +13,13 @@ require(['async'], function (async) {
 
         $(document).on('dragstart', '[component="topic/attendance"] .avatar[data-uid]', function (event) {
             var originalEvent = event.originalEvent;
-            originalEvent.dataTransfer.setData("uid", event.target.getAttribute('data-uid'));
-            originalEvent.dataTransfer.setData("username", event.target.getAttribute('data-username'));
+            originalEvent.dataTransfer.setData(
+                "application/json",
+                JSON.stringify({
+                    uid: event.target.getAttribute('data-uid'),
+                    username: event.target.getAttribute('data-username')
+                })
+            );
         });
 
         $(document).on('click', '.attendance-control', function () {
@@ -25,7 +30,7 @@ require(['async'], function (async) {
             var isMasterButton = $button.hasClass('attendance-master-button');
 
             if (isMasterButton) {
-                if (value == 'unknown' || value == '' || value == 'no') {
+                if (value === 'unknown' || value == '' || value === 'no') {
                     value = 'yes';
                     $button.data("value", "yes");
                     // console.log("yes to yes");
