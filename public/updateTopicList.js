@@ -11,8 +11,7 @@ require(['async'], function (async) {
 
     (function () {
 
-        $(document).on('dragstart', '.avatar[data-uid]', function (event) {
-//            event.preventDefault();
+        $(document).on('dragstart', '[component="topic/attendance"] .avatar[data-uid]', function (event) {
             var originalEvent = event.originalEvent;
             originalEvent.dataTransfer.setData("uid", event.target.getAttribute('data-uid'));
             originalEvent.dataTransfer.setData("username", event.target.getAttribute('data-username'));
