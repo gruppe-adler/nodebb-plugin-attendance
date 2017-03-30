@@ -52,6 +52,7 @@ require(['async'], function (async) {
                         myfuckingButtonForReal.setAttribute('data-value', value);
                     });
 
+                    $(window).trigger('attendance:probability', probability);
 
                     topicLoaded();
 
