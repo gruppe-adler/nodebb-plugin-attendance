@@ -28,7 +28,7 @@ require(['async'], function (async) {
                 contentType: 'application/json',
                 data: JSON.stringify({type: value, probability: probability}),
                 success: function () {
-                    callback();
+                    callback && callback();
                     topicLoaded();
 
                 },
@@ -38,7 +38,7 @@ require(['async'], function (async) {
             });
         }
 
-        $(window).bind('arma3-slotting:slotted', function (data) {
+        $(window).bind('arma3-slotting:slotted', function (event, data) {
             var tid = data.tid;
             setAttendance(tid, 'yes', 1);
         });
@@ -66,6 +66,22 @@ require(['async'], function (async) {
                 $(window).trigger('attendance:probability', probability);
                 $button.disabled = true;
                 var myfuckingButtonForReal = document.querySelectorAll('button.attendance-control');
+
+                var valueToMeldung = {
+                    yes: 'angemeldet',
+                    maybe: 'als vielleicht angemeldet',
+                    no: 'abgemeldet'
+                };
+
+                app.alert({
+                    title: 'Teilnahme',
+                    message: 'Du hast dich ' + valueToMeldung[value],
+                    location: 'left-bottom',
+                    timeout: 2500,
+                    type: value === 'no' ? 'info' : 'success',
+                    image: ''
+                });
+
 
                 Array.prototype.forEach.call(myfuckingButtonForReal, function (myfuckingButtonForReal) {
                     myfuckingButtonForReal.setAttribute('data-value', value);
