@@ -29,7 +29,15 @@ require(['async'], function (async) {
                 data: JSON.stringify({type: value, probability: probability}),
                 success: function () {
                     callback && callback();
+
+                    var myfuckingButtonForReal = document.querySelectorAll('button.attendance-control');
+                    Array.prototype.forEach.call(myfuckingButtonForReal, function (myfuckingButtonForReal) {
+                        myfuckingButtonForReal.setAttribute('data-value', value);
+                    });
+
                     topicLoaded();
+
+
 
                 },
                 error: function () {
@@ -65,7 +73,6 @@ require(['async'], function (async) {
             setAttendance(tid, value, probability, function () {
                 $(window).trigger('attendance:probability', probability);
                 $button.disabled = true;
-                var myfuckingButtonForReal = document.querySelectorAll('button.attendance-control');
 
                 var valueToMeldung = {
                     yes: 'angemeldet',
@@ -80,11 +87,6 @@ require(['async'], function (async) {
                     timeout: 2500,
                     type: value === 'no' ? 'info' : 'success',
                     image: ''
-                });
-
-
-                Array.prototype.forEach.call(myfuckingButtonForReal, function (myfuckingButtonForReal) {
-                    myfuckingButtonForReal.setAttribute('data-value', value);
                 });
             });
         });
