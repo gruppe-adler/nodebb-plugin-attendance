@@ -167,7 +167,7 @@ require(['async'], function (async) {
 
     function getCommitments(topicId, cb) {
         $.get('/api/attendance/' + topicId, function (response) {
-            if (typeof response == 'string') {
+            if (typeof response === 'string') {
                 response = JSON.parse(response)
             }
 
@@ -205,7 +205,7 @@ require(['async'], function (async) {
                 var isLocked = checkDateLock(topicDateString);
                 console.log("isLocked: " + isLocked);
 
-                var markup = _.template(templateString)({
+                buttonsNode.innerHTML = _.template(templateString)({
                     config: {
                         relative_path: config.relative_path
                     },
@@ -213,42 +213,14 @@ require(['async'], function (async) {
                     isLockedMarkup: isLocked,
                     tid: topicId
                 });
-                buttonsNode.innerHTML = markup;
 
                 if (!existingButtonsNode) {
                     console.log('adding buttonsNode…');
                     postBarNode.appendChild(buttonsNode);
                 }
             });
-        })
+        });
     }
-
-    /*
-     function insertDecisionButtons(topicNode, myAttendanceState) {
-     Array.prototype.forEach.call(document.querySelectorAll('.post-bar .clearfix'), function (topicNode) {
-
-
-     var topicId = parseInt(topicNode.getAttribute('data-tid'));
-
-     getTemplate('/plugins/nodebb-plugin-attendance/templates/partials/post_bar.ejs?v=1', function (templateString) {
-     var buttonsNode = document.createElement('div');
-     var existingButtonsNode = topicNode.querySelector('.attendance-master-button');
-     var markup = _.template(templateString)({
-     config: {
-     relative_path: config.relative_path
-     },
-     myAttendanceState: myAttendanceState,
-     tid: topicId
-     });
-     buttonsNode.innerHTML = markup;
-
-     if (!existingButtonsNode) {
-     console.log('adding buttonsNode…');
-     topicNode.appendChild(buttonsNode);
-     }
-     });
-     });
-     }*/
 
     // ende baustelle
 
