@@ -22,6 +22,27 @@ require(['async'], function (async) {
             );
         });
 
+        function setAttendance(tid, value, probability, callback) {
+            $.post({
+                url: config.relative_path + '/api/attendance/' + tid,
+                contentType: 'application/json',
+                data: JSON.stringify({type: value, probability: probability}),
+                success: function () {
+                    callback();
+                    topicLoaded();
+
+                },
+                error: function () {
+                    console.log(arguments);
+                }
+            });
+        }
+
+        $(window).bind('arma3-slotting:slotted', function (data) {
+            var tid = data.tid;
+            setAttendance(tid, 'yes', 1);
+        });
+
         $(document).on('click', '.attendance-control', function () {
             var $button = $(this);
             var value = getCurrentButtonValue($button);
@@ -40,29 +61,16 @@ require(['async'], function (async) {
                     // console.log("any to unknown");
                 }
             }
-            $.post({
-                url: config.relative_path + '/api/attendance/' + tid,
-                contentType: 'application/json',
-                data: JSON.stringify({type: value, probability: probability}),
-                success: function () {
-                    $button.disabled = true;
-                    var myfuckingButtonForReal = document.querySelectorAll('button.attendance-control');
 
-                    Array.prototype.forEach.call(myfuckingButtonForReal, function (myfuckingButtonForReal) {
-                        myfuckingButtonForReal.setAttribute('data-value', value);
-                    });
+            setAttendance(tid, value, probability, function () {
+                $(window).trigger('attendance:probability', probability);
+                $button.disabled = true;
+                var myfuckingButtonForReal = document.querySelectorAll('button.attendance-control');
 
-                    $(window).trigger('attendance:probability', probability);
-
-                    topicLoaded();
-
-                },
-                error: function () {
-                    console.log(arguments);
-                }
+                Array.prototype.forEach.call(myfuckingButtonForReal, function (myfuckingButtonForReal) {
+                    myfuckingButtonForReal.setAttribute('data-value', value);
+                });
             });
-
-
         });
     }());
 
