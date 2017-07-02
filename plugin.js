@@ -1,13 +1,18 @@
 "use strict";
 
-var meta = require('./plugin.json');
+const meta = require('./plugin.json');
 meta.nbbId = meta.id.replace(/nodebb-plugin-/, '');
+
+function noop() {}
 
 module.exports.setup = function (params, callback) {
 
     let admin = require('./lib/admin');
     admin(params, meta, function () {
-        require('./lib/api')(params, callback);
+        require('./lib/api')(params, noop);
+        require('./lib/views')(params, meta, noop);
+
+        callback();
     });
 };
 
