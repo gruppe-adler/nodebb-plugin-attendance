@@ -8,6 +8,7 @@
         "templates": "./public/templates",
         "css": "./public/css"
     },
+    "templates": "public/templates",
     "scripts": [
         "../../node_modules/underscore/underscore-min.js",
         "./public/updateTopicList.js"
@@ -16,7 +17,17 @@
     "hooks": [
         {
             "hook": "static:app.load",
-            "method": "registerApi",
+            "method": "setup",
+            "callbacked": true
+        },
+        {
+            "hook": "filter:topic.create",
+            "method": "tagTopic",
+            "callbacked": true
+        },
+        {
+            "hook": "filter:admin.header.build",
+            "method": "admin.menu",
             "callbacked": true
         }
     ]
