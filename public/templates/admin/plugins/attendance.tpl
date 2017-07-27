@@ -10,6 +10,14 @@
 				</div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="form-group">
+					<label for="allowed-groups">restrict to a number of user groups. Comma separated strings.</label>
+					<input placeholder="" type="text" class="form-control" id="allowed-groups" name="allowed-groups" />
+				</div>
+			</div>
+		</div>
 		<hr />
 		<button class="btn btn-lg btn-primary" id="save" type="button">Save</button>
 	</fieldset>
@@ -17,9 +25,9 @@
 
 <script type="text/javascript">
     require(['settings'], function(Settings) {
-        var nbbId = '{nbbId}',
-            klass = nbbId + '-settings',
-            wrapper = $('.' + klass);
+        const nbbId = '{nbbId}';
+        const klass = nbbId + '-settings';
+        const wrapper = $('.' + klass);
 
         Settings.load(nbbId, wrapper);
 
@@ -29,7 +37,5 @@
                 socket.emit('admin.restart');
             });
         });
-
-
     });
 </script>
