@@ -11,8 +11,8 @@
     "templates": "public/templates",
     "scripts": [
         "../../node_modules/underscore/underscore-min.js",
-        "./public/updateTopicList.js"
-
+        "./public/updateTopicList.js",
+        "./public/colorTopic.js"
     ],
     "hooks": [
         {
@@ -28,6 +28,16 @@
         {
             "hook": "filter:admin.header.build",
             "method": "admin.menu",
+            "callbacked": true
+        },
+        {
+            "hook": "filter:category.topics.get",
+            "method": "colorTopic",
+            "callbacked": true
+        },
+        {
+            "hook": "filter:events.topics.get",
+            "method": "colorTopic",
             "callbacked": true
         }
     ]
