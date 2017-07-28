@@ -2,6 +2,7 @@
 
 const meta = require('./plugin.json');
 const _ = require('underscore');
+const floatPersistence = require('./lib/persistence-float');
 meta.nbbId = meta.id.replace(/nodebb-plugin-/, '');
 
 function noop() {}
@@ -54,4 +55,23 @@ module.exports.colorTopic = function (data, cb) {
     });
 
     cb(null, data);
+};
+
+module.exports.catchArma3SlottingSet = function (data) {
+    const uid = data.uid;
+    const tid = data.tid;
+
+
+    const dataSet = {
+        tid: tid,
+        uid: uid,
+        probability: 1,
+        timestamp: (new Date()).getTime()
+    };
+
+    floatPersistence.set(
+        tid,
+        dataSet,
+        noop
+    );
 };

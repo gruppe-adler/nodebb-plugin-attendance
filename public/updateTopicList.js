@@ -46,11 +46,6 @@ require(['async'], function (async) {
             });
         }
 
-        $(window).bind('arma3-slotting:slotted', function (event, data) {
-            var tid = data.tid;
-            setAttendance(tid, 'yes', 1);
-        });
-
         $(document).on('click', '.attendance-control', function () {
             var $button = $(this);
             var value = getCurrentButtonValue($button);

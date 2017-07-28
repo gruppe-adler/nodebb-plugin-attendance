@@ -39,6 +39,11 @@
             "hook": "filter:events.topics.get",
             "method": "colorTopic",
             "callbacked": true
+        },
+        {
+            "hook": "action:arma3-slotting.set",
+            "method": "catchArma3SlottingSet",
+            "callbacked": true
         }
     ]
 }
