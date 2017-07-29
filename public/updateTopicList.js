@@ -66,7 +66,7 @@ require(['async'], function (async) {
             }
 
             setAttendance(tid, value, probability, function () {
-                $(window).trigger('attendance:probability', probability);
+                $(window).trigger('action:attendance.set', probability);
                 $button.disabled = true;
 
                 var valueToMeldung = {
@@ -219,7 +219,7 @@ require(['async'], function (async) {
 
             getTemplates('partials/post_bar.ejs', function (err, templates) {
                 var buttonsNode = document.createElement('div');
-                var existingButtonsNode = postBarNode.querySelector('.attendance-master-button');
+                var existingButtonsNode = postBarNode.querySelector('.attendance-master-button') ? postBarNode.querySelector('.attendance-master-button').parentNode : null;
                 var templateString = templates[0];
 
                 var topicDateString = isMission(getTopicTitle(document))[1];
@@ -239,6 +239,8 @@ require(['async'], function (async) {
                 if (!existingButtonsNode) {
                     console.log('adding buttonsNode…');
                     postBarNode.appendChild(buttonsNode);
+                } else {
+                    existingButtonsNode.parentNode.replaceChild(buttonsNode, existingButtonsNode);
                 }
             });
         });
@@ -260,6 +262,7 @@ require(['async'], function (async) {
         if (existingAttendanceComponentNode) {
             firstPost.replaceChild(attendanceNode, existingAttendanceComponentNode);
             hideAttendanceDetails();
+            insertDecisionButtons(topicComponentNode, myAttendanceState);
             refreshToolTips();
             return true;
         }
@@ -356,6 +359,8 @@ require(['async'], function (async) {
 
 
     $(window).bind('action:topic.loaded', topicLoaded);
+    $(window).bind('action:arma3-slotting.set', function () { setTimeout(topicLoaded, 50); });
+    $(window).bind('action:arma3-slotting.unset', function () { setTimeout(topicLoaded, 50); });
     $(window).bind('action:topics.loaded', topicsLoaded);
     if (app.template === 'category' || app.template === 'views/events') {
         topicsLoaded();
