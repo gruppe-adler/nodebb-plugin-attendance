@@ -118,7 +118,7 @@ require(['async'], function (async) {
     var getTemplate = (function () {
         var loadedTemplates = {};
         return function (templateName, cb) {
-            templateName = '/plugins/nodebb-plugin-attendance/templates/' + templateName;
+            templateName = '/plugins/nodebb-plugin-attendance/ejs-templates/' + templateName;
             if (loadedTemplates[templateName]) {
                 return cb(loadedTemplates[templateName]);
             }

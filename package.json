@@ -1,12 +1,13 @@
 {
     "name": "nodebb-plugin-attendance",
-    "version": "0.13.1",
+    "version": "0.13.2",
     "dependencies": {
         "async": "^2.0",
-        "winston": "*",
         "underscore": "*",
         "nodebb-plugin-frontend-async": "*"
-
+    },
+    "peerDependencies": {
+        "winston": "*"
     },
     "engines" : {
         "npm" : ">3.0"
