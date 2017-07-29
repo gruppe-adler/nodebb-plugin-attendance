@@ -1,7 +1,12 @@
 <div class="tag">
 	<div class="clearfix">
 		<div class="pull-left">
-			<!-- breadcrumbs, if you want to -->
+			<ul class="nav nav-pills">
+				<li class=""><a href="/events" id="events_all" class="btn">Alle Einsätze</a></li>
+				<li class=""><a href="/events/cid-3" id="events_general" class="btn">Unsere Einsätze</a></li>
+				<li class=""><a href="/events/cid-20" id="events_intern" class="btn">Interne Einsätze</a></li>
+				<li class=""><a href="/events/cid-27" id="events_extern" class="btn">Einladungen anderer Gruppen</a></li>
+			</ul>
 		</div>
 
 		<div class="pull-right">
