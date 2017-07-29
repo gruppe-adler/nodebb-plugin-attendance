@@ -2,22 +2,27 @@
 
 <form role="form" class="{nbbId}-settings">
 	<fieldset>
+		<!-- BEGIN groups -->
 		<div class="row">
-			<div class="col-sm-12">
+			<div class="col-sm-6">
 				<div class="form-group">
-					<label for="allowed-categories">restrict to a number of category IDs. Comma separated integers pl0x!</label>
-					<input placeholder="" type="text" class="form-control" id="allowed-categories" name="allowed-categories" />
+					<label for="categories-r-@value">readable events for @value</label>
+					<input title="comma separated category IDs" placeholder="" type="text" class="form-control"
+						   id="categories-r-@value"
+						   name="categories-r-@value" />
+				</div>
+			</div>
+
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label for="categories-w-@value">attendable events for @value</label>
+					<input title="comma separated category IDs" placeholder="" type="text" class="form-control"
+						   id="categories-w-@value"
+						   name="categories-w-@value" />
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-sm-12">
-				<div class="form-group">
-					<label for="allowed-groups">restrict to a number of user groups. Comma separated strings.</label>
-					<input placeholder="" type="text" class="form-control" id="allowed-groups" name="allowed-groups" />
-				</div>
-			</div>
-		</div>
+		<!-- END groups -->
 		<hr />
 		<button class="btn btn-lg btn-primary" id="save" type="button">Save</button>
 	</fieldset>
