@@ -31,4 +31,13 @@
 		<!-- IMPORT partials/paginator.tpl -->
 		<!-- ENDIF config.usePagination -->
 	</div>
+	<script>
+		(function () {
+			var currentPath = '{tag}' ? '/events/{tag}': '/events';
+			var activeLink = document.querySelector('a[href="' + currentPath + '"]');
+			if (activeLink) {
+				activeLink.className = activeLink.className + ' active';
+			}
+		}());
+	</script>
 </div>
