@@ -1,7 +1,7 @@
 <% /*global attendant, attendanceState */
 	var draggable = attendanceState === 'yes' ? 'true' : 'false'
 %>
-<li class="avatar-list-item">
+<li class="avatar-list-item" title="<%- attendant.username%>">
 	<div class="avatar-wrapper">
 		<% if (attendant.isSlotted) { %>
 			<i class="fa fa-lock slotted-badge"></i>
@@ -9,13 +9,11 @@
 		<% if (attendant.picture) { %>
 		<img class="user-img avatar avatar-md avatar-rounded attendance_<%- attendanceState %>" src="<%-attendant.picture %>"
 			 data-uid="<%-attendant.uid%>" data-username="<%-attendant.username%>"
-			 title="<%- attendant.username%>"
 			 draggable="<%-draggable%>"
 		/>
 		<% } else { %>
 		<div class="avatar avatar-md avatar-rounded attendance_<%- attendanceState %>"
 			 data-uid="<%-attendant.uid%>" data-username="<%-attendant.username%>"
-			 title="<%- attendant.username%>"
 			 style="background-color: <%=attendant['icon:bgColor'] %>"
 			 draggable="<%-draggable%>"
 		>
