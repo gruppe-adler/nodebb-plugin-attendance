@@ -349,8 +349,9 @@
 
 }
 
-[component="topic/attendance"] .avatar-list-item {
+[component="topic/attendance"] .main-table .secondColumn li {
     display: inline-block;
+    padding: 0 2px;
 }
 
 [component="topic/attendance"] .main-table .avatar {
