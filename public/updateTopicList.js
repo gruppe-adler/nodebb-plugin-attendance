@@ -302,7 +302,14 @@ require(['async'], function (async) {
                             userbadgeTemplate = templates[1],
                             userRowTemplate = templates[2];
                         var getUserMarkupList = function (compiledTemplate, attendanceState) {
-                            return response.attendants.sort(function (a, b) { return b.timestamp - a.timestamp}).filter(function (attendant) {
+                            return response.attendants.sort(function (a, b) {
+                                if (a.isSlotted && !b.isSlotted) {
+                                    return -1;
+                                } else if (!a.isSlotted && b.isSlotted) {
+                                    return 1;
+                                }
+                                return b.timestamp - a.timestamp;
+                            }).filter(function (attendant) {
                                 return probabilityToYesMaybeNo[attendant.probability] == attendanceState;
                             }).map(function (attendant) {
                                 return compiledTemplate({
