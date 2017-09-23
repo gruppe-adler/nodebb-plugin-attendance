@@ -25,7 +25,8 @@ module.exports.admin = {
         custom_header.plugins.push({
             "route": '/plugins/' + meta.nbbId,
             "icon": 'fa-calendar',
-            "name": meta.name
+            "name": meta.name,
+            "nbbId": meta.nbbId,
         });
 
         callback(null, custom_header);
