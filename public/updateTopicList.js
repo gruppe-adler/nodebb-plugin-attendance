@@ -199,7 +199,7 @@ require(['async'], function (async) {
 
     // baustelle
     var refreshToolTips = function () {
-        var attendanceAvatar = document.querySelectorAll(".avatar");
+        var attendanceAvatar = document.querySelectorAll(".avatar-list-item");
         Array.prototype.forEach.call(attendanceAvatar, function (attendanceAvatar) {
             if (!utils.isTouchDevice()) {
                 $(attendanceAvatar).tooltip({

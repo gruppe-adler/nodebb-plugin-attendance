@@ -356,8 +356,8 @@
 }
 
 [component="topic/attendance"] .main-table tr .secondColumn ul li img {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
 }
 
 [component="topic/attendance"] .main-table tr .thirdColumn {
@@ -542,7 +542,25 @@
   }
 }
 
-.attendance-slotted-badge {
+[component="topic/attendance"] .slotted-badge {
     position: absolute;
-    top: 0;
+    left: 0;
+    top: 4px;
+    width: 32px;
+    height: 32px;
+    background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.7) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.35) 50%,rgba(0,0,0,0.7) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.35) 50%,rgba(0,0,0,0.7) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#b3000000',GradientType=0 );
+    border-radius: 100px;
+    color: #fff;
+    line-height: 44px;
+    font-size: 10px;
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.9);
+}
+
+[component="topic/attendance"] .avatar-wrapper {
+    position: relative;
+    cursor:pointer;
+    display: inline-block;
 }
