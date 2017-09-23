@@ -2,7 +2,10 @@
 	var draggable = attendanceState === 'yes' ? 'true' : 'false'
 %>
 <li>
-	<div style="cursor:pointer; display: inline-block;">
+	<div style="cursor:pointer; display: inline-block; position: relative">
+		<% if (attendant.isSlotted) { %>
+			<i class="fa fa-shield attendance-slotted-badge"></i>
+		<% } %>
 		<% if (attendant.picture) { %>
 		<img class="user-img avatar avatar-md avatar-rounded attendance_<%- attendanceState %>" src="<%-attendant.picture %>"
 			 data-uid="<%-attendant.uid%>" data-username="<%-attendant.username%>"

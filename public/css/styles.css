@@ -541,3 +541,8 @@
     content: "";
   }
 }
+
+.attendance-slotted-badge {
+    position: absolute;
+    top: 0;
+}
