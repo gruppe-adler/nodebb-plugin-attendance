@@ -1,7 +1,7 @@
 {
     "id": "nodebb-plugin-attendance",
     "name": "NodeBB Attendance",
-    "description": "Marke topics with a date, and let users show if they want to attend.",
+    "description": "plugin which adds ability to show whether you attend an event by a single mouse click. Events are marked by having an ISO date at the start of the title.",
     "url": "https://github.com/Fusselwurm/nodebb-plugin-attendance",
     "library": "./plugin.js",
     "staticDirs": {
@@ -23,6 +23,11 @@
         },
         {
             "hook": "filter:topic.create",
+            "method": "tagTopic",
+            "callbacked": true
+        },
+        {
+            "hook": "filter:topic.edit",
             "method": "tagTopic",
             "callbacked": true
         },
