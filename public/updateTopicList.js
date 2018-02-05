@@ -355,9 +355,13 @@ require(['async'], function (async) {
                     var yesCount = response.attendants.filter(function (attendant) {
                         return probabilityToYesMaybeNo[attendant.probability] === 'yes'
                     }).length;
+                    var maybeCount = response.attendants.filter(function (attendant) {
+                        return probabilityToYesMaybeNo[attendant.probability] === 'maybe'
+                    }).length;
                     addCommitmentCountToTopicHeader(
                         topicItem,
                         yesCount,
+                        yesCount + maybeCount,
                         probabilityToYesMaybeNo[response.myAttendance ? response.myAttendance.probability : 2]);
                 });
             }
