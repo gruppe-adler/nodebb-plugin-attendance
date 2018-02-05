@@ -156,7 +156,7 @@ require(['async'], function (async) {
         no: "#c91106"
     };
 
-    var addCommitmentCountToTopicHeader = function (categoryItem, yesCount, myAttendance) {
+    var addCommitmentCountToTopicHeader = function (categoryItem, yesCount, possbileTotalCount, myAttendance) {
         if (hasAttendanceClasses(categoryItem)) {
             return;
         }
@@ -172,7 +172,7 @@ require(['async'], function (async) {
         viewsDiv.className = oneStatsDiv.className + ' stats-attendance';
         viewsDiv.innerHTML = oneStatsDiv.innerHTML;
         viewsDiv.querySelector('small').innerHTML = "Zusagen";
-        viewsDiv.querySelector('[class="human-readable-number"]').innerHTML = yesCount;
+        viewsDiv.querySelector('[class="human-readable-number"]').innerHTML = yesCount + ' - ' + possbileTotalCount;
 
         oneStatsDiv.parentNode.insertBefore(viewsDiv, oneStatsDiv);
 
