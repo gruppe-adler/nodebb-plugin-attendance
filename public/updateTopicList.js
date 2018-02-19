@@ -172,7 +172,7 @@ require(['async'], function (async) {
         viewsDiv.className = oneStatsDiv.className + ' stats-attendance';
         viewsDiv.innerHTML = oneStatsDiv.innerHTML;
         viewsDiv.querySelector('small').innerHTML = "Zusagen";
-        viewsDiv.querySelector('[class="human-readable-number"]').innerHTML = yesCount + ' - ' + possibleTotalCount;
+        viewsDiv.querySelector('[class="human-readable-number"]').innerHTML = yesCount + ' – ' + possibleTotalCount;
 
         oneStatsDiv.parentNode.insertBefore(viewsDiv, oneStatsDiv);
 
