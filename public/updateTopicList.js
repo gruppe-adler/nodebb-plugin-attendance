@@ -156,7 +156,7 @@ require(['async'], function (async) {
         no: "#c91106"
     };
 
-    var addCommitmentCountToTopicHeader = function (categoryItem, yesCount, myAttendance) {
+    var addCommitmentCountToTopicHeader = function (categoryItem, yesCount, possibleTotalCount, myAttendance) {
         if (hasAttendanceClasses(categoryItem)) {
             return;
         }
@@ -172,7 +172,7 @@ require(['async'], function (async) {
         viewsDiv.className = oneStatsDiv.className + ' stats-attendance';
         viewsDiv.innerHTML = oneStatsDiv.innerHTML;
         viewsDiv.querySelector('small').innerHTML = "Zusagen";
-        viewsDiv.querySelector('[class="human-readable-number"]').innerHTML = yesCount;
+        viewsDiv.querySelector('[class="human-readable-number"]').innerHTML = yesCount + ' - ' + possibleTotalCount;
 
         oneStatsDiv.parentNode.insertBefore(viewsDiv, oneStatsDiv);
 
@@ -355,9 +355,13 @@ require(['async'], function (async) {
                     var yesCount = response.attendants.filter(function (attendant) {
                         return probabilityToYesMaybeNo[attendant.probability] === 'yes'
                     }).length;
+                    var maybeCount = response.attendants.filter(function (attendant) {
+                        return probabilityToYesMaybeNo[attendant.probability] === 'maybe'
+                    }).length;
                     addCommitmentCountToTopicHeader(
                         topicItem,
                         yesCount,
+                        yesCount + maybeCount,
                         probabilityToYesMaybeNo[response.myAttendance ? response.myAttendance.probability : 2]);
                 });
             }
