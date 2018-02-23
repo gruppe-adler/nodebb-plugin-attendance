@@ -171,7 +171,7 @@ require(['async'], function (async) {
         function numberRangeMarkup(lower, upper) {
             var markup = '<span class="range-from">%d</span>'.replace('%d', lower);
             if (!isNaN(upper) && (upper !== lower)) {
-                markup += ' – <span class="range-to">%d</span>'.replace('%d', upper);
+                markup += ' <span class="range-to">– %d</span>'.replace('%d', upper);
             }
             return markup;
         }
