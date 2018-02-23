@@ -168,11 +168,19 @@ require(['async'], function (async) {
         myAttendanceDiv.appendChild(getUserSymbolElement(colorMap[myAttendance] || '#777', myAttendance));
         oneStatsDiv.parentNode.insertBefore(myAttendanceDiv, oneStatsDiv);
 
+        function numberRangeMarkup(lower, upper) {
+            var markup = '<span class="range-from">%d</span>'.replace('%d', lower);
+            if (!isNaN(upper) && (upper !== lower)) {
+                markup += ' – <span class="range-to">%d</span>'.replace('%d', upper);
+            }
+            return markup;
+        }
+
         var viewsDiv = document.createElement('div');
         viewsDiv.className = oneStatsDiv.className + ' stats-attendance';
         viewsDiv.innerHTML = oneStatsDiv.innerHTML;
         viewsDiv.querySelector('small').innerHTML = "Zusagen";
-        viewsDiv.querySelector('[class="human-readable-number"]').innerHTML = yesCount + ' - ' + possibleTotalCount;
+        viewsDiv.querySelector('[class="human-readable-number"]').innerHTML = numberRangeMarkup(yesCount, possibleTotalCount);
 
         oneStatsDiv.parentNode.insertBefore(viewsDiv, oneStatsDiv);
 
