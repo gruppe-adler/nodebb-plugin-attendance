@@ -563,3 +563,15 @@
     cursor:pointer;
     display: inline-block;
 }
+
+[data-relative-time="future"]  {
+    border-left: 5px solid #96d11f;
+}
+
+[data-relative-time="past"]  {
+    border-left: 5px solid #333;
+}
+
+.stats-votes.stats-attendance {
+    display: inline-block;
+}
