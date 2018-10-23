@@ -30,7 +30,7 @@
 
 <script type="text/javascript">
     require(['settings'], function(Settings) {
-        const nbbId = '{nbbId}';
+        const nbbId = 'attendance';
         const klass = nbbId + '-settings';
         const wrapper = $('.' + klass);
 
