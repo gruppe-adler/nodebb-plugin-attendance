@@ -53,7 +53,7 @@
         var now = parseInt((new Date()).getTime() / 1000, 10);
         var topicRows = document.querySelectorAll('[component="category/topic"]');
         Array.prototype.forEach.call(topicRows, function (categoryItem) {
-            var meta = categoryItem.querySelector('[component="topic/header"] a'); 
+            var meta = categoryItem.querySelector('[component="topic/header"] a');
             var topicTime = titleToTimestamp(meta.getAttribute('content') || meta.textContent || '');
             var dataRelativeTime = '';
             var timeDiff = now - topicTime;
@@ -72,5 +72,6 @@
 
     $(window).bind('action:ajaxify.contentLoaded', refresh);
     $(window).bind('action:topics.loaded', refresh);
+    $(document).ready(refresh);
     $(window).bind('action:categories.loaded', refresh);
 }());

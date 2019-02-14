@@ -381,9 +381,18 @@ require(['async'], function (async) {
     $(window).bind('action:arma3-slotting.set', function () { setTimeout(topicLoaded, 50); });
     $(window).bind('action:arma3-slotting.unset', function () { setTimeout(topicLoaded, 50); });
     $(window).bind('action:topics.loaded', topicsLoaded);
-    if (app.template === 'category' || app.template === 'views/events') {
-        topicsLoaded();
-    }
+    $(document).ready(function () {
+        switch (app.template) {
+            case 'category':
+            case 'views/events':
+                topicsLoaded();
+                break;
+            case 'topic':
+                topicLoaded();
+                break;
+        }
+    });
+
 
 });
 
