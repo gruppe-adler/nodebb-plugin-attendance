@@ -1,9 +1,8 @@
 "use strict";
 
-const meta = require('./plugin.json');
-const _ = require('underscore');
+const meta = require('./lib/meta.js');
+const _ = require.main.require('underscore');
 const floatPersistence = require('./lib/persistence-float');
-meta.nbbId = meta.id.replace(/nodebb-plugin-/, '');
 
 function noop() {}
 
@@ -72,7 +71,6 @@ module.exports.catchArma3SlottingSet = function (data) {
 
     floatPersistence.set(
         tid,
-        dataSet,
-        noop
+        dataSet
     );
 };

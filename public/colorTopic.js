@@ -4,15 +4,15 @@
     /**
      * taken from underscoreJs
      */
-    var _ = {
+    const _ = {
         now: Date.now || function() {
             return new Date().getTime();
         },
         debounce: function(func, wait, immediate) {
-            var timeout, args, context, timestamp, result;
+            let timeout, args, context, timestamp, result;
 
-            var later = function() {
-                var last = _.now() - timestamp;
+            const later = function () {
+                const last = _.now() - timestamp;
 
                 if (last < wait && last >= 0) {
                     timeout = setTimeout(later, wait - last);
@@ -20,7 +20,9 @@
                     timeout = null;
                     if (!immediate) {
                         result = func.apply(context, args);
-                        if (!timeout) context = args = null;
+                        if (!timeout) {
+                            context = args = null;
+                        }
                     }
                 }
             };
@@ -29,7 +31,7 @@
                 context = this;
                 args = arguments;
                 timestamp = _.now();
-                var callNow = immediate && !timeout;
+                const callNow = immediate && !timeout;
                 if (!timeout) timeout = setTimeout(later, wait);
                 if (callNow) {
                     result = func.apply(context, args);
@@ -41,22 +43,22 @@
         }
     };
 
-    var titleToTimestamp = function (title) {
-        var matches = title.trim().match(/([0-9]{4}-[0-9]{2}-[0-9]{2})([^0-9a-z])/i);
+    const titleToTimestamp = function (title) {
+        const matches = title.trim().match(/([0-9]{4}-[0-9]{2}-[0-9]{2})([^0-9a-z])/i);
         if (!matches) {
             return 0;
         }
         return parseInt((new Date(matches[1])).getTime() / 1000, 10);
     };
 
-    var refresh = _.debounce(function () {
-        var now = parseInt((new Date()).getTime() / 1000, 10);
-        var topicRows = document.querySelectorAll('[component="category/topic"]');
+    const refresh = _.debounce(function () {
+        const now = parseInt((new Date()).getTime() / 1000, 10);
+        const topicRows = document.querySelectorAll('[component="category/topic"]');
         Array.prototype.forEach.call(topicRows, function (categoryItem) {
-            var meta = categoryItem.querySelector('[component="topic/header"] a');
-            var topicTime = titleToTimestamp(meta.getAttribute('content') || meta.textContent || '');
-            var dataRelativeTime = '';
-            var timeDiff = now - topicTime;
+            const meta = categoryItem.querySelector('[component="topic/header"] a');
+            const topicTime = titleToTimestamp(meta.getAttribute('content') || meta.textContent || '');
+            let dataRelativeTime = '';
+            const timeDiff = now - topicTime;
 
             if (topicTime === 0) {
                 dataRelativeTime = 'now';
