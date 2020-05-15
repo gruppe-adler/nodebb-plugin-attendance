@@ -1,4 +1,4 @@
-/*global $, templates, _ */
+/*global $, templates, _template */
 
 (function () {
     const css = document.createElement('link');
@@ -226,7 +226,7 @@ function insertDecisionButtons(topicNode, myAttendance) {
         const isLocked = checkDateLock(topicDateString);
         console.debug("isLocked: " + isLocked);
 
-        buttonsNode.innerHTML = _.template(templateString)({
+        buttonsNode.innerHTML = _template(templateString)({
             config: {
                 relative_path: config.relative_path
             },
@@ -316,10 +316,10 @@ const topicLoaded = function () {
                             });
                         });
                     };
-                    const compiledUserbadgeTemplate = _.template(userbadgeTemplate);
-                    const compiledUserRowTemplate = _.template(userRowTemplate);
+                    const compiledUserbadgeTemplate = _template(userbadgeTemplate);
+                    const compiledUserRowTemplate = _template(userRowTemplate);
 
-                    const markup = _.template(template)({
+                    const markup = _template(template)({
                         config: config,
                         yesListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'yes'),
                         maybeListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'maybe'),

@@ -1,10 +1,22 @@
 "use strict";
 
 const meta = require('./lib/meta.js');
-const _ = require.main.require('underscore');
 const floatPersistence = require('./lib/persistence-float');
 
 function noop() {}
+function identity(e) {
+    return e;
+}
+
+// implementation like Underscore does it
+function memoize(func, hasher) {
+    const memo = {};
+    hasher || (hasher = identity);
+    return function() {
+        const key = hasher.apply(this, arguments);
+        return memo.hasOwnProperty(key) ? memo[key] : (memo[key] = func.apply(this, arguments));
+    };
+}
 
 module.exports.setup = function (params, callback) {
 
@@ -32,7 +44,7 @@ module.exports.admin = {
     }
 };
 
-const titleToTimestamp = _.memoize(function (title) {
+const titleToTimestamp = memoize(function (title) {
     const matches = title.match(/([0-9]{4}-[0-9]{2}-[0-9]{2})[^a-z0-9]/i);
     if (!matches) {
         return 0;
