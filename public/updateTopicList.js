@@ -1,10 +1,12 @@
 /*global $, templates, _template */
 
+const cachebuster = '5';
+
 (function () {
     const css = document.createElement('link');
     css.rel = 'stylesheet';
     css.type = 'text/css';
-    css.href = '/plugins/nodebb-plugin-attendance/css/styles.css?v=2';
+    css.href = '/plugins/nodebb-plugin-attendance/css/styles.css?v=' + cachebuster;
     document.head.appendChild(css);
 }());
 
@@ -50,7 +52,7 @@
         const isMasterButton = $button.hasClass('attendance-master-button');
 
         if (isMasterButton) {
-            if (value === 'unknown' || value == '' || value === 'no') { // TODO verify if we really need the fuzzy equality
+            if (!value || ['unknown', 'no'].indexOf(value) !== -1) { // TODO verify if we really need the fuzzy equality
                 value = 'yes';
                 $button.data("value", "yes");
             } else {
@@ -92,7 +94,6 @@ const probabilityToYesMaybeNo = {
     2: "unknown"
 };
 
-const cachebuster = '4';
 const getTemplates = function (templatePaths /*array of paths relative to public/templates*/) {
     if (typeof templatePaths === 'string') {
         templatePaths = [templatePaths];
@@ -113,14 +114,18 @@ const getTemplate = (function () {
                 return resolve(loadedTemplates[templateName]);
             }
             $.get(templateName, function (response) {
-                loadedTemplates[templateName] = response;
-                resolve(loadedTemplates[templateName]);
+                if (response) {
+                    loadedTemplates[templateName] = response;
+                    resolve(loadedTemplates[templateName]);
+                } else {
+                    reject();
+                }
             });
         });
     }
 }());
 
-const isMission = function (title) {
+const getEventTopicDateMatch = function (title) {
     return title.trim().match(/([0-9]{4}-[0-9]{2}-[0-9]{2})([^0-9a-z])/i);
 };
 
@@ -185,6 +190,13 @@ function getTopicTitle(categoryTopicComponentNode) {
     return titleElement.getAttribute('content') || titleElement.textContent || '';
 }
 
+function getEventDate(categoryTopicComponentNode) {
+    const topicTitle = getTopicTitle(categoryTopicComponentNode);
+    const dateMatch = getEventTopicDateMatch(topicTitle);
+
+    return dateMatch ? new Date(dateMatch) : undefined;
+}
+
 function getCommitments(topicId, cb) {
     $.get('/api/attendance/' + topicId, function (response) {
         if (typeof response === 'string') {
@@ -208,148 +220,144 @@ const refreshToolTips = function () {
     });
 };
 
-// github original
-function insertDecisionButtons(topicNode, myAttendance) {
-    const postBarNode = document.querySelectorAll(".post-bar .clearfix");
-    const topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
+async function insertDecisionButtons(myAttendance) {
+    const mainButtonsContainer = getTopicMainButtonsContainerOnTopicPage();
+    if (!mainButtonsContainer) {
+        console.warn('could not find topic main buttons container');
+        return;
+    }
 
-    Array.prototype.forEach.call(postBarNode, async function(postBarNode) {
+    const templates = await getTemplates('partials/post_bar.ejs');
 
-        const templates = await getTemplates('partials/post_bar.ejs');
-
-        const buttonsNode = document.createElement('div');
-        const existingButtonsNode = postBarNode.querySelector('.attendance-master-button') ? postBarNode.querySelector('.attendance-master-button').parentNode : null;
-        const templateString = templates[0];
-
-        const topicDateString = isMission(getTopicTitle(document))[1];
-        console.debug("topicDateString: " + topicDateString);
-        const isLocked = checkDateLock(topicDateString);
-        console.debug("isLocked: " + isLocked);
-
-        buttonsNode.innerHTML = _template(templateString)({
-            config: {
-                relative_path: config.relative_path
-            },
-            myAttendanceState: probabilityToYesMaybeNo[myAttendance ? myAttendance.probability : 2],
-            isLockedMarkup: isLocked,
-            tid: topicId
-        });
-
-        if (!existingButtonsNode) {
-            console.log('adding buttonsNode…');
-            postBarNode.appendChild(buttonsNode);
-        } else {
-            existingButtonsNode.parentNode.replaceChild(buttonsNode, existingButtonsNode);
-        }
+    const buttonsNodeParent = document.createElement('div');
+    buttonsNodeParent.innerHTML = _template(templates[0])({
+        config: {
+            relative_path: config.relative_path
+        },
+        myAttendanceState: probabilityToYesMaybeNo[myAttendance ? myAttendance.probability : 2],
+        isLockedMarkup: checkDateLock(getEventDate(document)),
+        tid: getTopicId(),
     });
+
+
+    const existingButtonsNode = mainButtonsContainer.querySelector('[component="topic/attendance-buttons"]');
+    if (existingButtonsNode) {
+        mainButtonsContainer.replaceChild(buttonsNodeParent.firstElementChild, existingButtonsNode);
+    } else {
+        mainButtonsContainer.prepend(buttonsNodeParent.firstElementChild);
+    }
 }
 
 // ende baustelle
 
-const insertTopicAttendanceNode = function (topicComponentNode, attendanceNode, myAttendanceState, canAttend) {
+const insertOrReplaceTopicAttendanceNode = function (attendanceNode) {
+    const topicHeaderNode = getTopicHeaderOnTopicPage();
+    const topicNode = topicHeaderNode.parentNode;
 
-    const firstPost = topicComponentNode.querySelector('[component="post"]');
 
-    //exit if isn't first page
-    if (firstPost.getAttribute("data-index") != "0") { // TODO check data-index type
-        return false;
-    }
-
-    //replace we updated data if the attendance component already exists
-    const existingAttendanceComponentNode = firstPost.querySelector('[component="topic/attendance"]');
+    const existingAttendanceComponentNode = topicNode.querySelector('[component="topic/attendance"]');
     if (existingAttendanceComponentNode) {
-        firstPost.replaceChild(attendanceNode, existingAttendanceComponentNode);
-        hideAttendanceDetails();
-        insertDecisionButtons(topicComponentNode, myAttendanceState);
-        refreshToolTips();
-        return true;
+        topicNode.replaceChild(attendanceNode, existingAttendanceComponentNode);
+    } else {
+        const postsNode = topicNode.querySelector('[component="topic"]');
+        topicNode.insertBefore(attendanceNode, postsNode)
     }
-
-    const postBarNode = firstPost.querySelector('[class="post-bar"]');
-
-    //only insert attendance if the postbar exists (if this is the first post)
-    if (postBarNode) {
-        postBarNode.parentNode.insertBefore(attendanceNode, postBarNode);
-        if (canAttend) {
-            insertDecisionButtons(topicComponentNode, myAttendanceState);
-        }
-    } else if (topicComponentNode.children.length === 1) {
-        firstPost.appendChild(attendanceNode);
-        if (canAttend) {
-            insertDecisionButtons(topicComponentNode, myAttendanceState);
-        }
-    }
-
-    hideAttendanceDetails();
-    refreshToolTips();
 };
 
 const hasAttendanceClasses = function (node) {
     return node.querySelector('.stats-attendance');
 };
 
+const getTopicMainButtonsContainerOnTopicPage = function () {
+    return document.querySelector('.topic-main-buttons');
+}
+
+const getTopicHeaderOnTopicPage = function () {
+    // previously document.querySelector('[component="topic"]')
+    return document.querySelector('.topic-header')
+}
+
+const getTopicId = function (topicNode) {
+    if (!topicNode) {
+        topicNode = document.querySelector('[component="topic"]');
+    }
+    return parseInt(topicNode.getAttribute('data-tid'), 10);
+}
+
 const topicLoaded = function () {
-    Array.prototype.forEach.call(document.querySelectorAll('[component="topic"]'), function (topicNode) {
+    const topicHeader = getTopicHeaderOnTopicPage();
+    if (!topicHeader) {
+        console.warn('cannot find topic header node');
+        return;
+    }
 
-        if (isMission(getTopicTitle(document))) {
-            const topicId = parseInt(topicNode.getAttribute('data-tid'), 10);
-            getCommitments(topicId, function (response) {
-                getTemplates(['topic.ejs', 'partials/topic_userbadge.ejs', 'partials/topic_detailsRow.ejs']).then(templates => {
-                    const template = templates[0],
-                        userbadgeTemplate = templates[1],
-                        userRowTemplate = templates[2];
-                    const getUserMarkupList = function (compiledTemplate, attendanceState) {
-                        return response.attendants.sort(function (a, b) {
-                            if (a.isSlotted && !b.isSlotted) {
-                                return -1;
-                            } else if (!a.isSlotted && b.isSlotted) {
-                                return 1;
-                            }
-                            return b.timestamp - a.timestamp;
-                        }).filter(function (attendant) {
-                            return probabilityToYesMaybeNo[attendant.probability] === attendanceState;
-                        }).map(function (attendant) {
-                            return compiledTemplate({
-                                attendant: attendant,
-                                attendanceState: attendanceState,
-                                config: config
-                            });
-                        });
-                    };
-                    const compiledUserbadgeTemplate = _template(userbadgeTemplate);
-                    const compiledUserRowTemplate = _template(userRowTemplate);
+    if (!getEventDate(topicHeader)) {
+        return;
+    }
 
-                    const markup = _template(template)({
-                        config: config,
-                        yesListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'yes'),
-                        maybeListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'maybe'),
-                        noListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'no'),
-                        userRowsMarkupYes: getUserMarkupList(compiledUserRowTemplate, 'yes'),
-                        userRowsMarkupMaybe: getUserMarkupList(compiledUserRowTemplate, 'maybe'),
-                        userRowsMarkupNo: getUserMarkupList(compiledUserRowTemplate, 'no'),
-                        tid: topicId
+    const topicId = getTopicId()
+
+    getCommitments(topicId, function (attendance) {
+        getTemplates(['topic.ejs', 'partials/topic_userbadge.ejs', 'partials/topic_detailsRow.ejs']).then(templates => {
+            const template = templates[0],
+                userbadgeTemplate = templates[1],
+                userRowTemplate = templates[2];
+            const getUserMarkupList = function (compiledTemplate, attendanceState) {
+                return attendance.attendants.sort(function (a, b) {
+                    if (a.isSlotted && !b.isSlotted) {
+                        return -1;
+                    } else if (!a.isSlotted && b.isSlotted) {
+                        return 1;
+                    }
+                    return b.timestamp - a.timestamp;
+                }).filter(function (attendant) {
+                    return probabilityToYesMaybeNo[attendant.probability] === attendanceState;
+                }).map(function (attendant) {
+                    return compiledTemplate({
+                        attendant: attendant,
+                        attendanceState: attendanceState,
+                        config: config
                     });
-
-                    const node = document.createElement('div');
-                    node.setAttribute('component', 'topic/attendance');
-                    node.innerHTML = markup;
-
-                    insertTopicAttendanceNode(topicNode, node, response.myAttendance, response.canAttend);
-                }).catch(err => {
-                    console.error(err);
                 });
+            };
+            const compiledUserbadgeTemplate = _template(userbadgeTemplate);
+            const compiledUserRowTemplate = _template(userRowTemplate);
+
+            const markup = _template(template)({
+                config: config,
+                yesListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'yes'),
+                maybeListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'maybe'),
+                noListMarkup: getUserMarkupList(compiledUserbadgeTemplate, 'no'),
+                userRowsMarkupYes: getUserMarkupList(compiledUserRowTemplate, 'yes'),
+                userRowsMarkupMaybe: getUserMarkupList(compiledUserRowTemplate, 'maybe'),
+                userRowsMarkupNo: getUserMarkupList(compiledUserRowTemplate, 'no'),
+                tid: topicId
             });
-        }
+
+            const node = document.createElement('div');
+            node.setAttribute('component', 'topic/attendance');
+            node.innerHTML = markup;
+
+            insertOrReplaceTopicAttendanceNode(node);
+            hideAttendanceDetails();
+            if (attendance.canAttend) {
+                console.info('inserting decision buttons, go!')
+                insertDecisionButtons(attendance.myAttendance);
+            }
+            refreshToolTips()
+        }).catch(err => {
+            console.error(err);
+        });
     });
-};
+}
 
 const topicsLoaded = function () {
     Array.prototype.forEach.call(document.querySelectorAll('[component="category/topic"]'), function (topicItem) {
         if (hasAttendanceClasses(topicItem)) {
             return;
         }
-        if (isMission(getTopicTitle(topicItem))) {
-            const topicId = parseInt(topicItem.getAttribute('data-tid'), 10);
+        if (getEventDate(topicItem)) {
+            const topicId = getTopicId(topicItem);
             getCommitments(topicId, function (response) {
                 const yesCount = response.attendants.filter(function (attendant) {
                     return probabilityToYesMaybeNo[attendant.probability] === 'yes'

@@ -1,44 +1,42 @@
 <% /*global tid, myAttendanceState */ %>
 <!-- begin nomi edit, kicked out TAGS for this type of thread -->
-<div class="clearfix">
-	<div class="btn-group bottom-sheet pull-left" component="topic/attendanceButtons" data-invisible="<%= isLockedMarkup %>">
-		<button class="attendance-control btn dropdown-toggle attendance-master-button" data-value="<%= myAttendanceState %>" data-tid="<%= tid %>" type="button">
-			<span class="attendance-control-icon"></span>
-			<span class="attendance-control-text"></span>
-		</button>
-		<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-			<span class="caret"></span>
-		</button>
-		<!-- todo: enable functionality-->
-		<ul class="attendance-control dropdown-menu">
-			<li>
-				<a href="#" class="attendance-control" data-value="yes" data-tid="<%= tid %>"
-				   type="button"
-				   data-id="slave"
-				>
-					<i class="fa fa-fw fa-check-circle"></i>
-					Anmelden
-				</a>
-			</li>
-			<li>
-				<a href="#" class="attendance-control" data-value="maybe" data-tid="<%= tid %>"
-				   type="button"
-				   data-id="slave"
-				>
-					<i class="fa fa-fw fa-question-circle"></i>
-					Vielleicht
-				</a>
-			</li>
-			<li>
-				<a href="#" class="attendance-control" data-value="no" data-tid="<%= tid %>"
-				   type="button"
-				   data-id="slave"
-				>
-					<i class="fa fa-fw fa-minus-circle"></i>
-					Abmelden
-				</a>
-			</li>
-		</ul>
-	</div>
+<div class="btn-group bottom-sheet" component="topic/attendance-buttons" data-invisible="<%= isLockedMarkup %>">
+	<button class="attendance-control btn btn-sm dropdown-toggle attendance-master-button" data-value="<%= myAttendanceState %>" data-tid="<%= tid %>" type="button">
+		<span class="attendance-control-icon"></span>
+		<span class="attendance-control-text"></span>
+	</button>
+	<button type="button" class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown">
+		<span class="caret"></span>
+	</button>
+	<!-- todo: enable functionality-->
+	<ul class="attendance-control dropdown-menu">
+		<li>
+			<a href="#" class="attendance-control" data-value="yes" data-tid="<%= tid %>"
+			   type="button"
+			   data-id="slave"
+			>
+				<i class="fa fa-fw fa-check-circle"></i>
+				Anmelden
+			</a>
+		</li>
+		<li>
+			<a href="#" class="attendance-control" data-value="maybe" data-tid="<%= tid %>"
+			   type="button"
+			   data-id="slave"
+			>
+				<i class="fa fa-fw fa-question-circle"></i>
+				Vielleicht
+			</a>
+		</li>
+		<li>
+			<a href="#" class="attendance-control" data-value="no" data-tid="<%= tid %>"
+			   type="button"
+			   data-id="slave"
+			>
+				<i class="fa fa-fw fa-minus-circle"></i>
+				Abmelden
+			</a>
+		</li>
+	</ul>
 </div>
 <!-- end nomi edit -->

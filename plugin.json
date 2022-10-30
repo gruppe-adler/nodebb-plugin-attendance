@@ -5,7 +5,6 @@
     "url": "https://github.com/Fusselwurm/nodebb-plugin-attendance",
     "languages": "languages",
     "defaultLang": "en",
-    "library": "./plugin.js",
     "staticDirs": {
         "ejs-templates": "./public/ejs-templates",
         "templates": "./public/templates",

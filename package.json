@@ -1,14 +1,15 @@
 {
     "name": "nodebb-plugin-attendance",
-    "version": "1.1.17",
+    "version": "2.0.0",
     "dependencies": {},
     "peerDependencies": {
         "winston": "*"
     },
-    "engines" : {
-        "npm" : ">3.0"
+    "engines": {
+        "npm": ">3.0"
     },
+    "main": "plugin.js",
     "nbbpm": {
-        "compatibility": "^1.0.0"
+        "compatibility": "^1.15.0"
     }
 }
