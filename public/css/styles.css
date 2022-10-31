@@ -305,7 +305,7 @@
     height: 100%;
     display: block;
     margin: 10px 0;
-    padding: 20px 20px 0;
+    padding: 1rem;
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
 }

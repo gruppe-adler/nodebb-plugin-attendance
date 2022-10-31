@@ -1,12 +1,10 @@
 /*global $, templates, _template */
 
-const cachebuster = '5';
-
 (function () {
     const css = document.createElement('link');
     css.rel = 'stylesheet';
     css.type = 'text/css';
-    css.href = '/plugins/nodebb-plugin-attendance/css/styles.css?v=' + cachebuster;
+    css.href = '/plugins/nodebb-plugin-attendance/css/styles.css?' + app.cacheBuster;
     document.head.appendChild(css);
 }());
 
@@ -100,7 +98,7 @@ const getTemplates = function (templatePaths /*array of paths relative to public
     }
     return Promise.all(
         templatePaths.map(function (templatePath) {
-            return getTemplate(templatePath + '?' + cachebuster)
+            return getTemplate(templatePath + '?' + app.cacheBuster)
         })
     );
 };
@@ -260,7 +258,12 @@ const insertOrReplaceTopicAttendanceNode = function (attendanceNode) {
         topicNode.replaceChild(attendanceNode, existingAttendanceComponentNode);
     } else {
         const postsNode = topicNode.querySelector('[component="topic"]');
-        topicNode.insertBefore(attendanceNode, postsNode)
+        const slottingNode = topicNode.querySelector('[component="topic/arma3-slotting"]');
+        if (slottingNode) {
+            topicNode.insertBefore(attendanceNode, slottingNode)
+        } else {
+            topicNode.insertBefore(attendanceNode, postsNode)
+        }
     }
 };
 
