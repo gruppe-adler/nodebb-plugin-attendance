@@ -38,6 +38,7 @@
 			if (activeLink) {
 				activeLink.className = activeLink.className + ' active';
 			}
+			$(window).trigger('action:events.loaded');
 		}());
 	</script>
 </div>

@@ -382,6 +382,7 @@ $(window).bind('action:topic.loaded', topicLoaded);
 $(window).bind('action:arma3-slotting.set', function () { setTimeout(topicLoaded, 50); });
 $(window).bind('action:arma3-slotting.unset', function () { setTimeout(topicLoaded, 50); });
 $(window).bind('action:topics.loaded', topicsLoaded);
+$(window).bind('action:events.loaded', topicsLoaded);
 $(document).ready(function () {
     switch (app.template) {
         case 'category':
