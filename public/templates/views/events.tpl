@@ -32,13 +32,22 @@
 		<!-- ENDIF config.usePagination -->
 	</div>
 	<script>
-		(function () {
-			var currentPath = '{tag}' ? '/events/{tag}': '/events';
-			var activeLink = document.querySelector('a[href="' + currentPath + '"]');
-			if (activeLink) {
-				activeLink.className = activeLink.className + ' active';
-			}
-			$(window).trigger('action:events.loaded');
-		}());
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', onEventsLoaded);
+        } else {
+            onEventsLoaded();
+        }
+
+        function onEventsLoaded() {
+            $(document).ready(function () {
+                var currentPath = '{tag}' ? '/events/{tag}': '/events';
+                var activeLink = document.querySelector('a[href="' + currentPath + '"]');
+                if (activeLink) {
+                    activeLink.className = activeLink.className + ' active';
+                }
+                $(window).trigger('action:events.loaded');
+            });
+        }
 	</script>
 </div>
