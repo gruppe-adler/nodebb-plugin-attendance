@@ -1,6 +1,6 @@
 {
     "name": "nodebb-plugin-attendance",
-    "version": "4.0.0",
+    "version": "4.0.1",
     "dependencies": {},
     "peerDependencies": {
         "winston": "*"

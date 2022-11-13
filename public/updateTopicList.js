@@ -4,7 +4,7 @@
     const css = document.createElement('link');
     css.rel = 'stylesheet';
     css.type = 'text/css';
-    css.href = '/plugins/nodebb-plugin-attendance/css/styles.css?' + app.cacheBuster;
+    css.href = '/assets/plugins/nodebb-plugin-attendance/css/styles.css?' + app.cacheBuster;
     document.head.appendChild(css);
 }());
 
