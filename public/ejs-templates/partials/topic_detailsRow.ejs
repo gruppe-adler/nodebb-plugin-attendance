@@ -1,9 +1,9 @@
 <% /*global attendant */ %>
 <tr data-uid="<%= attendant.uid %>">
 	<td>
-		<a href="{config.relative_path}/user/<%= attendant.userslug %>">
+		<a href="<%= config.relative_path %>/user/<%= attendant.userslug %>">
 			<% if (attendant.picture) { %>
-				<img class="user-img avatar avatar-sm avatar-rounded" src="<%= attendant.picture %>" title="">
+				<img class="user-img avatar avatar-sm avatar-rounded" src="<%= attendant.picture %>" title="" alt="" />
 			<% } else { %>
 				<div class="avatar avatar-sm avatar-rounded" title=""
 				 style="background-color: <%= attendant['icon:bgColor'] %>;"><%= attendant['icon:text'] %>

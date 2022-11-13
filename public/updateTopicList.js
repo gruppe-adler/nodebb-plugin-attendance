@@ -106,7 +106,7 @@ const getTemplates = function (templatePaths /*array of paths relative to public
 const getTemplate = (function () {
     const loadedTemplates = {};
     return async function (templateName) {
-        templateName = '/plugins/nodebb-plugin-attendance/ejs-templates/' + templateName;
+        templateName = '/assets/plugins/nodebb-plugin-attendance/ejs-templates/' + templateName;
         return new Promise((resolve, reject) => {
             if (loadedTemplates[templateName]) {
                 return resolve(loadedTemplates[templateName]);
@@ -395,16 +395,16 @@ $(document).ready(function () {
     }
 });
 
-const showAttendanceDetails = function () {
+window.showAttendanceDetails = () => {
     document.querySelector('[component="topic/attendance/details"]').style.display = 'block';
     document.querySelector('[component="topic/attendance/backdrop"]').style.display = 'block';
 };
-const hideAttendanceDetails = function () {
+window.hideAttendanceDetails = () => {
     document.querySelector('[component="topic/attendance/details"]').style.display = 'none';
     document.querySelector('[component="topic/attendance/backdrop"]').style.display = 'none';
 };
 
-function nodebbPluginAttendanceCustomISODateString(d) {
+window.nodebbPluginAttendanceCustomISODateString = (d) => {
     d = new Date(d);
     function pad(n) {
         return n < 10 ? '0' + n : n
@@ -430,6 +430,6 @@ function checkDateLock(d) {
     return itsHistory;
 }
 
-function nodebbPluginAttendanceTotalPotentialAttendees(min, pot) {
+window.nodebbPluginAttendanceTotalPotentialAttendees = (min, pot) => {
     return min + pot;
 }
