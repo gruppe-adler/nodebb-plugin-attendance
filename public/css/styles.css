@@ -63,7 +63,7 @@
 
 .btn[data-value="unknown"] .attendance-control-icon:after ,.btn[data-value=""] .attendance-control-icon:after {
   font-family: "FontAwesome";
-  content: "\f10c";
+  content: "\f111";
   color: #fff !important;
 }
 
