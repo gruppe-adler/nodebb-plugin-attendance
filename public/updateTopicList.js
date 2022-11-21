@@ -155,10 +155,18 @@ const addCommitmentCountToTopicHeader = function (categoryItem, yesCount, possib
         return;
     }
 
+    function removeClass(node, className) {
+        node.className = node.className.split(' ').filter(c => c !== className).join(' ');
+    }
+    function addClass(node, className) {
+        node.className = node.className + ' ' + className;
+    }
+
     const statsDivs = categoryItem.querySelectorAll('.stats');
     const oneStatsDiv = statsDivs[0];
     const myAttendanceDiv = document.createElement('div');
-    myAttendanceDiv.className = oneStatsDiv.className + ' stats-attendance';
+    addClass(myAttendanceDiv, 'stats-attendance');
+    removeClass(myAttendanceDiv, 'stats-votes');
     myAttendanceDiv.appendChild(getUserSymbolElement(colorMap[myAttendance] || '#777', myAttendance));
     oneStatsDiv.parentNode.insertBefore(myAttendanceDiv, oneStatsDiv);
 
@@ -171,7 +179,8 @@ const addCommitmentCountToTopicHeader = function (categoryItem, yesCount, possib
     }
 
     const viewsDiv = document.createElement('div');
-    viewsDiv.className = oneStatsDiv.className + ' stats-attendance';
+    addClass(viewsDiv, 'stats-attendance');
+    removeClass(viewsDiv, 'stats-votes');
     viewsDiv.innerHTML = oneStatsDiv.innerHTML;
     viewsDiv.querySelector('small').innerHTML = "Zusagen";
     viewsDiv.querySelector('[class="human-readable-number"]').innerHTML = numberRangeMarkup(yesCount, possibleTotalCount);
