@@ -165,6 +165,7 @@ const addCommitmentCountToTopicHeader = function (categoryItem, yesCount, possib
     const statsDivs = categoryItem.querySelectorAll('.stats');
     const oneStatsDiv = statsDivs[0];
     const myAttendanceDiv = document.createElement('div');
+    myAttendanceDiv.className = oneStatsDiv.className;
     addClass(myAttendanceDiv, 'stats-attendance');
     removeClass(myAttendanceDiv, 'stats-votes');
     myAttendanceDiv.appendChild(getUserSymbolElement(colorMap[myAttendance] || '#777', myAttendance));
@@ -179,6 +180,7 @@ const addCommitmentCountToTopicHeader = function (categoryItem, yesCount, possib
     }
 
     const viewsDiv = document.createElement('div');
+    viewsDiv.className = oneStatsDiv.className;
     addClass(viewsDiv, 'stats-attendance');
     removeClass(viewsDiv, 'stats-votes');
     viewsDiv.innerHTML = oneStatsDiv.innerHTML;
