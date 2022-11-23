@@ -203,7 +203,7 @@ function getEventDate(categoryTopicComponentNode) {
     const topicTitle = getTopicTitle(categoryTopicComponentNode);
     const dateMatch = getEventTopicDateMatch(topicTitle);
 
-    return dateMatch ? new Date(dateMatch) : undefined;
+    return dateMatch ? new Date(dateMatch[1]) : undefined;
 }
 
 function getCommitments(topicId, cb) {
