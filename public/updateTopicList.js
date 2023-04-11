@@ -259,6 +259,10 @@ async function insertDecisionButtons(myAttendance) {
 
 // ende baustelle
 
+const insertAfter = function (newNode, existingNode) {
+    existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling)
+}
+
 const insertOrReplaceTopicAttendanceNode = function (attendanceNode) {
     const topicHeaderNode = getTopicHeaderOnTopicPage();
     const topicNode = topicHeaderNode.parentNode;
@@ -268,12 +272,12 @@ const insertOrReplaceTopicAttendanceNode = function (attendanceNode) {
     if (existingAttendanceComponentNode) {
         topicNode.replaceChild(attendanceNode, existingAttendanceComponentNode);
     } else {
-        const postsNode = topicNode.querySelector('[component="topic"]');
+        const firstPost = document.querySelector('[component="post"][data-index="0"]');
         const slottingNode = topicNode.querySelector('[component="topic/arma3-slotting"]');
         if (slottingNode) {
             topicNode.insertBefore(attendanceNode, slottingNode)
         } else {
-            topicNode.insertBefore(attendanceNode, postsNode)
+            insertAfter(attendanceNode, firstPost)
         }
     }
 };
