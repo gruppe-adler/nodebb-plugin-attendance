@@ -270,7 +270,7 @@ const insertOrReplaceTopicAttendanceNode = function (attendanceNode) {
 
     const existingAttendanceComponentNode = topicNode.querySelector('[component="topic/attendance"]');
     if (existingAttendanceComponentNode) {
-        topicNode.replaceChild(attendanceNode, existingAttendanceComponentNode);
+        existingAttendanceComponentNode.parentNode.replaceChild(attendanceNode, existingAttendanceComponentNode);
     } else {
         const firstPost = document.querySelector('[component="post"][data-index="0"]');
         const slottingNode = topicNode.querySelector('[component="topic/arma3-slotting"]');
